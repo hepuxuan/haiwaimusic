@@ -1,0 +1,20 @@
+.audioPlayer {
+  position: relative;
+}
+
+.button {
+  border: none;
+  background-color: inherit;
+  outline: inherit !important;
+  background: none !important;
+  z-index: 1;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  i {
+    font-size: 38px;
+  }
+}
