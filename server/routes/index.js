@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
   res.render('template', {
-    title: 'qq音乐搜索',
+    title: '海外音悦台',
     page: 'index',
     body: renderToString(<Index />),
     data: JSON.stringify({}),
