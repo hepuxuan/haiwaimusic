@@ -7,6 +7,10 @@ export default class Player extends React.Component {
     isPlaying: true,
   }
 
+  componentDidMount() {
+    this.audio.play();
+  }
+
   play = () => {
     this.audio.play();
     this.setState({
@@ -34,7 +38,6 @@ export default class Player extends React.Component {
         <Image imageId={imageId} />
         <audio
           ref={(r) => { this.audio = r; }}
-          autoPlay
           src={`http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`}
           onEnded={this.handleEnded}
         />
