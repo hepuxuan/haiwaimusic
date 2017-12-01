@@ -1,4 +1,4 @@
-# haiwaimusic
+# [haiwaimusic](http://www.yinyuetai.fun/)
 
 ## run in production
 
