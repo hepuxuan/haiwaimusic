@@ -84,7 +84,10 @@ module.exports = {
       },
     }),
     new UglifyJSPlugin(),
-    new ExtractTextPlugin('style.css'),
+    new ExtractTextPlugin({
+      filename: '[name].css',
+      allChunks: true,
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity,
