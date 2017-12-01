@@ -34,6 +34,7 @@ export default class Player extends React.Component {
         <Image imageId={imageId} />
         <audio
           ref={(r) => { this.audio = r; }}
+          loop
           src={`http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`}
           onEnded={this.handleEnded}
         />

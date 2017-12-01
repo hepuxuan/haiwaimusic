@@ -35,7 +35,8 @@ export default class Index extends React.Component {
   }
 
   handleScroll = () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight
+      && !this.state.isLoading) {
       const { q, page } = this.state;
       const newPage = page + 1;
       this.getSearchResult(q, newPage).then(({ songs }) => {
