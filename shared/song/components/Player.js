@@ -4,11 +4,7 @@ import styles from '../scss/player.scss';
 
 export default class Player extends React.Component {
   state = {
-    isPlaying: true,
-  }
-
-  componentDidMount() {
-    this.audio.play();
+    isPlaying: false,
   }
 
   play = () => {
