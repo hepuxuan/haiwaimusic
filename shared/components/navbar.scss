@@ -1,5 +1,7 @@
+@import '../variables';
+
 .navbar {
-  background-color: #31c27c;
+  background-color: $primary-color;
   height: 44px;
   width: 100%;
   top: 0;

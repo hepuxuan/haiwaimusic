@@ -6,9 +6,9 @@ const Music = require('../../shared/song/components').default;
 
 const router = express.Router();
 
-router.get('/:songId', (req, res) => {
-  const { songId } = req.params;
-  const { singer, song, imageId } = req.query;
+router.get('/:song', (req, res) => {
+  const { song } = req.params;
+  const { singer, songId, imageId } = req.query;
 
   res.render('template', {
     title: '音乐播放',
