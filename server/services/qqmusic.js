@@ -1,4 +1,6 @@
 const fetch = require('isomorphic-fetch');
+const { parseString } = require('xml2js');
+const { promisify } = require('util');
 
 module.exports = {
   search(q, page = 1) {
@@ -17,5 +19,14 @@ module.exports = {
       .catch(() => ({
         songs: [],
       }));
+  },
+
+  getLyric(songId) {
+    const url = `http://music.qq.com/miniportal/static/lyric/${songId % 100}/${songId}.xml`;
+    const parseXml = promisify(parseString);
+    return fetch(url)
+      .then(r => r.text())
+      .then(xml => parseXml(xml))
+      .then(result => result);
   },
 };

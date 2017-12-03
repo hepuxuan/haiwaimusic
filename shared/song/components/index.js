@@ -5,13 +5,13 @@ import Player from './Player';
 import '../scss/index.scss';
 
 export default function ({
-  songId, song, singer, imageId,
+  songId, song, singer, imageId, lyric,
 }) {
   return (
     <div>
       <Nav />
       <Description song={song} singer={singer} />
-      <Player songId={songId} imageId={imageId} />
+      <Player songId={songId} imageId={imageId} lyric={lyric} />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from './Image';
+import Lyric from './Lyric';
 import styles from '../scss/player.scss';
 
 export default class Player extends React.Component {
@@ -26,6 +27,12 @@ export default class Player extends React.Component {
     this.setState({
       isPlaying: false,
     });
+    if (this.state.loop) {
+      setTimeout(() => {
+        this.play();
+        this.lyric.replay();
+      }, 500);
+    }
   }
 
   handleToggleLoop = () => {
@@ -35,13 +42,13 @@ export default class Player extends React.Component {
   }
 
   render() {
-    const { songId, imageId } = this.props;
+    const { songId, imageId, lyric } = this.props;
     return (
       <div className={styles.audioPlayer}>
         <Image imageId={imageId} isPlaying={this.state.isPlaying} />
+        <Lyric ref={(r) => { this.lyric = r; }} lyric={lyric} isPlaying={this.state.isPlaying} />
         <audio
           ref={(r) => { this.audio = r; }}
-          loop={this.state.loop}
           src={`http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`}
           onEnded={this.handleEnded}
         />

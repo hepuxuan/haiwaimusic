@@ -1,6 +1,7 @@
 // precompile in production?
 require('babel-register')({
-  presets: ['es2015', 'react'],
+  presets: ['react'],
+  ignore: 'node_modules',
   plugins: [
     [
       'css-modules-transform', {
@@ -9,7 +10,6 @@ require('babel-register')({
         extensions: ['.scss'],
       },
     ],
-    'transform-class-properties',
   ],
 });
 
