@@ -7,7 +7,7 @@ export default function ({
   return (
     <a href={`/song/${song}?singer=${singer}&songId=${id}&imageId=${imageId}`} className={styles.result}>
       <div className={styles.misicIcon}>
-        <i className="material-icons">library_music</i>
+        <i className="material-icons">music_note</i>
       </div>
       <div>
         <div className={styles.title} key="title">

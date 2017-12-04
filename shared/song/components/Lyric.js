@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../scss/lyric.scss';
-
+import Lrc from './Lrc';
 
 export default class Lyric extends React.Component {
   state = {
@@ -12,16 +12,15 @@ export default class Lyric extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.isPlaying && nextProps.isPlaying) {
+    if (!this.props.isStopped && nextProps.isStopped) {
+      this.lrc.stop();
+    } else if (this.props.isStopped && !nextProps.isStopped) {
       this.lrc.play();
-    } else if (this.props.isPlaying && !nextProps.isPlaying) {
+    }
+
+    if (this.props.isPaused !== nextProps.isPaused) {
       this.lrc.pauseToggle();
     }
-  }
-
-  replay() {
-    this.lrc.stop();
-    this.lrc.play();
   }
 
   handleOutput = (currentLine) => {

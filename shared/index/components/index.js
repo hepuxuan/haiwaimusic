@@ -1,6 +1,7 @@
 import React from 'react';
-import Navbar from '../../components/Navbar';
+import Navbar from './Navbar';
 import Search from './Search';
+import BottomNav from '../../components/BottomNav';
 import SearchResultList from './SearchResultList';
 import Loader from '../../components/Loader';
 import '../scss/index.scss';
@@ -26,11 +27,11 @@ export default class Index extends React.Component {
       isLoading: true,
     });
     const url = `/api/qqmusic?q=${q}&p=${page}`;
-    return fetch(url).then((res) => {
+    return fetch(url).then(res => res.json()).then((json) => {
       this.setState({
         isLoading: false,
       });
-      return res.json();
+      return json;
     });
   }
 
@@ -62,14 +63,15 @@ export default class Index extends React.Component {
   render() {
     const { searchResults, isLoading } = this.state;
     return (
-      <div>
+      <React.Fragment>
         <Navbar />
         <Search onSearch={this.handleSearch} />
         <SearchResultList searchResults={searchResults} />
         {
           isLoading && <Loader />
         }
-      </div>
+        <BottomNav activeLink="home" />
+      </React.Fragment>
     );
   }
 }

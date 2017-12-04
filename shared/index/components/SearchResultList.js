@@ -8,8 +8,8 @@ export default function ({ searchResults }) {
       {
         searchResults.map(({
           singer, song, id, imageId,
-        }) => (
-          <div key={id} className={styles.searchItem}>
+        }, index) => (
+          <div key={index} className={styles.searchItem}>
             <SearchResult singer={singer} song={song} id={id} imageId={imageId} />
           </div>
         ))

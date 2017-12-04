@@ -35,7 +35,8 @@ module.exports = {
   entry: {
     vendor: ['react', 'react-dom'],
     index: './client/index.js',
-    music: './client/song.js',
+    song: './client/song.js',
+    playList: './client/playList.js',
   },
 
   output: {

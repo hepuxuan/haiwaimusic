@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './navbar.scss';
+import styles from '../scss/navbar.scss';
 
 export default function () {
   return (
-    <div className={styles.navbar}>
+    <div className={styles.navBar}>
       <h1 className={styles.title}>海外音悦台</h1>
     </div>
   );

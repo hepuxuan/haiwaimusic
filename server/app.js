@@ -23,6 +23,7 @@ const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
 const song = require('./routes/song');
+const playList = require('./routes/playList');
 const qqApi = require('./routes/qqApi');
 
 const app = express();
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', index);
 app.use('/song', song);
+app.use('/playList', playList);
 app.use('/api/qqmusic', qqApi);
 
 // catch 404 and forward to error handler

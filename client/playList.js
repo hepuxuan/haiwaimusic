@@ -1,8 +1,8 @@
 import { hydrate } from 'react-dom';
 import React from 'react';
-import Index from '../shared/index/components';
+import PlayList from '../shared/playList/components';
 
 hydrate(
-  <Index />,
+  <PlayList />,
   document.getElementById('main'),
 );

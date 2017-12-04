@@ -1,37 +1,43 @@
 import React from 'react';
 import Image from './Image';
 import Lyric from './Lyric';
+import ControlPanel from './ControlPanel';
 import styles from '../scss/player.scss';
 
 export default class Player extends React.Component {
   state = {
-    isPlaying: false,
-    loop: true,
+    isPaused: false,
+    isStopped: true,
+    loop: false,
   }
 
   play = () => {
     this.audio.play();
     this.setState({
-      isPlaying: true,
+      isStopped: false,
+      isPaused: false,
     });
   }
 
   pause = () => {
     this.audio.pause();
     this.setState({
-      isPlaying: false,
+      isPaused: true,
+      isStopped: false,
     });
   }
 
   handleEnded = () => {
     this.setState({
-      isPlaying: false,
+      isStopped: true,
+      isPaused: false,
     });
     if (this.state.loop) {
       setTimeout(() => {
         this.play();
-        this.lyric.replay();
       }, 500);
+    } else {
+      this.props.onPlayNext();
     }
   }
 
@@ -42,37 +48,35 @@ export default class Player extends React.Component {
   }
 
   render() {
-    const { songId, imageId, lyric } = this.props;
+    const {
+      songId, imageId, lyric, onPlayNext, onPlayPrev,
+    } = this.props;
+    const { isPaused, isStopped } = this.state;
+    const isPlaying = !isPaused && !isStopped;
     return (
       <div className={styles.audioPlayer}>
-        <Image imageId={imageId} isPlaying={this.state.isPlaying} />
-        <Lyric ref={(r) => { this.lyric = r; }} lyric={lyric} isPlaying={this.state.isPlaying} />
+        <Image imageId={imageId} isPlaying={isPlaying} />
+        {
+          lyric && <Lyric
+            lyric={lyric}
+            isPaused={isPaused}
+            isStopped={isStopped}
+          />
+        }
         <audio
           ref={(r) => { this.audio = r; }}
           src={`http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`}
           onEnded={this.handleEnded}
         />
-        <div className={styles.buttonsGroup}>
-          <div>
-            <button onClick={this.handleToggleLoop} className={`${styles.button} ${styles.buttonSmall} ${this.state.loop ? '' : styles.loopOff}`}>
-              <i className="material-icons">loop</i>
-            </button>
-          </div>
-          <div>
-            {
-              this.state.isPlaying ? (
-                <button onClick={this.pause} className={styles.button}>
-                  <i className="material-icons">pause</i>
-                </button>
-              ) : (
-                <button onClick={this.play} className={styles.button}>
-                  <i className="material-icons">play_arrow</i>
-                </button>
-              )
-            }
-          </div>
-          <div className="placeholder" />
-        </div>
+        <ControlPanel
+          loop={this.state.loop}
+          onToggleLoop={this.handleToggleLoop}
+          onPlay={this.play}
+          onPause={this.pause}
+          isPlaying={isPlaying}
+          onPlayNext={onPlayNext}
+          onPlayPrev={onPlayPrev}
+        />
       </div>
     );
   }
