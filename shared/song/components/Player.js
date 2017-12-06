@@ -9,6 +9,15 @@ export default class Player extends React.Component {
     isPaused: false,
     isStopped: true,
     loop: false,
+    renderAudio: false,
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        renderAudio: true,
+      });
+    }, 500);
   }
 
   play = () => {
@@ -24,6 +33,13 @@ export default class Player extends React.Component {
     this.setState({
       isPaused: true,
       isStopped: false,
+    });
+  }
+
+  handlePlay = () => {
+    this.setState({
+      isStopped: false,
+      isPaused: false,
     });
   }
 
@@ -63,11 +79,17 @@ export default class Player extends React.Component {
             isStopped={isStopped}
           />
         }
-        <audio
-          ref={(r) => { this.audio = r; }}
-          src={`http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`}
-          onEnded={this.handleEnded}
-        />
+        {
+          this.state.renderAudio && (
+            <audio
+              ref={(r) => { this.audio = r; }}
+              src={`http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`}
+              onEnded={this.handleEnded}
+              autoPlay
+              onPlay={this.handlePlay}
+            />
+          )
+        }
         <ControlPanel
           loop={this.state.loop}
           onToggleLoop={this.handleToggleLoop}

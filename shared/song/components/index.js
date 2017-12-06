@@ -4,13 +4,13 @@ import findIndex from 'lodash/findIndex';
 import Description from './Description';
 import Nav from './Nav';
 import Player from './Player';
-import BottomNav from '../../components/BottomNav';
-import '../scss/index.scss';
+import styles from '../scss/index.scss';
 import { getPlayList, updatePlayList } from '../../utils';
 
 function Index({
   songId, song, singer, imageId, lyric, onAddToPlayList, onPlayNext, onPlayPrev,
 }) {
+  const imageUrl = `http://imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
   return (
     <React.Fragment>
       <Nav handleAddToPlayList={onAddToPlayList} />
@@ -22,7 +22,7 @@ function Index({
         imageId={imageId}
         lyric={lyric}
       />
-      <BottomNav />
+      <div className={styles.background} style={{ backgroundImage: `url(${imageUrl})` }} />
     </React.Fragment>
   );
 }
@@ -71,13 +71,13 @@ export default class IndexContainer extends React.Component {
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) => existingSongId === this.props.songId,
+        ({ id: existingSongId }) => existingSongId === this.props.songId,
       );
       const nextIndex = (index + 1) % playList.length;
       const {
-        songId, song, singer, imageId,
+        id, song, singer, imageId,
       } = playList[nextIndex];
-      window.location.replace(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
+      window.location.replace(`/song/${song}?singer=${singer}&songId=${id}&imageId=${imageId}`);
     }
   }
 

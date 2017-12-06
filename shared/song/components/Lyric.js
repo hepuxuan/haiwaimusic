@@ -9,6 +9,9 @@ export default class Lyric extends React.Component {
 
   componentDidMount() {
     this.lrc = new Lrc(this.props.lyric, this.handleOutput);
+    if (!this.props.isStopped) {
+      this.lrc.play();
+    }
   }
 
   componentWillReceiveProps(nextProps) {

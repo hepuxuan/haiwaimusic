@@ -11,6 +11,7 @@
 .result {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .misicIcon {
@@ -18,4 +19,9 @@
     font-size: 32px;
   }
   margin-right: 12px;
+}
+
+.innerBox {
+  display: flex;
+  align-items: center;
 }

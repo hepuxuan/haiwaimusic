@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   position: fixed;
-  bottom: 74px;
+  bottom: 30px;
   width: 100%;
   align-items: center;
   > div {
@@ -20,6 +20,7 @@
     position: relative;
     i {
       font-size: 18px;
+      font-weight: bold;
     }
   }
 }
@@ -33,7 +34,7 @@
 }
 
 .button {
-  border: 1px solid;
+  border: 2px solid;
   border-radius: 50%;
   height: 48px;
   width: 48px;
