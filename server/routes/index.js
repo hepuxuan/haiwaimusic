@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
   res.render('template', {
     title: '海外音悦台',
     page: 'index',
+    hash: req.hash,
     body: renderToString(<Index />),
     data: JSON.stringify({}),
   });

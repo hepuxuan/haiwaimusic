@@ -7,7 +7,7 @@
     "build": "webpack --config webpack.prod.js",
     "start-watch": "nodemon ./server/bin/www",
     "webpackWatch": "webpack -w",
-    "start-dev": "concurrently \"npm run start-watch\" \"npm run webpackWatch\""
+    "start-dev": "webpack && concurrently \"npm run start-watch\" \"npm run webpackWatch\""
   },
   "dependencies": {
     "babel-core": "^6.26.0",
@@ -15,6 +15,7 @@
     "babel-register": "^6.26.0",
     "body-parser": "~1.18.2",
     "compression": "^1.7.1",
+    "compression-webpack-plugin": "^1.0.1",
     "concurrently": "^3.5.1",
     "cookie-parser": "~1.4.3",
     "css-loader": "^0.28.7",
@@ -33,6 +34,7 @@
     "react-dom": "^16.2.0",
     "sass-loader": "^6.0.6",
     "serve-favicon": "~2.4.5",
+    "source-map-support": "^0.5.0",
     "style-loader": "^0.19.0",
     "uglifyjs-webpack-plugin": "^1.1.2",
     "webpack": "^3.9.1",

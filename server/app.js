@@ -1,32 +1,20 @@
-// precompile in production?
-require('babel-register')({
-  presets: ['react'],
-  ignore: 'node_modules',
-  plugins: [
-    [
-      'css-modules-transform', {
-        preprocessCss: './server/loaders/sass-loader.js',
-        generateScopedName: '[hash:8]',
-        extensions: ['.scss'],
-      },
-    ],
-  ],
-});
-
 const express = require('express');
 const path = require('path');
-const compression = require('compression');
+const fs = require('fs');
 // const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
-const index = require('./routes/index');
-const song = require('./routes/song');
-const playList = require('./routes/playList');
+const index = require('./build/index');
+const song = require('./build/song');
+const playList = require('./build/playList');
 const qqApi = require('./routes/qqApi');
 
 const app = express();
+
+const content = fs.readFileSync(path.resolve(__dirname, './stats.generated.json'));
+const hash = JSON.parse(content).hash;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,12 +22,20 @@ app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../public')));
+
+const oneYear = 86400000 * 365;
+app.use(express.static(path.join(__dirname, '../public'), {
+  maxAge: oneYear,
+}));
+
+app.use((req, res, next) => {
+  req.hash = hash;
+  next();
+});
 
 app.use('/', index);
 app.use('/song', song);

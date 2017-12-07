@@ -8,6 +8,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   res.render('template', {
     title: '我的播放列表',
+    hash: req.hash,
     page: 'playList',
     body: renderToString(<PlayList />),
     data: JSON.stringify({}),

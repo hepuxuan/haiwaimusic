@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const path = require('path');
+const fs = require('fs');
 const autoprefixer = require('autoprefixer');
+const CompressionPlugin = require('compression-webpack-plugin');
 /*
  * We've enabled UglifyJSPlugin for you! This minifies your app
  * in order to load faster and run less javascript.
@@ -31,67 +33,127 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-module.exports = {
-  entry: {
-    vendor: ['react', 'react-dom'],
-    index: './client/index.js',
-    song: './client/song.js',
-    playList: './client/playList.js',
-  },
+module.exports = [
+  {
+    entry: {
+      vendor: ['react', 'react-dom'],
+      index: './client/index.js',
+      song: './client/song.js',
+      playList: './client/playList.js',
+    },
 
-  output: {
-    filename: '[name].js',
-    chunkFilename: '[name].js',
-    path: path.resolve(__dirname, './public/build'),
-  },
+    output: {
+      filename: '[name]-[hash].js',
+      chunkFilename: '[name]-[hash].js',
+      path: path.resolve(__dirname, './public/build'),
+    },
 
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.(scss|css)$/,
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader',
+        },
+        {
+          test: /\.(scss|css)$/,
 
-        use: ExtractTextPlugin.extract([
-          {
-            loader: 'css-loader',
-            query: {
-              localIdentName: '[hash:8]',
-              modules: true,
+          use: ExtractTextPlugin.extract([
+            {
+              loader: 'css-loader',
+              query: {
+                localIdentName: '[hash:8]',
+                modules: true,
+              },
             },
-          },
-          {
-            loader: 'sass-loader',
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: [autoprefixer],
+            {
+              loader: 'sass-loader',
             },
-          },
-        ]),
+            {
+              loader: 'postcss-loader',
+              options: {
+                ident: 'postcss',
+                plugins: [autoprefixer],
+              },
+            },
+          ]),
+        },
+      ],
+    },
+
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify('production'),
+        },
+      }),
+      new UglifyJSPlugin(),
+      new ExtractTextPlugin({
+        filename: '[name]-[hash].css',
+        allChunks: true,
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks: Infinity,
+      }),
+      new CompressionPlugin({
+        test: /\.js|.css/,
+      }),
+      function OutputHash() {
+        this.plugin('done', (stats) => {
+          fs.writeFileSync(path.join(__dirname, 'server', 'stats.generated.json'), JSON.stringify({
+            hash: stats.toJson().hash,
+          }));
+        });
       },
     ],
   },
+  {
+    target: 'node',
+    entry: {
+      index: './server/routes/index.js',
+      song: './server/routes/song.js',
+      playList: './server/routes/playList.js',
+    },
 
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
-    new UglifyJSPlugin(),
-    new ExtractTextPlugin({
-      filename: '[name].css',
-      allChunks: true,
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
-    }),
-  ],
-};
+    output: {
+      filename: '[name].js',
+      chunkFilename: '[name].js',
+      path: path.resolve(__dirname, './server/build'),
+      libraryTarget: 'commonjs2',
+    },
+
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          loader: 'babel-loader',
+        },
+        {
+          test: /\.(scss|css)$/,
+
+          use: [
+            {
+              loader: 'css-loader/locals?modules',
+              query: {
+                localIdentName: '[hash:8]',
+                modules: true,
+              },
+            },
+            {
+              loader: 'sass-loader',
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                ident: 'postcss',
+                plugins: [autoprefixer],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+];

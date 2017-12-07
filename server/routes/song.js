@@ -11,6 +11,7 @@ router.get('/:song', (req, res) => {
   res.render('template', {
     title: '音乐播放',
     page: 'song',
+    hash: req.hash,
     body: renderToString(<Music
       songId={songId}
       song={song}
