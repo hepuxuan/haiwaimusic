@@ -1,3 +1,5 @@
+@import '../../variables';
+
 .mylist {
   > div:not(:last-child) {
     border-bottom: solid 1px #ccc;
@@ -11,4 +13,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.titleEmpty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  font-size: 16px;
+  a {
+    color: $primary-color;
+    padding-left: 2px;
+  };
 }

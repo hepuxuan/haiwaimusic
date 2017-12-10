@@ -1,6 +1,5 @@
 .search {
   background-color: #f4f4f4;
-  padding: 10px;
   input {
     width: 100%;
     border-radius: 3px;
@@ -9,4 +8,8 @@
     appearance: none;
     border: none;
   }
+}
+
+.searchForm {
+  padding: 10px;
 }

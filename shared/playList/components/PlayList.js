@@ -3,7 +3,7 @@ import ListItem from './ListItem';
 import styles from '../scss/playList.scss';
 
 export default function ({ playList, onRemoveSong }) {
-  return (
+  return playList.length ? (
     <div className={styles.mylist}>
       {
         playList.map(song => (
@@ -17,6 +17,11 @@ export default function ({ playList, onRemoveSong }) {
           </div>
         ))
       }
+    </div>
+  ) : (
+    <div className={styles.titleEmpty}>
+      您的列表空空如也，立刻
+      <a href="/">搜索歌曲</a>
     </div>
   );
 }
