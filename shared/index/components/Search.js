@@ -19,11 +19,9 @@ export default class Search extends React.Component {
   render() {
     return (
       <div className={styles.search}>
-        <div className={styles.searchForm}>
-          <form onSubmit={this.handleSubmit}>
-            <input placeholder="搜索歌手或者歌名" onChange={this.handleChange} value={this.state.q} />
-          </form>
-        </div>
+        <form className={styles.searchForm} onSubmit={this.handleSubmit}>
+          <input placeholder="搜索歌手或者歌名" onChange={this.handleChange} value={this.state.q} />
+        </form>
       </div>
     );
   }
