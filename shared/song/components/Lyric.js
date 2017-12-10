@@ -15,6 +15,13 @@ export default class Lyric extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.lyric !== this.props.lyric) {
+      this.lrc = new Lrc(this.props.lyric, this.handleOutput);
+      if (!nextProps.isStopped) {
+        this.lrc.play();
+      }
+    }
+
     if (!this.props.isStopped && nextProps.isStopped) {
       this.lrc.stop();
     } else if (this.props.isStopped && !nextProps.isStopped) {
@@ -24,6 +31,10 @@ export default class Lyric extends React.Component {
     if (this.props.isPaused !== nextProps.isPaused) {
       this.lrc.pauseToggle();
     }
+  }
+
+  componentWillUnmount() {
+    this.lrc.handler = () => {};
   }
 
   handleOutput = (currentLine) => {

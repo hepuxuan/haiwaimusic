@@ -25,8 +25,8 @@ export default class IndexContainer extends React.Component {
     });
   }
 
-  handleRemoveSong = (songId) => {
-    const playList = this.state.playList.filter(({ id }) => id !== songId);
+  handleRemoveSong = (_songId) => {
+    const playList = this.state.playList.filter(({ songId }) => songId !== _songId);
     setTimeout(() => {
       this.setState({
         playList,

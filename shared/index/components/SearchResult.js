@@ -6,17 +6,17 @@ import { getPlayList, updatePlayList } from '../../utils';
 
 function handleAddToList(item) {
   const existingList = getPlayList();
-  if (find(existingList, ({ id }) => id === item.id)) {
+  if (find(existingList, ({ songId }) => songId === item.songId)) {
     return;
   }
   updatePlayList(getPlayList().concat(item));
 }
 
 export default function ({
-  singer, song, id, imageId,
+  singer, song, songId, imageId,
 }) {
   return (
-    <a href={`/song/${song}?singer=${singer}&songId=${id}&imageId=${imageId}`} className={styles.result}>
+    <a href={`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`} className={styles.result}>
       <div className={styles.innerBox}>
         <div className={styles.misicIcon}>
           <i className="material-icons">music_note</i>
@@ -31,7 +31,7 @@ export default function ({
       <Menu>
         <MenuItem
           onClick={() => {
-            window.location.assign(`/song/${song}?singer=${singer}&songId=${id}&imageId=${imageId}`);
+            window.location.assign(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
           }}
         >
           播放
@@ -39,7 +39,7 @@ export default function ({
         <MenuItem
           onClick={() => {
             handleAddToList({
-              singer, song, id, imageId,
+              singer, song, songId, imageId,
             });
           }}
         >

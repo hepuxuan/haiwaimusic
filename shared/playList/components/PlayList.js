@@ -7,10 +7,10 @@ export default function ({ playList, onRemoveSong }) {
     <div className={styles.mylist}>
       {
         playList.map(song => (
-          <div className={styles.listItem} key={song.id}>
+          <div className={styles.listItem} key={song.songId}>
             <ListItem {...song} />
             <div>
-              <button onClick={() => { onRemoveSong(song.id); }}>
+              <button onClick={() => { onRemoveSong(song.songId); }}>
                 &#10006;
               </button>
             </div>

@@ -10,7 +10,7 @@ export default function ({ searchResults }) {
           singer, song, id, imageId,
         }, index) => (
           <div key={index} className={styles.searchItem}>
-            <SearchResult singer={singer} song={song} id={id} imageId={imageId} />
+            <SearchResult singer={singer} song={song} songId={id} imageId={imageId} />
           </div>
         ))
       }

@@ -31,18 +31,29 @@ export default class IndexContainer extends React.Component {
   constructor(props) {
     super(props);
 
-
     this.state = {
       lyric: null,
       playList: getPlayList(),
+      songId: props.songId,
+      song: props.song,
+      singer: props.singer,
+      imageId: props.imageId,
     };
   }
 
   componentDidMount() {
-    const url = `/api/qqmusic/lyric?songId=${this.props.songId}`;
+    this.fetchLyric();
+  }
+
+  fetchLyric = () => {
+    const url = `/api/qqmusic/lyric?songId=${this.state.songId}`;
     fetch(url).then(res => res.json()).then(({ lyric }) => {
       this.setState({
         lyric,
+      });
+    }).catch(() => {
+      this.setState({
+        lyric: null,
       });
     });
   }
@@ -50,7 +61,7 @@ export default class IndexContainer extends React.Component {
   handleAddToPlayList = () => {
     const {
       songId, song, singer, imageId,
-    } = this.props;
+    } = this.state;
     const { playList } = this.state;
 
     if (find(playList, ({ songId: existingSongId }) => existingSongId === songId)) {
@@ -71,13 +82,17 @@ export default class IndexContainer extends React.Component {
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ id: existingSongId }) => existingSongId === this.props.songId,
+        ({ songId: existingSongId }) => existingSongId === this.state.songId,
       );
       const nextIndex = (index + 1) % playList.length;
       const {
-        id, song, singer, imageId,
+        songId, song, singer, imageId,
       } = playList[nextIndex];
-      window.location.replace(`/song/${song}?singer=${singer}&songId=${id}&imageId=${imageId}`);
+
+      this.setState({
+        songId, song, singer, imageId, lyric: null,
+      }, this.fetchLyric);
+      window.history.pushState('playSong', document.title, `/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
     }
   }
 
@@ -86,7 +101,7 @@ export default class IndexContainer extends React.Component {
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) => existingSongId === this.props.songId,
+        ({ songId: existingSongId }) => existingSongId === this.state.songId,
       );
       let nextIndex;
       if (index > 0) {
@@ -97,16 +112,25 @@ export default class IndexContainer extends React.Component {
       const {
         songId, song, singer, imageId,
       } = playList[nextIndex];
-      window.location.replace(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
+
+      this.setState({
+        songId, song, singer, imageId, lyric: null,
+      }, this.fetchLyric);
+      window.history.pushState('playSong', document.title, `/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
     }
   }
 
   render() {
-    const { lyric, playList } = this.state;
+    const {
+      lyric, playList, songId, song, singer, imageId,
+    } = this.state;
 
     return (
       <Index
-        {...this.props}
+        songId={songId}
+        song={song}
+        singer={singer}
+        imageId={imageId}
         lyric={lyric}
         playList={playList}
         onAddToPlayList={this.handleAddToPlayList}
