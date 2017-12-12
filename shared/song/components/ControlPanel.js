@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../scss/controlPanel.scss';
 
 export default function ({
-  onToggleLoop, onPause, onPlay, isPlaying, loop, onPlayNext, onPlayPrev,
+  onToggleLoop, onPause, onPlay, isPlaying, loop, onPlayNext, onPlayPrev, onOpenPlayList,
 }) {
   return (
     <div className={styles.buttonsGroup}>
@@ -37,7 +37,11 @@ export default function ({
           <i className="material-icons">keyboard_arrow_right</i>
         </button>
       </div>
-      <div />
+      <div>
+        <button onClick={onOpenPlayList}>
+          <i className="material-icons">format_list_numbered</i>
+        </button>
+      </div>
     </div>
   );
 }

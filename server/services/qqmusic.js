@@ -27,6 +27,7 @@ module.exports = {
     return fetch(url)
       .then(r => r.text())
       .then(xml => parseXml(xml))
-      .then(result => result);
+      .then(result => result)
+      .catch(() => ({ lyric: '[offset:0]\n[00:00.00][10:00.00]暂无歌词' }));
   },
 };

@@ -65,7 +65,7 @@ export default class Player extends React.Component {
 
   render() {
     const {
-      songId, imageId, lyric, onPlayNext, onPlayPrev,
+      songId, imageId, lyric, onPlayNext, onPlayPrev, onOpenPlayList,
     } = this.props;
     const { isPaused, isStopped } = this.state;
     const isPlaying = !isPaused && !isStopped;
@@ -98,6 +98,7 @@ export default class Player extends React.Component {
           isPlaying={isPlaying}
           onPlayNext={onPlayNext}
           onPlayPrev={onPlayPrev}
+          onOpenPlayList={onOpenPlayList}
         />
       </div>
     );

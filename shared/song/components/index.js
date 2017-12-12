@@ -4,11 +4,13 @@ import findIndex from 'lodash/findIndex';
 import Description from './Description';
 import Nav from './Nav';
 import Player from './Player';
+import PlayList from './PlayList';
 import styles from '../scss/index.scss';
 import { getPlayList, updatePlayList } from '../../utils';
 
 function Index({
-  songId, song, singer, imageId, lyric, onAddToPlayList, onPlayNext, onPlayPrev,
+  songId, song, singer, imageId, lyric, onOpenPlayList, onClosePlayList,
+  onAddToPlayList, onPlayNext, onPlayPrev, playList, isPlayListOpen,
 }) {
   const imageUrl = `http://imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
   return (
@@ -21,6 +23,12 @@ function Index({
         songId={songId}
         imageId={imageId}
         lyric={lyric}
+        onOpenPlayList={onOpenPlayList}
+      />
+      <PlayList
+        playList={playList}
+        isPlayListOpen={isPlayListOpen}
+        onClosePlayList={onClosePlayList}
       />
       <div className={styles.background} style={{ backgroundImage: `url(${imageUrl})` }} />
     </React.Fragment>
@@ -38,6 +46,7 @@ export default class IndexContainer extends React.Component {
       song: props.song,
       singer: props.singer,
       imageId: props.imageId,
+      isPlayListOpen: false,
     };
   }
 
@@ -120,9 +129,21 @@ export default class IndexContainer extends React.Component {
     }
   }
 
+  handleOpenPlayList = () => {
+    this.setState({
+      isPlayListOpen: true,
+    });
+  }
+
+  handleClosePlayList = () => {
+    this.setState({
+      isPlayListOpen: false,
+    });
+  }
+
   render() {
     const {
-      lyric, playList, songId, song, singer, imageId,
+      lyric, playList, songId, song, singer, imageId, isPlayListOpen,
     } = this.state;
 
     return (
@@ -136,6 +157,9 @@ export default class IndexContainer extends React.Component {
         onAddToPlayList={this.handleAddToPlayList}
         onPlayNext={this.handlePlayNext}
         onPlayPrev={this.handlePlayPrev}
+        isPlayListOpen={isPlayListOpen}
+        onOpenPlayList={this.handleOpenPlayList}
+        onClosePlayList={this.handleClosePlayList}
       />
     );
   }

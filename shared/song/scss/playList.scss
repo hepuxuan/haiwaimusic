@@ -1,0 +1,46 @@
+.playList {
+  height: 80%;
+  overflow: auto;
+  a {
+    color: #fff;
+  }
+}
+
+.title {
+  padding: 12px 18px 12px 18px;
+  border-bottom: 1px solid #9E9E9E;
+  color: #fff;
+}
+
+.listWrapper {
+  position: fixed;
+  top: 30%;
+  left: 0;
+  background: rgba(0,0,0, 0.7);
+  width: 100%;
+  height: 70%;
+}
+
+.listRoot {
+  position: relative;
+  height: 100%;
+}
+.actionArea {
+  position: absolute;
+  display: block;
+  bottom: 0;
+  height: 70px;
+  padding-bottom: 18px;
+  border-top: 1px solid #9E9E9E;
+  padding-top: 0;
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+}
+
+.song {
+  margin: 12px 18px 12px 18px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #9E9E9E;
+}
