@@ -1,14 +1,19 @@
+@import '../../variables';
+
 .playList {
   height: calc(100% - 148px);
   overflow: auto;
   a {
+    color: $grey-500;
+  }
+  .songName {
     color: #fff;
   }
 }
 
 .title {
   padding: 12px 18px 12px 18px;
-  border-bottom: 1px solid #9E9E9E;
+  border-bottom: 1px solid $grey-500;
   color: #fff;
   height: 30px;
   margin: 12px 0 12px 0;
@@ -33,7 +38,7 @@
   bottom: 0;
   height: 70px;
   padding-bottom: 18px;
-  border-top: 1px solid #9E9E9E;
+  border-top: 1px solid $grey-500;
   padding-top: 0;
   color: #fff;
   font-size: 14px;
@@ -44,5 +49,5 @@
 .song {
   margin: 12px 18px 12px 18px;
   padding-bottom: 6px;
-  border-bottom: 1px solid #9E9E9E;
+  border-bottom: 1px solid $grey-500;
 }

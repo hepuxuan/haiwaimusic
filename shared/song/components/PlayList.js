@@ -15,7 +15,7 @@ export default function ({ playList, isPlayListOpen, onClosePlayList }) {
             }) => (
               <div className={styles.song} key={songId}>
                 <a href={`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`}>
-                  <span>{song}</span>
+                  <span className={styles.songName}>{song}</span>
                   <span>-</span>
                   <span>{singer}</span>
                 </a>
