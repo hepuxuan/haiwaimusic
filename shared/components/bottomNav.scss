@@ -4,8 +4,6 @@
   z-index: 1;
   background-color: rgba(255,255,255,1);
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
-  display: flex;
-  justify-content: space-around;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -24,4 +22,12 @@
     margin: auto;
     font-size: 20px;
   }
+}
+
+.inner {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
 }

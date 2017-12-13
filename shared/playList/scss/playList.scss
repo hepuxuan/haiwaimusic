@@ -1,13 +1,6 @@
 @import '../../variables';
 
-.mylist {
-  > div:not(:last-child) {
-    border-bottom: solid 1px #ccc;
-  }
-  > div {
-    padding: 8px 8px 8px 10px;
-  }
-}
+
 
 .listItem {
   display: flex;
@@ -25,4 +18,24 @@
     color: $primary-color;
     padding-left: 2px;
   };
+}
+
+.mylist {
+  max-width: 1000px;
+  margin: 18px auto;
+}
+
+.mylist > div {
+  padding: 8px 8px 28px 10px;
+}
+
+@media (max-width: 800px) {
+  .mylist {
+    > div:not(:last-child) {
+      border-bottom: solid 1px #ccc;
+    }
+    > div {
+      padding-bottom: 8px;
+    }
+  }
 }
