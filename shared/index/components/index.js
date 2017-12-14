@@ -23,16 +23,20 @@ export default class Index extends React.Component {
   }
 
   getSearchResult(q, page = 1) {
-    this.setState({
-      isLoading: true,
-    });
-    const url = `/api/qqmusic?q=${q}&p=${page}`;
-    return fetch(url).then(res => res.json()).then((json) => {
+    if (q) {
       this.setState({
-        isLoading: false,
+        isLoading: true,
       });
-      return json;
-    });
+      const url = `/api/qqmusic?q=${q}&p=${page}`;
+      return fetch(url).then(res => res.json()).then((json) => {
+        this.setState({
+          isLoading: false,
+        });
+        return json;
+      });
+    }
+
+    return Promise.resolve();
   }
 
   handleScroll = () => {
