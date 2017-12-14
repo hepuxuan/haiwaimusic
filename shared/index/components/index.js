@@ -52,6 +52,7 @@ export default class Index extends React.Component {
   handleSearch = (q) => {
     this.setState({
       q,
+      searchResults: [],
     });
     this.getSearchResult(q).then(({ songs }) => {
       this.setState(() => ({

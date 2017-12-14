@@ -12,6 +12,22 @@
   }
 }
 
+.searchWrapper {
+  position: relative;
+  button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 8px;
+  }
+  i {
+    font-size: 26px;
+  }
+  button:hover {
+    cursor: pointer;
+  }
+}
+
 .searchForm {
   padding: 10px 0 10px 0;
 }
