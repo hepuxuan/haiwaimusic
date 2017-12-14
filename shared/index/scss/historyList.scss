@@ -1,0 +1,13 @@
+.searchHistory {
+  font-size: 16px;
+  padding: 12px 10px 0 10px;
+  button {
+    font-size: 16px;
+  }
+  > div {
+    padding: 12px 0 12px 0;
+  }
+  > div:not(:last-child) {
+    border-bottom: solid 1px #ccc;
+  }
+}

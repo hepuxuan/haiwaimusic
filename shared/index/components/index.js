@@ -3,15 +3,19 @@ import Navbar from './Navbar';
 import Search from './Search';
 import BottomNav from '../../components/BottomNav';
 import SearchResultList from './SearchResultList';
+import HistoryList from './HistoryList';
 import Loader from '../../components/Loader';
+import { getSearchHistory, updateHistory } from '../../utils';
 import '../scss/index.scss';
 
 export default class Index extends React.Component {
   state = {
+    searchHistory: getSearchHistory(),
     searchResults: [],
     page: 1,
     q: '',
     isLoading: false,
+    isSearching: false,
   }
 
   componentDidMount() {
@@ -53,11 +57,25 @@ export default class Index extends React.Component {
     }
   }
 
-  handleSearch = (q) => {
+  handleSearch = () => {
+    const { q } = this.state;
+    let searchHistory;
+    if (this.state.searchHistory.indexOf(q) === -1) {
+      searchHistory = [
+        q,
+        ...this.state.searchHistory,
+      ].slice(0, 5);
+    } else {
+      searchHistory = this.state.searchHistory;
+    }
+
     this.setState({
+      isSearching: false,
+      searchHistory,
       q,
       searchResults: [],
     });
+    updateHistory(searchHistory);
     this.getSearchResult(q).then(({ songs }) => {
       this.setState(() => ({
         searchResults: songs,
@@ -65,13 +83,54 @@ export default class Index extends React.Component {
     });
   }
 
+  handleFocus = () => {
+    this.setState({
+      isSearching: true,
+    });
+  }
+
+  handleBlur = () => {
+    setTimeout(() => {
+      this.setState({
+        isSearching: false,
+      });
+    }, 500);
+  }
+
+  handleSelectHistory = (history) => {
+    this.setState({
+      q: history,
+    }, this.handleSearch);
+  }
+
+  handleChangeSearchString = (q) => {
+    this.setState({
+      q,
+    });
+  }
+
   render() {
-    const { searchResults, isLoading } = this.state;
+    const {
+      searchResults, isLoading, searchHistory, isSearching, q,
+    } = this.state;
     return (
       <React.Fragment>
         <Navbar />
-        <Search onSearch={this.handleSearch} />
-        <SearchResultList searchResults={searchResults} />
+        <Search
+          onChange={this.handleChangeSearchString}
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
+          onSearch={this.handleSearch}
+          q={q}
+        />
+        {
+          isSearching ? (
+            <HistoryList
+              onSelect={this.handleSelectHistory}
+              searchHistory={searchHistory}
+            />
+          ) : <SearchResultList searchResults={searchResults} />
+        }
         {
           isLoading && <Loader />
         }

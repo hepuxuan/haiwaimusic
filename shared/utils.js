@@ -13,4 +13,20 @@ function updatePlayList(list) {
   }
 }
 
-export { getPlayList, updatePlayList };
+function getSearchHistory() {
+  let searchHistory = [];
+  if (typeof localStorage !== 'undefined') {
+    const searchHistoryString = localStorage.getItem('searchHistory');
+    searchHistory = searchHistoryString ? JSON.parse(searchHistoryString) : [];
+  }
+  return searchHistory;
+}
+
+function updateHistory(list) {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('searchHistory', JSON.stringify(list));
+  }
+}
+
+
+export { getPlayList, updatePlayList, getSearchHistory, updateHistory };
