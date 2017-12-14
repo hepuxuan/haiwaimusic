@@ -119,7 +119,6 @@ export default class Index extends React.Component {
         <Search
           onChange={this.handleChangeSearchString}
           onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
           onSearch={this.handleSearch}
           q={q}
         />
