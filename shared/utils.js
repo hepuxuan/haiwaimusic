@@ -28,5 +28,12 @@ function updateHistory(list) {
   }
 }
 
+function jsonp(url, cb) {
+  window.JsonCallback = cb;
+  const tag = document.createElement('script');
+  tag.charset = 'GBK';
+  tag.src = url;
+  document.getElementsByTagName('head')[0].appendChild(tag);
+}
 
-export { getPlayList, updatePlayList, getSearchHistory, updateHistory };
+export { getPlayList, updatePlayList, getSearchHistory, updateHistory, jsonp };

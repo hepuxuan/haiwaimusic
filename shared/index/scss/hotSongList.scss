@@ -1,8 +1,7 @@
-.searchHistory {
-  text-align: center;
+.hotSongs {
   font-size: 16px;
   padding: 12px 10px 0 10px;
-  button {
+  a {
     font-size: 14px;
     padding-left: 0;
   }
@@ -12,9 +11,8 @@
   > div:not(:last-child) {
     border-bottom: solid 1px #ccc;
   }
-  .closeButton {
-    padding: 8px;
-    text-align: center;
-    width: 100%;
-  }
+}
+
+.singerName {
+  font-size: 12px;
 }

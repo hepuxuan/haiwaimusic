@@ -3,9 +3,10 @@ import Navbar from './Navbar';
 import Search from './Search';
 import BottomNav from '../../components/BottomNav';
 import SearchResultList from './SearchResultList';
+import HotSongList from './HotSongList';
 import HistoryList from './HistoryList';
 import Loader from '../../components/Loader';
-import { getSearchHistory, updateHistory } from '../../utils';
+import { getSearchHistory, updateHistory, jsonp } from '../../utils';
 import '../scss/index.scss';
 
 export default class Index extends React.Component {
@@ -16,10 +17,16 @@ export default class Index extends React.Component {
     q: '',
     isLoading: false,
     isSearching: false,
+    hotSongs: [],
   }
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
+    jsonp('http://music.qq.com/musicbox/shop/v3/data/hit/hit_all.js', (data) => {
+      this.setState({
+        hotSongs: data.songlist.slice(0, 20),
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -89,6 +96,12 @@ export default class Index extends React.Component {
     });
   }
 
+  handleCloseHistory = () => {
+    this.setState({
+      isSearching: false,
+    });
+  }
+
   handleBlur = () => {
     setTimeout(() => {
       this.setState({
@@ -111,7 +124,7 @@ export default class Index extends React.Component {
 
   render() {
     const {
-      searchResults, isLoading, searchHistory, isSearching, q,
+      searchResults, isLoading, searchHistory, isSearching, q, hotSongs,
     } = this.state;
     return (
       <React.Fragment>
@@ -123,10 +136,14 @@ export default class Index extends React.Component {
           q={q}
         />
         {
+          (!q && !isSearching) && <HotSongList songs={hotSongs} />
+        }
+        {
           isSearching ? (
             <HistoryList
               onSelect={this.handleSelectHistory}
               searchHistory={searchHistory}
+              onClose={this.handleCloseHistory}
             />
           ) : <SearchResultList searchResults={searchResults} />
         }
