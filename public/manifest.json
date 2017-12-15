@@ -1,8 +1,8 @@
 {
   "name": "海外音悦台",
   "short_name": "海外音悦台",
-  "theme_color": "#31c27c",
-  "background_color": "#31c27c",
+  "theme_color": "#FF5722",
+  "background_color": "#FF5722",
   "display": "standalone",
   "orientation": "portrait",
   "Scope": "/",
