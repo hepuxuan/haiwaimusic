@@ -18,6 +18,7 @@ export default class Index extends React.Component {
     isLoading: false,
     isSearching: false,
     hotSongs: [],
+    newSongs: [],
   }
 
   componentDidMount() {
@@ -25,6 +26,11 @@ export default class Index extends React.Component {
     jsonp('http://music.qq.com/musicbox/shop/v3/data/hit/hit_all.js', (data) => {
       this.setState({
         hotSongs: data.songlist.slice(0, 20),
+      });
+      jsonp('http://music.qq.com/musicbox/shop/v3/data/hit/hit_newsong.js', (data) => {
+        this.setState({
+          newSongs: data.songlist.slice(0, 20),
+        });
       });
     });
   }
@@ -34,20 +40,16 @@ export default class Index extends React.Component {
   }
 
   getSearchResult(q, page = 1) {
-    if (q) {
+    this.setState({
+      isLoading: true,
+    });
+    const url = `/api/qqmusic?q=${q}&p=${page}`;
+    return fetch(url).then(res => res.json()).then((json) => {
       this.setState({
-        isLoading: true,
+        isLoading: false,
       });
-      const url = `/api/qqmusic?q=${q}&p=${page}`;
-      return fetch(url).then(res => res.json()).then((json) => {
-        this.setState({
-          isLoading: false,
-        });
-        return json;
-      });
-    }
-
-    return Promise.resolve();
+      return json;
+    });
   }
 
   handleScroll = () => {
@@ -55,12 +57,14 @@ export default class Index extends React.Component {
       && !this.state.isLoading) {
       const { q, page } = this.state;
       const newPage = page + 1;
-      this.getSearchResult(q, newPage).then(({ songs }) => {
-        this.setState(prevState => ({
-          searchResults: prevState.searchResults.concat(songs),
-          page: newPage,
-        }));
-      });
+      if (q) {
+        this.getSearchResult(q, newPage).then(({ songs }) => {
+          this.setState(prevState => ({
+            searchResults: prevState.searchResults.concat(songs),
+            page: newPage,
+          }));
+        });
+      }
     }
   }
 
@@ -83,11 +87,13 @@ export default class Index extends React.Component {
       searchResults: [],
     });
     updateHistory(searchHistory);
-    this.getSearchResult(q).then(({ songs }) => {
-      this.setState(() => ({
-        searchResults: songs,
-      }));
-    });
+    if (q) {
+      this.getSearchResult(q).then(({ songs }) => {
+        this.setState(() => ({
+          searchResults: songs,
+        }));
+      });
+    }
   }
 
   handleFocus = () => {
@@ -124,32 +130,37 @@ export default class Index extends React.Component {
 
   render() {
     const {
-      searchResults, isLoading, searchHistory, isSearching, q, hotSongs,
+      searchResults, isLoading, searchHistory, isSearching, q, hotSongs, newSongs,
     } = this.state;
     return (
       <React.Fragment>
-        <Navbar />
-        <Search
-          onChange={this.handleChangeSearchString}
-          onFocus={this.handleFocus}
-          onSearch={this.handleSearch}
-          q={q}
-        />
-        {
-          (!q && !isSearching) && <HotSongList songs={hotSongs} />
-        }
-        {
-          isSearching ? (
-            <HistoryList
-              onSelect={this.handleSelectHistory}
-              searchHistory={searchHistory}
-              onClose={this.handleCloseHistory}
-            />
-          ) : <SearchResultList searchResults={searchResults} />
-        }
-        {
-          isLoading && <Loader />
-        }
+        <div className="page-body">
+          <Navbar />
+          <Search
+            onChange={this.handleChangeSearchString}
+            onFocus={this.handleFocus}
+            onSearch={this.handleSearch}
+            q={q}
+          />
+          {
+            (!q && !isSearching) && <HotSongList songs={hotSongs} title="热门歌曲" />
+          }
+          {
+            (!q && !isSearching) && <HotSongList songs={newSongs} title="新歌速递" />
+          }
+          {
+            isSearching ? (
+              <HistoryList
+                onSelect={this.handleSelectHistory}
+                searchHistory={searchHistory}
+                onClose={this.handleCloseHistory}
+              />
+            ) : !!q && <SearchResultList searchResults={searchResults} />
+          }
+          {
+            isLoading && <Loader />
+          }
+        </div>
         <BottomNav activeLink="home" />
       </React.Fragment>
     );

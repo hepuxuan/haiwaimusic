@@ -8,8 +8,10 @@ import '../scss/index.scss';
 function Index({ playList, onRemoveSong }) {
   return (
     <React.Fragment>
-      <Nav />
-      <PlayList playList={playList} onRemoveSong={onRemoveSong} />
+      <div className="page-body">
+        <Nav />
+        <PlayList playList={playList} onRemoveSong={onRemoveSong} />
+      </div>
       <BottomNav activeLink="playList" />
     </React.Fragment>
   );

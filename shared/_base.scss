@@ -8,8 +8,8 @@ a {
   text-decoration: none;
 }
 
-#main {
-  min-height: 100vh;
+:global(.page-body) {
+  margin-bottom: 53px;
 }
 
 button {
