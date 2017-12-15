@@ -31,3 +31,9 @@
 .singerName {
   font-size: 12px;
 }
+
+.songName, .singerName {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

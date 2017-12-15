@@ -16,7 +16,7 @@ export default function ({ songs, title }) {
                <a href={`/song/${songName}?singer=${singerName}&songId=${id}&imageId=${albumId}`}>
                  <img width="100%" src={url} alt="" />
                  <div>
-                   <div>{songName}</div>
+                   <div className={styles.songName}>{songName}</div>
                    <div className={styles.singerName}>{singerName}</div>
                  </div>
                </a>
