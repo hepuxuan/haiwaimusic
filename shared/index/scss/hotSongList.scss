@@ -8,8 +8,23 @@
   > div {
     padding: 8px 0 8px 0;
   }
-  > div:not(:last-child) {
-    border-bottom: solid 1px #ccc;
+}
+
+.title {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.srollable {
+  overflow: auto;
+  white-space: nowrap;
+  > div {
+    display: inline-block;
+    width: 27%;
+    max-width: 250px;
+    margin-right: 12px;
   }
 }
 
