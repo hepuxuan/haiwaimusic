@@ -10,6 +10,9 @@ export default class Player extends React.Component {
     isStopped: true,
     loop: false,
     renderAudio: false,
+    duration: null,
+    current: 0,
+    init: 0,
   }
 
   componentDidMount() {
@@ -20,12 +23,19 @@ export default class Player extends React.Component {
     }, 500);
   }
 
+  triggerTimer = () => {
+    if (!this.state.isStopped && !this.state.isPaused) {
+      setTimeout(() => {
+        this.setState({
+          current: (new Date()).valueOf(),
+        }, this.triggerTimer);
+      }, 1000);
+    }
+  }
+
   play = () => {
     this.audio.play();
-    this.setState({
-      isStopped: false,
-      isPaused: false,
-    });
+    this.handlePlay();
   }
 
   pause = () => {
@@ -37,10 +47,16 @@ export default class Player extends React.Component {
   }
 
   handlePlay = () => {
+    if (this.state.isStopped) {
+      this.setState({
+        init: (new Date()).valueOf(),
+      });
+    }
+
     this.setState({
       isStopped: false,
       isPaused: false,
-    });
+    }, this.triggerTimer);
   }
 
   handleEnded = () => {
@@ -67,8 +83,11 @@ export default class Player extends React.Component {
     const {
       songId, imageId, lyric, onPlayNext, onPlayPrev, onOpenPlayList,
     } = this.props;
-    const { isPaused, isStopped } = this.state;
+    const {
+      isPaused, isStopped, current, init, loop, duration,
+    } = this.state;
     const isPlaying = !isPaused && !isStopped;
+    const currentProgress = (current - init) / 1000;
     return (
       <div className={styles.audioPlayer}>
         <Image imageId={imageId} isPlaying={isPlaying} />
@@ -82,7 +101,14 @@ export default class Player extends React.Component {
         {
           this.state.renderAudio && (
             <audio
-              ref={(r) => { this.audio = r; }}
+              ref={(r) => {
+                this.audio = r;
+                if (!this.state.duration && r && r.duration) {
+                  this.setState({
+                    duration: r.duration,
+                  });
+                }
+              }}
               src={`http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`}
               onEnded={this.handleEnded}
               autoPlay
@@ -91,7 +117,9 @@ export default class Player extends React.Component {
           )
         }
         <ControlPanel
-          loop={this.state.loop}
+          loop={loop}
+          current={currentProgress}
+          duration={duration}
           onToggleLoop={this.handleToggleLoop}
           onPlay={this.play}
           onPause={this.pause}

@@ -1,15 +1,41 @@
 @import '../../variables';
 
-.buttonsGroup {
+.root {
+  bottom: 30px;
   left: 0;
   right: 0;
   max-width: 400px;
+  position: fixed;
   margin: 0 auto;
+}
+.progressBar {
+  position: relative;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 16px;
+}
+.background, .progress {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.progress {
+  top: -1px;
+  background-color: $primary-color;
+  height: 4px;
+}
+
+.background {
+  top: 0;
+  background-color: #ccc;
+  height: 2px;
+}
+
+.buttonsGroup {
+  width: 100%;
   display: flex;
   justify-content: center;
-  position: fixed;
-  bottom: 30px;
-  width: 100%;
   align-items: center;
   > div {
     width: 30%;

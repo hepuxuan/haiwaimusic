@@ -6,7 +6,7 @@ import SearchResultList from './SearchResultList';
 import HotSongList from './HotSongList';
 import HistoryList from './HistoryList';
 import Loader from '../../components/Loader';
-import { getSearchHistory, updateHistory, jsonp } from '../../utils';
+import { getSearchHistory, updateHistory, jsonp, getPlayList } from '../../utils';
 import '../scss/index.scss';
 
 export default class Index extends React.Component {
@@ -19,10 +19,18 @@ export default class Index extends React.Component {
     isSearching: false,
     hotSongs: [],
     newSongs: [],
+    playList: [],
   }
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
+    this.setState({
+      playList: getPlayList().map(({
+        songId, song, singer, imageId,
+      }) => ({
+        id: songId, songName: song, singerName: singer, albumId: imageId,
+      })),
+    });
     jsonp('http://music.qq.com/musicbox/shop/v3/data/hit/hit_all.js', (data) => {
       this.setState({
         hotSongs: data.songlist.slice(0, 20),
@@ -130,7 +138,7 @@ export default class Index extends React.Component {
 
   render() {
     const {
-      searchResults, isLoading, searchHistory, isSearching, q, hotSongs, newSongs,
+      searchResults, isLoading, searchHistory, isSearching, q, hotSongs, newSongs, playList,
     } = this.state;
     return (
       <React.Fragment>
@@ -143,10 +151,13 @@ export default class Index extends React.Component {
             q={q}
           />
           {
-            (!q && !isSearching) && <HotSongList songs={hotSongs} title="热门歌曲" />
-          }
-          {
-            (!q && !isSearching) && <HotSongList songs={newSongs} title="新歌速递" />
+            (!q && !isSearching) && (
+              <React.Fragment>
+                <HotSongList songs={playList} title="播放列表" />
+                <HotSongList songs={hotSongs} title="热门歌曲" />
+                <HotSongList songs={hotSongs} title="热门歌曲" />
+              </React.Fragment>
+            )
           }
           {
             isSearching ? (
