@@ -36,4 +36,12 @@ function jsonp(url, cb) {
   document.getElementsByTagName('head')[0].appendChild(tag);
 }
 
-export { getPlayList, updatePlayList, getSearchHistory, updateHistory, jsonp };
+function toFixed2(num) {
+  return num < 10 ? `0${num}` : num;
+}
+
+function formatTime(seconds) {
+  return `${toFixed2(Math.floor(seconds / 60))}:${toFixed2(Math.round((seconds % 60)))}`;
+}
+
+export { getPlayList, updatePlayList, getSearchHistory, updateHistory, jsonp, formatTime };

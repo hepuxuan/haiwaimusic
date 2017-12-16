@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatTime } from '../../utils';
 import styles from '../scss/controlPanel.scss';
 
 export default function ({
@@ -8,9 +9,13 @@ export default function ({
   const progress = duration ? (current / duration) * 100 : 0;
   return (
     <div className={styles.root}>
-      <div className={styles.progressBar}>
-        <div className={styles.background} />
-        <div style={{ width: `${progress}%` }} className={styles.progress} />
+      <div className={styles.playerStats}>
+        <div className={styles.time}>{formatTime(current)}</div>
+        <div className={styles.progressBar}>
+          <div className={styles.background} />
+          <div style={{ width: `${progress}%` }} className={styles.progress} />
+        </div>
+        <div className={styles.time}>{formatTime(duration)}</div>
       </div>
       <div className={styles.buttonsGroup}>
         <div>

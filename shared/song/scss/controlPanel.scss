@@ -1,5 +1,18 @@
 @import '../../variables';
 
+.playerStats {
+  display: flex;
+  margin-bottom: 16px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.time {
+  width: 15%;
+  color: $grey-200;
+  font-size: 12px;
+  text-align: center;
+}
 .root {
   bottom: 30px;
   left: 0;
@@ -10,9 +23,8 @@
 }
 .progressBar {
   position: relative;
-  width: 90%;
+  width: 70%;
   margin: auto;
-  margin-bottom: 16px;
 }
 .background, .progress {
   position: absolute;
