@@ -12,7 +12,6 @@ export default class Player extends React.Component {
     renderAudio: false,
     duration: null,
     current: 0,
-    init: 0,
   }
 
   componentDidMount() {
@@ -21,16 +20,21 @@ export default class Player extends React.Component {
         renderAudio: true,
       });
     }, 500);
+    this.triggerTimer();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.triggerTimer);
   }
 
   triggerTimer = () => {
-    if (!this.state.isStopped && !this.state.isPaused) {
-      setTimeout(() => {
-        this.setState({
-          current: (new Date()).valueOf(),
-        }, this.triggerTimer);
-      }, 1000);
-    }
+    setInterval(() => {
+      if (!this.state.isStopped && !this.state.isPaused) {
+        this.setState(prevState => ({
+          current: prevState.current + 1,
+        }));
+      }
+    }, 1000);
   }
 
   play = () => {
@@ -47,22 +51,17 @@ export default class Player extends React.Component {
   }
 
   handlePlay = () => {
-    if (this.state.isStopped) {
-      this.setState({
-        init: (new Date()).valueOf(),
-      });
-    }
-
     this.setState({
       isStopped: false,
       isPaused: false,
-    }, this.triggerTimer);
+    });
   }
 
   handleEnded = () => {
     this.setState({
       isStopped: true,
       isPaused: false,
+      current: 0,
     });
     if (this.state.loop) {
       setTimeout(() => {
@@ -79,15 +78,28 @@ export default class Player extends React.Component {
     }));
   }
 
+  handlePlayNext = () => {
+    this.setState({
+      current: 0,
+    });
+    this.props.onPlayNext();
+  }
+
+  handlePlayPrev = () => {
+    this.setState({
+      current: 0,
+    });
+    this.props.onPlayPrev();
+  }
+
   render() {
     const {
-      songId, imageId, lyric, onPlayNext, onPlayPrev, onOpenPlayList,
+      songId, imageId, lyric, onOpenPlayList,
     } = this.props;
     const {
-      isPaused, isStopped, current, init, loop, duration,
+      isPaused, isStopped, current, loop, duration,
     } = this.state;
     const isPlaying = !isPaused && !isStopped;
-    const currentProgress = (current - init) / 1000;
     return (
       <div className={styles.audioPlayer}>
         <Image imageId={imageId} isPlaying={isPlaying} />
@@ -118,14 +130,14 @@ export default class Player extends React.Component {
         }
         <ControlPanel
           loop={loop}
-          current={currentProgress}
+          current={current}
           duration={duration}
           onToggleLoop={this.handleToggleLoop}
           onPlay={this.play}
           onPause={this.pause}
           isPlaying={isPlaying}
-          onPlayNext={onPlayNext}
-          onPlayPrev={onPlayPrev}
+          onPlayNext={this.handlePlayNext}
+          onPlayPrev={this.handlePlayPrev}
           onOpenPlayList={onOpenPlayList}
         />
       </div>
