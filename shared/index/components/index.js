@@ -155,7 +155,7 @@ export default class Index extends React.Component {
               <React.Fragment>
                 <HotSongList songs={playList} title="播放列表" />
                 <HotSongList songs={hotSongs} title="热门歌曲" />
-                <HotSongList songs={hotSongs} title="热门歌曲" />
+                <HotSongList songs={newSongs} title="新歌速度" />
               </React.Fragment>
             )
           }
