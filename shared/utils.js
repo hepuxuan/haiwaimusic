@@ -44,4 +44,9 @@ function formatTime(seconds) {
   return `${toFixed2(Math.floor(seconds / 60))}:${toFixed2(Math.round((seconds % 60)))}`;
 }
 
-export { getPlayList, updatePlayList, getSearchHistory, updateHistory, jsonp, formatTime };
+function goto(url) {
+  window.history.pushState({}, document.title, url);
+  ga('send', 'pageview', url);
+}
+
+export { getPlayList, updatePlayList, getSearchHistory, updateHistory, jsonp, formatTime, goto };

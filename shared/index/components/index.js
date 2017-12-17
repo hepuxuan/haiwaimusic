@@ -1,4 +1,5 @@
 import React from 'react';
+import find from 'lodash/find';
 import Navbar from './Navbar';
 import Search from './Search';
 import BottomNav from '../../components/BottomNav';
@@ -6,8 +7,19 @@ import SearchResultList from './SearchResultList';
 import HotSongList from './HotSongList';
 import HistoryList from './HistoryList';
 import Loader from '../../components/Loader';
-import { getSearchHistory, updateHistory, jsonp, getPlayList } from '../../utils';
+import { getSearchHistory, updateHistory, jsonp, getPlayList, updatePlayList } from '../../utils';
 import '../scss/index.scss';
+
+function convertToModel({
+  id, singerName, songName, albumId,
+}) {
+  return {
+    imageId: albumId,
+    songId: id,
+    singer: singerName,
+    song: songName,
+  };
+}
 
 export default class Index extends React.Component {
   state = {
@@ -25,19 +37,15 @@ export default class Index extends React.Component {
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
     this.setState({
-      playList: getPlayList().map(({
-        songId, song, singer, imageId,
-      }) => ({
-        id: songId, songName: song, singerName: singer, albumId: imageId,
-      })),
+      playList: getPlayList(),
     });
     jsonp('http://music.qq.com/musicbox/shop/v3/data/hit/hit_all.js', (data) => {
       this.setState({
-        hotSongs: data.songlist.slice(0, 20),
+        hotSongs: data.songlist.map(convertToModel),
       });
-      jsonp('http://music.qq.com/musicbox/shop/v3/data/hit/hit_newsong.js', (data) => {
+      jsonp('http://music.qq.com/musicbox/shop/v3/data/hit/hit_newsong.js', (newSongs) => {
         this.setState({
-          newSongs: data.songlist.slice(0, 20),
+          newSongs: newSongs.songlist.map(convertToModel),
         });
       });
     });
@@ -136,6 +144,17 @@ export default class Index extends React.Component {
     });
   }
 
+  handleAddToList = (song) => {
+    if (find(this.state.playList, ({ songId }) => songId === song.songId)) {
+      return;
+    }
+    const newList = this.state.playList.concat(song);
+    updatePlayList(newList);
+    this.setState({
+      playList: newList,
+    });
+  }
+
   render() {
     const {
       searchResults, isLoading, searchHistory, isSearching, q, hotSongs, newSongs, playList,
@@ -166,7 +185,13 @@ export default class Index extends React.Component {
                 searchHistory={searchHistory}
                 onClose={this.handleCloseHistory}
               />
-            ) : !!q && <SearchResultList searchResults={searchResults} />
+            ) : !!q && (
+              <SearchResultList
+                playList={playList}
+                handleAddToList={this.handleAddToList}
+                searchResults={searchResults}
+              />
+            )
           }
           {
             isLoading && <Loader />

@@ -6,7 +6,7 @@ import Nav from './Nav';
 import Player from './Player';
 import PlayList from './PlayList';
 import styles from '../scss/index.scss';
-import { getPlayList, updatePlayList } from '../../utils';
+import { getPlayList, updatePlayList, goto } from '../../utils';
 
 function Index({
   songId, song, singer, imageId, lyric, onOpenPlayList, onClosePlayList,
@@ -101,7 +101,7 @@ export default class IndexContainer extends React.Component {
       this.setState({
         songId, song, singer, imageId, lyric: null,
       }, this.fetchLyric);
-      window.history.pushState('playSong', document.title, `/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
+      goto(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
     }
   }
 
@@ -125,7 +125,7 @@ export default class IndexContainer extends React.Component {
       this.setState({
         songId, song, singer, imageId, lyric: null,
       }, this.fetchLyric);
-      window.history.pushState('playSong', document.title, `/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
+      goto(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
     }
   }
 

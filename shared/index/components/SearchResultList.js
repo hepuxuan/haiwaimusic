@@ -1,8 +1,9 @@
 import React from 'react';
+import find from 'lodash/find';
 import SearchResult from './SearchResult';
 import styles from '../scss/searchResultList.scss';
 
-export default function ({ searchResults }) {
+export default function ({ searchResults, playList, handleAddToList }) {
   return (
     <div className={styles.searchitems}>
       {
@@ -10,7 +11,14 @@ export default function ({ searchResults }) {
           singer, song, id, imageId,
         }, index) => (
           <div key={index} className={styles.searchItem}>
-            <SearchResult singer={singer} song={song} songId={id} imageId={imageId} />
+            <SearchResult
+              isInPlayList={find(playList, _song => _song.songId === id)}
+              singer={singer}
+              song={song}
+              songId={id}
+              imageId={imageId}
+              handleAddToList={handleAddToList}
+            />
           </div>
         ))
       }

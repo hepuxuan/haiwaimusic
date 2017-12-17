@@ -1,3 +1,5 @@
+@import '../../variables';
+
 .title {
   font-size: 16px;
   margin-bottom: 5px;
@@ -24,4 +26,12 @@
 .innerBox {
   display: flex;
   align-items: center;
+}
+
+.likeButton {
+  font-size: 18px;
+}
+
+.isActive {
+  color: $primary-color;
 }
