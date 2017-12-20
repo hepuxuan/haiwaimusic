@@ -1,3 +1,5 @@
+import filter from 'lodash/filter';
+
 function getPlayList() {
   let playList = [];
   if (typeof localStorage !== 'undefined') {
@@ -19,7 +21,7 @@ function getSearchHistory() {
     const searchHistoryString = localStorage.getItem('searchHistory');
     searchHistory = searchHistoryString ? JSON.parse(searchHistoryString) : [];
   }
-  return searchHistory;
+  return filter(searchHistory, item => !!item.mid);
 }
 
 function updateHistory(list) {
