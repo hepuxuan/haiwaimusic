@@ -6,7 +6,7 @@ function getPlayList() {
     const playListString = localStorage.getItem('playList');
     playList = playListString ? JSON.parse(playListString) : [];
   }
-  return playList;
+  return filter(playList, item => !!item.mid);
 }
 
 function updatePlayList(list) {
@@ -21,7 +21,7 @@ function getSearchHistory() {
     const searchHistoryString = localStorage.getItem('searchHistory');
     searchHistory = searchHistoryString ? JSON.parse(searchHistoryString) : [];
   }
-  return filter(searchHistory, item => !!item.mid);
+  return searchHistory;
 }
 
 function updateHistory(list) {
