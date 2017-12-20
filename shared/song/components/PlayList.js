@@ -11,10 +11,10 @@ export default function ({ playList, isPlayListOpen, onClosePlayList }) {
         <div className={styles.playList}>
           {
             playList.map(({
-             songId, song, singer, imageId,
+             songId, song, singer, imageId, mid,
             }) => (
               <div className={styles.song} key={songId}>
-                <a href={`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`}>
+                <a href={`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}&mid=${mid}`}>
                   <span className={styles.songName}>{song}</span>
                   <span>-</span>
                   <span className={styles.author}>{singer}</span>

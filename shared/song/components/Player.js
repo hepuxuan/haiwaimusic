@@ -94,7 +94,7 @@ export default class Player extends React.Component {
 
   render() {
     const {
-      songId, imageId, lyric, onOpenPlayList,
+      imageId, lyric, onOpenPlayList, songUrl,
     } = this.props;
     const {
       isPaused, isStopped, current, loop, duration,
@@ -121,7 +121,7 @@ export default class Player extends React.Component {
                   });
                 }
               }}
-              src={`http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`}
+              src={songUrl}
               onEnded={this.handleEnded}
               autoPlay
               onPlay={this.handlePlay}

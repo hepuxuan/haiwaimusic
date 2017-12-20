@@ -8,12 +8,12 @@ export default function ({ songs, title }) {
       <div className={styles.srollable}>
         {
           songs.slice(0, 10).map(({
-           songId, song, singer, imageId,
+           songId, song, singer, imageId, mid,
          }) => {
            const url = `http://imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
            return (
              <div key={songId}>
-               <a href={`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`}>
+               <a href={`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}&mid=${mid}`}>
                  <img width="100%" src={url} alt="" />
                  <div>
                    <div className={styles.songName}>{song}</div>

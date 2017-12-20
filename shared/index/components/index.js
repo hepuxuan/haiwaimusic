@@ -11,13 +11,17 @@ import { getSearchHistory, updateHistory, jsonp, getPlayList, updatePlayList } f
 import '../scss/index.scss';
 
 function convertToModel({
-  id, singerName, songName, albumId,
+  data: {
+    songid, songmid, singer: singerList, songname, albumid,
+  },
 }) {
+  const singer = singerList.map(({ name }) => name).join(' ');
   return {
-    imageId: albumId,
-    songId: id,
-    singer: singerName,
-    song: songName,
+    imageId: albumid,
+    songId: songid,
+    singer,
+    mid: songmid,
+    song: songname,
   };
 }
 
@@ -30,7 +34,6 @@ export default class Index extends React.Component {
     isLoading: false,
     isSearching: false,
     hotSongs: [],
-    newSongs: [],
     playList: [],
   }
 
@@ -39,14 +42,9 @@ export default class Index extends React.Component {
     this.setState({
       playList: getPlayList(),
     });
-    jsonp('http://music.qq.com/musicbox/shop/v3/data/hit/hit_all.js', (data) => {
+    jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?tpl=3&page=detail&date=2017-09-12&topid=4&type=top&song_begin=0&song_num=30&g_tk=5381&jsonpCallback=JsonCallback&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0', (data) => {
       this.setState({
         hotSongs: data.songlist.map(convertToModel),
-      });
-      jsonp('http://music.qq.com/musicbox/shop/v3/data/hit/hit_newsong.js', (newSongs) => {
-        this.setState({
-          newSongs: newSongs.songlist.map(convertToModel),
-        });
       });
     });
   }
@@ -157,7 +155,7 @@ export default class Index extends React.Component {
 
   render() {
     const {
-      searchResults, isLoading, searchHistory, isSearching, q, hotSongs, newSongs, playList,
+      searchResults, isLoading, searchHistory, isSearching, q, hotSongs, playList,
     } = this.state;
     return (
       <React.Fragment>
@@ -174,7 +172,6 @@ export default class Index extends React.Component {
               <React.Fragment>
                 <HotSongList songs={playList} title="播放列表" />
                 <HotSongList songs={hotSongs} title="热门歌曲" />
-                <HotSongList songs={newSongs} title="新歌速递" />
               </React.Fragment>
             )
           }

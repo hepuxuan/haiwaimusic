@@ -2,10 +2,10 @@ import React from 'react';
 import styles from '../scss/searchResult.scss';
 
 export default function ({
-  singer, song, songId, imageId, isInPlayList, handleAddToList,
+  singer, song, songId, imageId, isInPlayList, handleAddToList, mid,
 }) {
   return (
-    <a href={`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`} className={styles.result}>
+    <a href={`/song/${song}?singer=${singer}&songId=${songId}&mid=${mid}&imageId=${imageId}`} className={styles.result}>
       <div className={styles.innerBox}>
         <div className={styles.misicIcon}>
           <i className="material-icons">music_note</i>
@@ -24,7 +24,7 @@ export default function ({
           e.preventDefault();
           e.stopPropagation();
           handleAddToList({
-            singer, song, songId, imageId,
+            singer, song, songId, imageId, mid,
           });
         }}
         >{

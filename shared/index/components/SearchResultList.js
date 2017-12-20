@@ -8,14 +8,15 @@ export default function ({ searchResults, playList, handleAddToList }) {
     <div className={styles.searchitems}>
       {
         searchResults.map(({
-          singer, song, id, imageId,
+          singer, song, songId, imageId, mid,
         }, index) => (
           <div key={index} className={styles.searchItem}>
             <SearchResult
-              isInPlayList={find(playList, _song => _song.songId === id)}
+              isInPlayList={find(playList, _song => _song.songId === songId)}
               singer={singer}
               song={song}
-              songId={id}
+              songId={songId}
+              mid={mid}
               imageId={imageId}
               handleAddToList={handleAddToList}
             />

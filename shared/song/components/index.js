@@ -6,11 +6,11 @@ import Nav from './Nav';
 import Player from './Player';
 import PlayList from './PlayList';
 import styles from '../scss/index.scss';
-import { getPlayList, updatePlayList, goto } from '../../utils';
+import { getPlayList, updatePlayList } from '../../utils';
 
 function Index({
   songId, song, singer, imageId, lyric, onOpenPlayList, onClosePlayList,
-  onAddToPlayList, onPlayNext, onPlayPrev, playList, isPlayListOpen,
+  onAddToPlayList, onPlayNext, onPlayPrev, playList, isPlayListOpen, songUrl,
 }) {
   const imageUrl = `http://imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
   return (
@@ -24,6 +24,7 @@ function Index({
         imageId={imageId}
         lyric={lyric}
         onOpenPlayList={onOpenPlayList}
+        songUrl={songUrl}
       />
       <PlayList
         playList={playList}
@@ -69,8 +70,8 @@ export default class IndexContainer extends React.Component {
 
   handleAddToPlayList = () => {
     const {
-      songId, song, singer, imageId,
-    } = this.state;
+      songId, song, singer, imageId, mid,
+    } = this.props;
     const { playList } = this.state;
 
     if (find(playList, ({ songId: existingSongId }) => existingSongId === songId)) {
@@ -78,7 +79,7 @@ export default class IndexContainer extends React.Component {
     }
 
     const newList = playList.concat({
-      songId, song, singer, imageId,
+      songId, song, singer, imageId, mid,
     });
     updatePlayList(newList);
     this.setState({
@@ -95,13 +96,9 @@ export default class IndexContainer extends React.Component {
       );
       const nextIndex = (index + 1) % playList.length;
       const {
-        songId, song, singer, imageId,
+        songId, song, singer, imageId, mid,
       } = playList[nextIndex];
-
-      this.setState({
-        songId, song, singer, imageId, lyric: null,
-      }, this.fetchLyric);
-      goto(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
+      window.location.assign(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}&mid=${mid}`);
     }
   }
 
@@ -119,13 +116,9 @@ export default class IndexContainer extends React.Component {
         nextIndex = playList.length - 1;
       }
       const {
-        songId, song, singer, imageId,
+        songId, song, singer, imageId, mid,
       } = playList[nextIndex];
-
-      this.setState({
-        songId, song, singer, imageId, lyric: null,
-      }, this.fetchLyric);
-      goto(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}`);
+      window.location.assign(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}&mid=${mid}`);
     }
   }
 
@@ -160,6 +153,7 @@ export default class IndexContainer extends React.Component {
         isPlayListOpen={isPlayListOpen}
         onOpenPlayList={this.handleOpenPlayList}
         onClosePlayList={this.handleClosePlayList}
+        songUrl={this.props.songUrl}
       />
     );
   }
