@@ -1,2 +1,15 @@
+@import '../../variables';
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  > div {
+    margin: 0 10px 0 10px;
+  }
+}
+
+.activeTab {
+  color: $primary-color;
+}
 
 @import '../../base';

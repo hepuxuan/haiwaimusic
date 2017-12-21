@@ -1,10 +1,16 @@
 import React from 'react';
 import styles from '../scss/hotSongList.scss';
 
-export default function ({ songs, title }) {
+export default function ({ songs, title, tabs }) {
   return (
     <div className={styles.hotSongs}>
-      { !!songs.length && <div className={styles.title}>{title}</div> }
+      {!!songs.length && (
+        <React.Fragment>
+          <div className={styles.title}>{title}</div>
+          {tabs || null}
+        </React.Fragment>
+      )}
+
       <div className={styles.srollable}>
         {
           songs.slice(0, 10).map(({

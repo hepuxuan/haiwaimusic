@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from '../scss/nav.scss';
+import styles from './navbar.scss';
 
-export default function () {
+export default function ({ title }) {
   return (
     <div className={styles.navbar}>
       <div>
@@ -9,7 +9,7 @@ export default function () {
           <i className="material-icons">keyboard_arrow_left</i>
         </a>
       </div>
-      <div className={styles.pagetitle}>播放列表</div>
+      <div className={styles.pagetitle}>{title}</div>
       <div />
     </div>
   );

@@ -27,6 +27,7 @@ module.exports = [
       index: './client/index.js',
       song: './client/song.js',
       playList: './client/playList.js',
+      search: './client/search.js',
     },
     devtool: 'source-map',
     output: {
@@ -89,6 +90,7 @@ module.exports = [
       index: './server/routes/index.js',
       song: './server/routes/song.js',
       playList: './server/routes/playList.js',
+      search: './server/routes/search.js',
     },
 
     output: {

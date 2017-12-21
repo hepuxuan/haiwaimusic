@@ -10,6 +10,7 @@ const index = require('./build/index');
 const song = require('./build/song');
 const playList = require('./build/playList');
 const qqApi = require('./routes/qqApi');
+const search = require('./build/search');
 
 const app = express();
 
@@ -40,7 +41,9 @@ app.use((req, res, next) => {
 app.use('/', index);
 app.use('/song', song);
 app.use('/playList', playList);
+app.use('/search', search);
 app.use('/api/qqmusic', qqApi);
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

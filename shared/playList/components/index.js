@@ -1,5 +1,5 @@
 import React from 'react';
-import Nav from './Nav';
+import Navbar from '../../components/Navbar';
 import PlayList from './PlayList';
 import BottomNav from '../../components/BottomNav';
 import { getPlayList, updatePlayList } from '../../utils';
@@ -9,7 +9,7 @@ function Index({ playList, onRemoveSong }) {
   return (
     <React.Fragment>
       <div className="page-body">
-        <Nav />
+        <Navbar title="播放列表" />
         <PlayList playList={playList} onRemoveSong={onRemoveSong} />
       </div>
       <BottomNav activeLink="playList" />

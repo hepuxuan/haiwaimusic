@@ -40,6 +40,7 @@ module.exports = [
       index: './client/index.js',
       song: './client/song.js',
       playList: './client/playList.js',
+      search: './client/search.js',
     },
 
     output: {
@@ -114,6 +115,7 @@ module.exports = [
       index: './server/routes/index.js',
       song: './server/routes/song.js',
       playList: './server/routes/playList.js',
+      search: './server/routes/search.js',
     },
 
     output: {

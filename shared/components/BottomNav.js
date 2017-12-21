@@ -13,6 +13,10 @@ export default function ({ activeLink }) {
           <i className="material-icons">list</i>
           播放列表
         </a>
+        <a href="/search" className={activeLink === 'search' ? styles.active : ''}>
+          <i className="material-icons">search</i>
+          搜索
+        </a>
       </div>
     </div>
   );

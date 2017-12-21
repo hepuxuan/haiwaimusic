@@ -1,198 +1,102 @@
 import React from 'react';
-import find from 'lodash/find';
 import Navbar from './Navbar';
-import Search from './Search';
 import BottomNav from '../../components/BottomNav';
-import SearchResultList from './SearchResultList';
 import HotSongList from './HotSongList';
-import HistoryList from './HistoryList';
-import Loader from '../../components/Loader';
-import { getSearchHistory, updateHistory, jsonp, getPlayList, updatePlayList } from '../../utils';
-import '../scss/index.scss';
+import { jsonp, getPlayList } from '../../utils';
+import styles from '../scss/index.scss';
 
 function convertToModel({
-  data: {
-    songid, songmid, singer: singerList, songname, albumid,
-  },
+  id: songId, mid, singer: singerList, name: song, album,
 }) {
   const singer = singerList.map(({ name }) => name).join(' ');
   return {
-    imageId: albumid,
-    songId: songid,
+    imageId: album.id,
+    songId,
     singer,
-    mid: songmid,
-    song: songname,
+    mid,
+    song,
   };
 }
 
 export default class Index extends React.Component {
   state = {
-    searchHistory: getSearchHistory(),
-    searchResults: [],
-    page: 1,
-    q: '',
-    isLoading: false,
-    isSearching: false,
-    hotSongs: [],
+    hotSongsmainland: [],
+    hotSongshktw: [],
+    hotSongseuna: [],
     playList: [],
+    selectedTab: 'mainland',
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
     this.setState({
       playList: getPlayList(),
     });
-    jsonp('https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?tpl=3&page=detail&date=2017-09-12&topid=4&type=top&song_begin=0&song_num=30&g_tk=5381&jsonpCallback=JsonCallback&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0', (data) => {
+    jsonp('https://u.y.qq.com/cgi-bin/musicu.fcg?callback=JsonCallback&g_tk=5381&jsonpCallback=recom650982096327902&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data=%7B%22comm%22%3A%7B%22ct%22%3A24%7D%2C%22new_song%22%3A%7B%22module%22%3A%22QQMusic.MusichallServer%22%2C%22method%22%3A%22GetNewSong%22%2C%22param%22%3A%7B%22type%22%3A1%7D%7D%7D', (data) => {
       this.setState({
-        hotSongs: data.songlist.map(convertToModel),
+        hotSongsmainland: data.new_song.data.song_list.map(convertToModel),
       });
-    });
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-  }
-
-  getSearchResult(q, page = 1) {
-    this.setState({
-      isLoading: true,
-    });
-    const url = `/api/qqmusic?q=${q}&p=${page}`;
-    return fetch(url).then(res => res.json()).then((json) => {
-      this.setState({
-        isLoading: false,
-      });
-      return json;
-    });
-  }
-
-  handleScroll = () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight
-      && !this.state.isLoading) {
-      const { q, page } = this.state;
-      const newPage = page + 1;
-      if (q) {
-        this.getSearchResult(q, newPage).then(({ songs }) => {
-          this.setState(prevState => ({
-            searchResults: prevState.searchResults.concat(songs),
-            page: newPage,
-          }));
+      jsonp('https://u.y.qq.com/cgi-bin/musicu.fcg?callback=JsonCallback&g_tk=5381&jsonpCallback=recom43677013802051934&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data=%7B%22comm%22%3A%7B%22ct%22%3A24%7D%2C%22new_song%22%3A%7B%22module%22%3A%22QQMusic.MusichallServer%22%2C%22method%22%3A%22GetNewSong%22%2C%22param%22%3A%7B%22type%22%3A2%7D%7D%7D', (data1) => {
+        this.setState({
+          hotSongshktw: data1.new_song.data.song_list.map(convertToModel),
         });
-      }
-    }
-  }
-
-  handleSearch = () => {
-    const { q } = this.state;
-    let searchHistory;
-    if (this.state.searchHistory.indexOf(q) === -1) {
-      searchHistory = [
-        q,
-        ...this.state.searchHistory,
-      ].slice(0, 5);
-    } else {
-      searchHistory = this.state.searchHistory;
-    }
-
-    this.setState({
-      isSearching: false,
-      searchHistory,
-      q,
-      searchResults: [],
-    });
-    updateHistory(searchHistory);
-    if (q) {
-      this.getSearchResult(q).then(({ songs }) => {
-        this.setState(() => ({
-          searchResults: songs,
-        }));
+        jsonp('https://u.y.qq.com/cgi-bin/musicu.fcg?callback=JsonCallback&g_tk=5381&jsonpCallback=recom5144684456582007&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data=%7B%22comm%22%3A%7B%22ct%22%3A24%7D%2C%22new_song%22%3A%7B%22module%22%3A%22QQMusic.MusichallServer%22%2C%22method%22%3A%22GetNewSong%22%2C%22param%22%3A%7B%22type%22%3A3%7D%7D%7D', (data2) => {
+          this.setState({
+            hotSongseuna: data2.new_song.data.song_list.map(convertToModel),
+          });
+        });
       });
-    }
-  }
-
-  handleFocus = () => {
-    this.setState({
-      isSearching: true,
     });
   }
 
-  handleCloseHistory = () => {
+  handleSelectTab = (e) => {
     this.setState({
-      isSearching: false,
-    });
-  }
-
-  handleBlur = () => {
-    setTimeout(() => {
-      this.setState({
-        isSearching: false,
-      });
-    }, 500);
-  }
-
-  handleSelectHistory = (history) => {
-    this.setState({
-      q: history,
-    }, this.handleSearch);
-  }
-
-  handleChangeSearchString = (q) => {
-    this.setState({
-      q,
-    });
-  }
-
-  handleAddToList = (song) => {
-    if (find(this.state.playList, ({ songId }) => songId === song.songId)) {
-      return;
-    }
-    const newList = this.state.playList.concat(song);
-    updatePlayList(newList);
-    this.setState({
-      playList: newList,
+      selectedTab: e.target.getAttribute('data-value'),
     });
   }
 
   render() {
-    const {
-      searchResults, isLoading, searchHistory, isSearching, q, hotSongs, playList,
-    } = this.state;
+    const { playList } = this.state;
+    const tabs = (
+      <div className={styles.tabs}>
+        <div>
+          <button
+            data-value="mainland"
+            className={this.state.selectedTab === 'mainland' ? styles.activeTab : null}
+            onClick={this.handleSelectTab}
+          >内地
+          </button>
+        </div>
+        <div>
+          <button
+            data-value="hktw"
+            className={this.state.selectedTab === 'hktw' ? styles.activeTab : null}
+            onClick={this.handleSelectTab}
+          >港台
+          </button>
+        </div>
+        <div>
+          <button
+            data-value="euna"
+            className={this.state.selectedTab === 'euna' ? styles.activeTab : null}
+            onClick={this.handleSelectTab}
+          >欧美
+          </button>
+        </div>
+      </div>
+    );
+
     return (
       <React.Fragment>
         <div className="page-body">
           <Navbar />
-          <Search
-            onChange={this.handleChangeSearchString}
-            onFocus={this.handleFocus}
-            onSearch={this.handleSearch}
-            q={q}
-          />
-          {
-            (!q && !isSearching) && (
-              <React.Fragment>
-                <HotSongList songs={playList} title="播放列表" />
-                <HotSongList songs={hotSongs} title="热门歌曲" />
-              </React.Fragment>
-            )
-          }
-          {
-            isSearching ? (
-              <HistoryList
-                onSelect={this.handleSelectHistory}
-                searchHistory={searchHistory}
-                onClose={this.handleCloseHistory}
-              />
-            ) : !!q && (
-              <SearchResultList
-                playList={playList}
-                handleAddToList={this.handleAddToList}
-                searchResults={searchResults}
-              />
-            )
-          }
-          {
-            isLoading && <Loader />
-          }
+          <React.Fragment>
+            <HotSongList songs={playList} title="播放列表" />
+            <HotSongList
+              songs={this.state[`hotSongs${this.state.selectedTab}`]}
+              title="新歌榜单"
+              tabs={tabs}
+            />
+          </React.Fragment>
         </div>
         <BottomNav activeLink="home" />
       </React.Fragment>
