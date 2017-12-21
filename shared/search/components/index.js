@@ -172,7 +172,7 @@ export default class Index extends React.Component {
                 );
               }
                 return (
-                  <div className={styles.hotSearchWords}>
+                  <div className={`main-body ${styles.hotSearchWords}`}>
                     <h4>热门搜索词</h4>
                     {
                       hotwordsList.map(k => (

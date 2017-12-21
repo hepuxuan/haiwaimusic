@@ -1,4 +1,5 @@
 @import '../../variables';
+@import '../../base';
 
 .tabs {
   display: flex;
@@ -11,5 +12,3 @@
 .activeTab {
   color: $primary-color;
 }
-
-@import '../../base';

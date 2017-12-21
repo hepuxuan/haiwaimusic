@@ -4,16 +4,14 @@ import styles from '../scss/hotSongList.scss';
 export default function ({ songs, title, tabs }) {
   return (
     <div className={styles.hotSongs}>
-      {!!songs.length && (
-        <React.Fragment>
-          <div className={styles.title}>{title}</div>
-          {tabs || null}
-        </React.Fragment>
-      )}
+      <React.Fragment>
+        <div className={styles.title}>{title}</div>
+        {tabs || null}
+      </React.Fragment>
 
       <div className={styles.srollable}>
         {
-          songs.slice(0, 10).map(({
+          songs.map(({
            songId, song, singer, imageId, mid,
          }) => {
            const url = `http://imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
