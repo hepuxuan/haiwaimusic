@@ -92,7 +92,7 @@ export default class IndexContainer extends React.Component {
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) => existingSongId === this.state.songId,
+        ({ songId: existingSongId }) => existingSongId.toString() === this.state.songId,
       );
       const nextIndex = (index + 1) % playList.length;
       const {
@@ -107,7 +107,7 @@ export default class IndexContainer extends React.Component {
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) => existingSongId === this.state.songId,
+        ({ songId: existingSongId }) => existingSongId.toString() === this.state.songId,
       );
       let nextIndex;
       if (index > 0) {
