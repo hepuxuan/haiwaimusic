@@ -21,7 +21,7 @@ export default function ({ playList, onRemoveSong }) {
   ) : (
     <div className={styles.titleEmpty}>
       您的列表空空如也，立刻
-      <a href="/">搜索歌曲</a>
+      <a href="/search">搜索歌曲</a>
     </div>
   );
 }
