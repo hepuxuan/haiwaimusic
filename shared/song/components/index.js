@@ -92,13 +92,13 @@ export default class IndexContainer extends React.Component {
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) => existingSongId.toString() === this.state.songId,
+        ({ songId: existingSongId }) => existingSongId.toString() === this.state.songId.toString(),
       );
       const nextIndex = (index + 1) % playList.length;
       const {
-        songId, song, singer, imageId, mid,
+        song, mid,
       } = playList[nextIndex];
-      window.location.assign(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}&mid=${mid}`);
+      window.location.assign(`/song/${song}?&mid=${mid}`);
     }
   }
 
@@ -107,7 +107,7 @@ export default class IndexContainer extends React.Component {
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) => existingSongId.toString() === this.state.songId,
+        ({ songId: existingSongId }) => existingSongId.toString() === this.state.songId.toString(),
       );
       let nextIndex;
       if (index > 0) {
@@ -116,9 +116,9 @@ export default class IndexContainer extends React.Component {
         nextIndex = playList.length - 1;
       }
       const {
-        songId, song, singer, imageId, mid,
+        song, mid,
       } = playList[nextIndex];
-      window.location.assign(`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}&mid=${mid}`);
+      window.location.assign(`/song/${song}?&mid=${mid}`);
     }
   }
 

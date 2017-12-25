@@ -1,7 +1,11 @@
+@import '../../variables';
+
 .navbar {
   align-items: center;
   height: 44px;
   width: 100%;
+  max-width: $page-width;
+  margin: auto;
   top: 0;
   display: flex;
   justify-content: space-between;

@@ -17,7 +17,7 @@ export default function ({ songs, title, tabs }) {
            const url = `http://imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
            return (
              <div key={songId}>
-               <a href={`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}&mid=${mid}`}>
+               <a href={`/song/${song}?&mid=${mid}`}>
                  <img width="100%" src={url} alt="" />
                  <div>
                    <div className={styles.songName}>{song}</div>

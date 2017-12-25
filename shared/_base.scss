@@ -1,3 +1,5 @@
+@import './variables';
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -52,7 +54,7 @@ button:after {
 
 :global(.main-body) {
   margin: auto;
-  max-width: 1280px;
+  max-width: $page-width;
 }
 
 button:focus:not(:active)::after {

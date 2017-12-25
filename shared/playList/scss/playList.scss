@@ -1,7 +1,5 @@
 @import '../../variables';
 
-
-
 .listItem {
   display: flex;
   align-items: center;
@@ -21,12 +19,11 @@
 }
 
 .mylist {
-  max-width: 1000px;
   margin: 18px auto;
 }
 
 .mylist > div {
-  padding: 8px 8px 28px 10px;
+  padding: 8px 8px 28px 0;
 }
 
 @media (max-width: 800px) {

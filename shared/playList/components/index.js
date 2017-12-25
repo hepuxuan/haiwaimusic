@@ -10,7 +10,9 @@ function Index({ playList, onRemoveSong }) {
     <React.Fragment>
       <div className="page-body">
         <Navbar title="播放列表" />
-        <PlayList playList={playList} onRemoveSong={onRemoveSong} />
+        <div className="main-body">
+          <PlayList playList={playList} onRemoveSong={onRemoveSong} />
+        </div>
       </div>
       <BottomNav activeLink="playList" />
     </React.Fragment>

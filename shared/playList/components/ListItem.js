@@ -2,11 +2,11 @@ import React from 'react';
 import styles from '../scss/listItem.scss';
 
 export default function ({
-  songId, song, singer, imageId, mid,
+  song, singer, mid,
 }) {
   return (
     <a
-      href={`/song/${song}?singer=${singer}&songId=${songId}&imageId=${imageId}&mid=${mid}`}
+      href={`/song/${song}?mid=${mid}`}
       className={styles.result}
     >
       <div className={styles.title} key="title">

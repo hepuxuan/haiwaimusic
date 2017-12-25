@@ -23,6 +23,19 @@ module.exports = {
       }));
   },
 
+  getSongInfo(mid) {
+    const url = `https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid=${mid}&tpl=yqq_song_detail&format=json&g_tk=5381&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0`;
+    return fetch(url)
+      .then(res => res.json())
+      .then(({ data }) => ({
+        songId: data[0].id,
+        mid: data[0].mid,
+        song: data[0].name,
+        imageId: data[0].album.id,
+        singer: data[0].singer.map(({ name }) => name).join(' '),
+      }));
+  },
+
   getSongAddress(mid) {
     const t = (new Date).getUTCMilliseconds(); // eslint-disable-line
     const guid = (Math.round(2147483647 * Math.random()) * t) % 1e10;
