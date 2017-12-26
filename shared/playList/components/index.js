@@ -2,14 +2,14 @@ import React from 'react';
 import Navbar from '../../components/Navbar';
 import PlayList from './PlayList';
 import BottomNav from '../../components/BottomNav';
-import { getPlayList, updatePlayList } from '../../utils';
+import { getPlayList, removeFromPlayList } from '../../utils';
 import '../scss/index.scss';
 
-function Index({ playList, onRemoveSong }) {
+function Index({ playList, onRemoveSong, user }) {
   return (
     <React.Fragment>
       <div className="page-body">
-        <Navbar title="播放列表" />
+        <Navbar title="播放列表" user={user} />
         <div className="main-body">
           <PlayList playList={playList} onRemoveSong={onRemoveSong} />
         </div>
@@ -25,21 +25,21 @@ export default class IndexContainer extends React.Component {
   }
   componentDidMount() {
     this.setState({
-      playList: getPlayList(),
+      playList: this.props.playList.concat(getPlayList()),
     });
   }
 
-  handleRemoveSong = (_songId) => {
-    const playList = this.state.playList.filter(({ songId }) => songId !== _songId);
+  handleRemoveSong = (mid) => {
+    const playList = this.state.playList.filter(({ mid: _mid }) => _mid !== mid);
     setTimeout(() => {
       this.setState({
         playList,
       });
     }, 500);
-    updatePlayList(playList);
+    removeFromPlayList(mid);
   }
 
   render() {
-    return <Index playList={this.state.playList} onRemoveSong={this.handleRemoveSong} />;
+    return <Index playList={this.state.playList} onRemoveSong={this.handleRemoveSong} user={this.props.user} />;
   }
 }

@@ -1,12 +1,13 @@
 import React from 'react';
 import find from 'lodash/find';
+import 'isomorphic-fetch';
 import findIndex from 'lodash/findIndex';
 import Description from './Description';
 import Nav from './Nav';
 import Player from './Player';
 import PlayList from './PlayList';
 import styles from '../scss/index.scss';
-import { getPlayList, updatePlayList } from '../../utils';
+import { getPlayList, addToPlayList } from '../../utils';
 
 function Index({
   songId, song, singer, imageId, lyric, onOpenPlayList, onClosePlayList,
@@ -42,7 +43,7 @@ export default class IndexContainer extends React.Component {
 
     this.state = {
       lyric: null,
-      playList: getPlayList(),
+      playList: this.props.playList.concat(getPlayList()),
       songId: props.songId,
       song: props.song,
       singer: props.singer,
@@ -78,10 +79,12 @@ export default class IndexContainer extends React.Component {
       return;
     }
 
-    const newList = playList.concat({
+    const newSong = {
       songId, song, singer, imageId, mid,
-    });
-    updatePlayList(newList);
+    };
+
+    const newList = playList.concat(newSong);
+    addToPlayList(newSong);
     this.setState({
       playList: newList,
     });

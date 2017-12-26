@@ -3,6 +3,6 @@ import React from 'react';
 import Index from '../shared/index/components';
 
 hydrate(
-  <Index />,
+  <Index {...__SERVER__DATA__} />,
   document.getElementById('main'),
 );

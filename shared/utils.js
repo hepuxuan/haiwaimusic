@@ -9,9 +9,32 @@ function getPlayList() {
   return filter(playList, item => !!item.mid);
 }
 
-function updatePlayList(list) {
-  if (typeof localStorage !== 'undefined') {
-    localStorage.setItem('playList', JSON.stringify(list));
+function addToPlayList(song) {
+  if (__SERVER__DATA__.user) {
+    fetch('/user/playList', {
+      body: JSON.stringify(song),
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } else if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('playList', JSON.stringify(getPlayList().concat(song)));
+  }
+}
+
+function removeFromPlayList(mid) {
+  if (__SERVER__DATA__.user) {
+    fetch(`/user/playList/${mid}`, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } else if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('playList', JSON.stringify(filter(getPlayList(), song => song.mid !== mid)));
   }
 }
 
@@ -21,6 +44,7 @@ function getSearchHistory() {
     const searchHistoryString = localStorage.getItem('searchHistory');
     searchHistory = searchHistoryString ? JSON.parse(searchHistoryString) : [];
   }
+
   return searchHistory;
 }
 
@@ -51,4 +75,5 @@ function goto(url) {
   ga('send', 'pageview', url);
 }
 
-export { getPlayList, updatePlayList, getSearchHistory, updateHistory, jsonp, formatTime, goto };
+export { getPlayList, getSearchHistory, updateHistory,
+  jsonp, formatTime, goto, addToPlayList, removeFromPlayList };

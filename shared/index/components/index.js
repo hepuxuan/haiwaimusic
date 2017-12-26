@@ -57,7 +57,7 @@ export default class Index extends React.Component {
 
   componentDidMount() {
     this.setState({
-      playList: getPlayList(),
+      playList: [...getPlayList(), ...this.props.playList],
     });
     jsonp(URLS.hotSongsmainland, (data) => {
       this.setState({
@@ -138,7 +138,7 @@ export default class Index extends React.Component {
     return (
       <React.Fragment>
         <div className="page-body">
-          <Navbar />
+          <Navbar user={this.props.user} />
           <div className="main-body">
             <HotSongList songs={playList} title="播放列表" />
             <HotSongList

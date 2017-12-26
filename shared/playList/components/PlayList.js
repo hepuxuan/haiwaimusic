@@ -10,7 +10,7 @@ export default function ({ playList, onRemoveSong }) {
           <div className={styles.listItem} key={song.songId}>
             <ListItem {...song} />
             <div>
-              <button onClick={() => { onRemoveSong(song.songId); }}>
+              <button onClick={() => { onRemoveSong(song.mid); }}>
                 &#10006;
               </button>
             </div>

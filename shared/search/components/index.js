@@ -1,5 +1,6 @@
 import React from 'react';
 import find from 'lodash/find';
+import 'isomorphic-fetch';
 import Navbar from '../../components/Navbar';
 import Search from './Search';
 import BottomNav from '../../components/BottomNav';
@@ -7,12 +8,12 @@ import SearchResultList from './SearchResultList';
 import HistoryList from './HistoryList';
 import Hotkeyword from './Hotkeyword';
 import Loader from '../../components/Loader';
-import { getSearchHistory, updateHistory, getPlayList, updatePlayList, jsonp } from '../../utils';
+import { getSearchHistory, updateHistory, getPlayList, addToPlayList, jsonp } from '../../utils';
 import styles from '../scss/index.scss';
 
 export default class Index extends React.Component {
   state = {
-    searchHistory: getSearchHistory(),
+    searchHistory: [],
     searchResults: [],
     page: 1,
     q: '',
@@ -25,7 +26,8 @@ export default class Index extends React.Component {
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
     this.setState({
-      playList: getPlayList(),
+      playList: this.props.playList.concat(getPlayList()),
+      searchHistory: getSearchHistory(),
     });
     jsonp('https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg?g_tk=5381&jsonpCallback=JsonCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0', (data) => {
       this.setState({
@@ -132,7 +134,7 @@ export default class Index extends React.Component {
       return;
     }
     const newList = this.state.playList.concat(song);
-    updatePlayList(newList);
+    addToPlayList(song);
     this.setState({
       playList: newList,
     });
@@ -145,7 +147,7 @@ export default class Index extends React.Component {
     return (
       <React.Fragment>
         <div className="page-body">
-          <Navbar title="搜索歌曲" />
+          <Navbar title="搜索歌曲" user={this.props.user} />
           <Search
             onChange={this.handleChangeSearchString}
             onFocus={this.handleFocus}

@@ -5,12 +5,20 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
+const session = require('express-session');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const RedisStore = require('connect-redis')(session);
+const redis = require('redis');
 const index = require('./build/index');
 const song = require('./build/song');
 const playList = require('./build/playList');
 const qqApi = require('./routes/qqApi');
+const auth = require('./routes/auth');
+const user = require('./routes/user');
 const search = require('./build/search');
+const config = require('./config');
+const userService = require('./services/user');
 
 const app = express();
 
@@ -21,21 +29,59 @@ const hash = JSON.parse(content).hash;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-// uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, '../public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 const oneYear = 86400000 * 365;
 app.use(express.static(path.join(__dirname, '../public'), {
   maxAge: oneYear,
 }));
 
+const client = redis.createClient();
+app.use(session({
+  store: new RedisStore({
+    client,
+  }),
+  secret: config.secret,
+  saveUninitialized: false,
+  resave: true,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use((req, res, next) => {
   req.hash = hash;
   next();
+});
+
+passport.use(new GoogleStrategy(
+  {
+    clientID: config.clientID,
+    clientSecret: config.clientSecret,
+    callbackURL: config.callbackURL,
+  },
+  ((token, tokenSecret, profile, done) => {
+    const user = {
+      uuid: profile.id,
+      name: profile.displayName,
+      email: profile.email,
+      imageUrl: profile.photos[0].value,
+    };
+    userService.createOrUpdate(user).then(() => {
+      done(null, user);
+    });
+  }),
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
 });
 
 app.use('/', index);
@@ -43,7 +89,8 @@ app.use('/song', song);
 app.use('/playList', playList);
 app.use('/search', search);
 app.use('/api/qqmusic', qqApi);
-
+app.use('/auth', auth);
+app.use('/user', user);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

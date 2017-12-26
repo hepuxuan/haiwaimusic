@@ -3,14 +3,21 @@ const React = require('react');
 const { renderToString } = require('react-dom/server');
 const Music = require('../../shared/song/components').default;
 const { getSongAddress, getSongInfo } = require('../services/qqmusic');
+const { getPlayList } = require('../services/user');
 
 const router = express.Router();
 
-router.get('/:song', (req, res) => {
+router.get('/:song', async (req, res) => {
   const { song } = req.params;
   const { mid } = req.query;
-  Promise.all([getSongInfo(mid), getSongAddress(mid)])
-    .then(([({ songId, singer, imageId }), songUrl]) => {
+  let playListPromise;
+  if (req.user) {
+    playListPromise = getPlayList(req.user.uuid);
+  } else {
+    playListPromise = Promise.resolve({ songs: [] });
+  }
+  Promise.all([getSongInfo(mid), getSongAddress(mid), playListPromise])
+    .then(([{ songId, singer, imageId }, songUrl, { songs }]) => {
       res.render('template', {
         title: '音乐播放',
         page: 'song',
@@ -22,9 +29,11 @@ router.get('/:song', (req, res) => {
           imageId={imageId}
           songUrl={songUrl}
           mid={mid}
+          user={req.user}
+          playList={songs}
         />),
         data: JSON.stringify({
-          songId, singer, song, imageId, songUrl, mid,
+          songId, singer, song, imageId, songUrl, mid, user: req.user, playList: songs,
         }),
       });
     });
