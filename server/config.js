@@ -4,10 +4,12 @@ const config = {
   secret: '=CsZwA<_,Jxm9^7"',
 };
 
-if (process.env.NODE_ENV === 'production') {
-  config.callbackURL = 'http://www.yinyuetai.fun/auth/google/return';
-} else {
-  config.callbackURL = 'http://localhost:8080/auth/google/return';
-}
+// if (process.env.NODE_ENV === 'production') {
+//   config.callbackURL = 'http://www.yinyuetai.fun/auth/google/return';
+// } else {
+//   config.callbackURL = 'http://localhost:8080/auth/google/return';
+// }
+
+config.callbackURL = 'http://www.yinyuetai.fun/auth/google/return';
 
 module.exports = config;
