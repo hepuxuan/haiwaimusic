@@ -33,7 +33,8 @@ function removeFromPlayList(mid) {
         'Content-Type': 'application/json',
       },
     });
-  } else if (typeof localStorage !== 'undefined') {
+  }
+  if (typeof localStorage !== 'undefined') {
     localStorage.setItem('playList', JSON.stringify(filter(getPlayList(), song => song.mid !== mid)));
   }
 }
