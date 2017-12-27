@@ -44,10 +44,6 @@ export default class IndexContainer extends React.Component {
     this.state = {
       lyric: null,
       playList: this.props.playList.concat(getPlayList()),
-      songId: props.songId,
-      song: props.song,
-      singer: props.singer,
-      imageId: props.imageId,
       isPlayListOpen: false,
     };
   }
@@ -57,7 +53,7 @@ export default class IndexContainer extends React.Component {
   }
 
   fetchLyric = () => {
-    const url = `/api/qqmusic/lyric?songId=${this.state.songId}`;
+    const url = `/api/qqmusic/lyric?songId=${this.props.songId}`;
     fetch(url).then(res => res.json()).then(({ lyric }) => {
       this.setState({
         lyric,
@@ -95,7 +91,7 @@ export default class IndexContainer extends React.Component {
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) => existingSongId.toString() === this.state.songId.toString(),
+        ({ songId: existingSongId }) => existingSongId.toString() === this.props.songId.toString(),
       );
       const nextIndex = (index + 1) % playList.length;
       const {
@@ -110,7 +106,7 @@ export default class IndexContainer extends React.Component {
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) => existingSongId.toString() === this.state.songId.toString(),
+        ({ songId: existingSongId }) => existingSongId.toString() === this.props.songId.toString(),
       );
       let nextIndex;
       if (index > 0) {
@@ -139,8 +135,12 @@ export default class IndexContainer extends React.Component {
 
   render() {
     const {
-      lyric, playList, songId, song, singer, imageId, isPlayListOpen,
+      lyric, playList, isPlayListOpen,
     } = this.state;
+
+    const {
+      songId, song, singer, imageId,
+    } = this.props;
 
     return (
       <Index
