@@ -14,7 +14,7 @@ export default function ({ songs, title, tabs }) {
           songs.map(({
            songId, song, singer, imageId, mid,
          }) => {
-           const url = `http://imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
+           const url = `//imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
            return (
              <div key={songId}>
                <a href={`/song/${song}?&mid=${mid}`}>

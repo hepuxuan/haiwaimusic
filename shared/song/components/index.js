@@ -13,7 +13,7 @@ function Index({
   songId, song, singer, imageId, lyric, onOpenPlayList, onClosePlayList,
   onAddToPlayList, onPlayNext, onPlayPrev, playList, isPlayListOpen, songUrl,
 }) {
-  const imageUrl = `http://imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
+  const imageUrl = `//imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
   return (
     <React.Fragment>
       <Nav handleAddToPlayList={onAddToPlayList} />
