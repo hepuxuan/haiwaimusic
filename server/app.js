@@ -76,12 +76,12 @@ passport.use(new GoogleStrategy(
   }),
 ));
 
-passport.serializeUser((user, done) => {
-  done(null, user);
+passport.serializeUser((_user, done) => {
+  done(null, _user);
 });
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
+passport.deserializeUser((_user, done) => {
+  done(null, _user);
 });
 
 app.use('/', index);

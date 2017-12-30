@@ -44,7 +44,7 @@ module.exports = {
     return fetch(url)
       .then(res => res.json())
       .then(({ key }) => key)
-      .then(vkey => `http://dl.stream.qqmusic.qq.com/${fileName}?vkey=${vkey}&guid=${guid}&fromtag=52`);
+      .then(vkey => `https://dl.stream.qqmusic.qq.com/${fileName}?vkey=${vkey}&guid=${guid}&fromtag=52`);
   },
 
   getLyric(songId) {

@@ -36,6 +36,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-lazy-load": "^3.0.13",
     "redis": "^2.8.0",
     "sass-loader": "^6.0.6",
     "serve-favicon": "~2.4.5",

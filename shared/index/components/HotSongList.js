@@ -1,4 +1,5 @@
 import React from 'react';
+import LazyLoad from 'react-lazy-load';
 import styles from '../scss/hotSongList.scss';
 
 export default function ({ songs, title, tabs }) {
@@ -13,12 +14,14 @@ export default function ({ songs, title, tabs }) {
         {
           songs.map(({
            songId, song, singer, imageId, mid,
-         }) => {
+         }, i) => {
            const url = `//imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
            return (
              <div key={songId}>
                <a href={`/song/${song}?&mid=${mid}`}>
-                 <img width="100%" src={url} alt="" />
+                 <LazyLoad height={300} offsetTop={300 * i}>
+                   <img width="100%" src={url} alt="" />
+                 </LazyLoad>
                  <div>
                    <div className={styles.songName}>{song}</div>
                    <div className={styles.singerName}>{singer}</div>
