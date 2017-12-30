@@ -14,12 +14,12 @@ export default function ({ songs, title, tabs }) {
         {
           songs.map(({
            songId, song, singer, imageId, mid,
-         }, i) => {
+         }) => {
            const url = `//imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
            return (
              <div key={songId}>
                <a href={`/song/${song}?&mid=${mid}`}>
-                 <LazyLoad height={300} offsetTop={300 * i}>
+                 <LazyLoad>
                    <img width="100%" src={url} alt="" />
                  </LazyLoad>
                  <div>
