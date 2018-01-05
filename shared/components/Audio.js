@@ -1,4 +1,3 @@
-import { autorun } from 'mobx';
 import React from 'react';
 import findIndex from 'lodash/findIndex';
 import { inject, observer } from 'mobx-react';
@@ -10,15 +9,6 @@ export default class Audio extends React.Component {
       this.audio.play();
     }
     this.interval = this.triggerTimer();
-    autorun(() => {
-      if (this.audio) {
-        if (!this.props.store.isPaused && !this.props.store.isStopped) {
-          this.audio.play();
-        } else {
-          this.audio.pause();
-        }
-      }
-    });
   }
 
   componentWillUnmount() {
@@ -36,7 +26,6 @@ export default class Audio extends React.Component {
     if (this.props.store.loop) {
       setTimeout(() => {
         this.props.store.play();
-        this.audio.play();
       }, 500);
     } else {
       const { playList } = this.props.store;
@@ -66,7 +55,9 @@ export default class Audio extends React.Component {
           ref={(r) => {
             this.audio = r;
           }}
-          onLoadedMetadata={() => { setDuration(this.audio.duration); }}
+          onLoadedMetadata={() => {
+            this.props.store.audio = this.audio; setDuration(this.audio.duration);
+          }}
           src={songUrl}
           onEnded={this.handleEnded}
           autoPlay

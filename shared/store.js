@@ -27,17 +27,26 @@ export default class Store {
   @action.bound play() {
     this.isStopped = false;
     this.isPaused = false;
+    if (this.audio) {
+      this.audio.play();
+    }
   }
 
   @action.bound replay() {
     this.current = 0;
     this.isStopped = false;
     this.isPaused = false;
+    if (this.audio) {
+      this.audio.play();
+    }
   }
 
   @action.bound pause() {
     this.isPaused = true;
     this.isStopped = false;
+    if (this.audio) {
+      this.audio.pause();
+    }
   }
 
   @action.bound removeSong(mid) {
