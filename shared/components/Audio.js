@@ -5,9 +5,6 @@ import { inject, observer } from 'mobx-react';
 @inject('store') @observer
 export default class Audio extends React.Component {
   componentDidMount() {
-    if (!this.props.store.isStopped) {
-      this.audio.play();
-    }
     this.interval = this.triggerTimer();
   }
 
@@ -53,10 +50,10 @@ export default class Audio extends React.Component {
       return (
         <audio
           ref={(r) => {
-            this.audio = r;
+            this.props.store.audio = r;
           }}
           onLoadedMetadata={() => {
-            this.props.store.audio = this.audio; setDuration(this.audio.duration);
+            setDuration(this.props.store.audio.duration);
           }}
           src={songUrl}
           onEnded={this.handleEnded}
