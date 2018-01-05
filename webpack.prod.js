@@ -109,7 +109,7 @@ module.exports = [
   {
     target: 'node',
     entry: {
-      ServerApp: './server/ServerApp.js',
+      application: './server/routes/application.js',
     },
 
     output: {
