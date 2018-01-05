@@ -1,22 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './bottomNav.scss';
 
 export default function ({ activeLink }) {
   return (
-    <div className={styles.bottomNav}>
-      <div className={styles.inner}>
-        <a href="/" className={activeLink === 'home' ? styles.active : ''}>
-          <i className="material-icons">home</i>
+    <div className={styles.bottomNavRoot}>
+      <div className={styles.bottomNav}>
+        <Link to="/" className={activeLink === 'home' ? styles.active : ''}>
           主页
-        </a>
-        <a href="/playList" className={activeLink === 'playList' ? styles.active : ''}>
-          <i className="material-icons">list</i>
+        </Link>
+        <Link to="/playList" className={activeLink === 'playList' ? styles.active : ''}>
           播放列表
-        </a>
-        <a href="/search" className={activeLink === 'search' ? styles.active : ''}>
-          <i className="material-icons">search</i>
+        </Link>
+        <Link to="/search" className={activeLink === 'search' ? styles.active : ''}>
           搜索
-        </a>
+        </Link>
       </div>
     </div>
   );

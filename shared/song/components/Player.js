@@ -1,146 +1,82 @@
 import React from 'react';
+import findIndex from 'lodash/findIndex';
+import { inject, observer } from 'mobx-react';
 import Image from './Image';
 import Lyric from './Lyric';
 import ControlPanel from './ControlPanel';
 import styles from '../scss/player.scss';
 
+@inject('store') @observer
 export default class Player extends React.Component {
-  state = {
-    isPaused: false,
-    isStopped: true,
-    loop: false,
-    renderAudio: false,
-    duration: null,
-    current: 0,
-  }
-
   componentDidMount() {
     setTimeout(() => {
-      this.setState({
-        renderAudio: true,
-      });
+      this.props.store.renderAudio = true;
     }, 500);
-    this.triggerTimer();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.triggerTimer);
-  }
-
-  triggerTimer = () => {
-    setInterval(() => {
-      if (!this.state.isStopped && !this.state.isPaused) {
-        this.setState(prevState => ({
-          current: prevState.current + 1,
-        }));
-      }
-    }, 1000);
-  }
-
-  play = () => {
-    this.audio.play();
-    this.handlePlay();
-  }
-
-  pause = () => {
-    this.audio.pause();
-    this.setState({
-      isPaused: true,
-      isStopped: false,
-    });
-  }
-
-  handlePlay = () => {
-    this.setState({
-      isStopped: false,
-      isPaused: false,
-    });
-  }
-
-  handleEnded = () => {
-    this.setState({
-      isStopped: true,
-      isPaused: false,
-      current: 0,
-    });
-    if (this.state.loop) {
-      setTimeout(() => {
-        this.play();
-      }, 500);
-    } else {
-      this.props.onPlayNext();
-    }
-  }
-
-  handleToggleLoop = () => {
-    this.setState(prevState => ({
-      loop: !prevState.loop,
-    }));
   }
 
   handlePlayNext = () => {
-    this.setState({
-      current: 0,
-    });
-    this.props.onPlayNext();
+    const { playList } = this.props.store;
+    if (playList.length) {
+      const index = findIndex(
+        playList,
+        ({ songId: existingSongId }) =>
+          existingSongId.toString() === this.props.store.song.songId.toString(),
+      );
+      const nextIndex = (index + 1) % playList.length;
+      const {
+        song, mid,
+      } = playList[nextIndex];
+      window.browserHistory.push(`/song/${song}?&mid=${mid}`);
+    }
   }
 
   handlePlayPrev = () => {
-    this.setState({
-      current: 0,
-    });
-    this.props.onPlayPrev();
+    const { playList } = this.props.store;
+    if (playList.length) {
+      const index = findIndex(
+        playList,
+        ({ songId: existingSongId }) =>
+          existingSongId.toString() === this.props.store.song.songId.toString(),
+      );
+      let nextIndex;
+      if (index > 0) {
+        nextIndex = index - 1;
+      } else {
+        nextIndex = playList.length - 1;
+      }
+      const {
+        song, mid,
+      } = playList[nextIndex];
+      window.browserHistory.push(`/song/${song}?&mid=${mid}`);
+    }
   }
 
   render() {
     const {
-      imageId, lyric, onOpenPlayList, songUrl,
+      lyric, onOpenPlayList, store: {
+        isPaused, isStopped,
+      },
     } = this.props;
-    const {
-      isPaused, isStopped, current, loop, duration,
-    } = this.state;
-    const isPlaying = !isPaused && !isStopped;
     return (
-      <div className={styles.audioPlayer}>
-        <Image imageId={imageId} isPlaying={isPlaying} />
-        {
-          lyric && <Lyric
-            lyric={lyric}
-            isPaused={isPaused}
-            isStopped={isStopped}
-          />
-        }
-        {
-          this.state.renderAudio && (
-            <audio
-              ref={(r) => {
-                this.audio = r;
-                if (!this.state.duration && r && r.duration) {
-                  this.setState({
-                    duration: r.duration,
-                  });
-                }
-              }}
-              src={songUrl}
-              onEnded={this.handleEnded}
-              autoPlay
-              onPlay={this.handlePlay}
+      <React.Fragment>
+        <div className={styles.audioPlayer}>
+          <Image />
+          {
+            lyric && <Lyric
+              lyric={lyric}
+              isPaused={isPaused}
+              isStopped={isStopped}
             />
-          )
-        }
-        <ControlPanel
-          loop={loop}
-          current={current}
-          duration={duration}
-          onToggleLoop={this.handleToggleLoop}
-          onPlay={this.play}
-          onPause={this.pause}
-          isPlaying={isPlaying}
-          onPlayNext={this.handlePlayNext}
-          onPlayPrev={this.handlePlayPrev}
-          onOpenPlayList={onOpenPlayList}
-        />
-      </div>
+          }
+          <ControlPanel
+            onPlay={this.props.store.play}
+            onPause={this.props.store.pause}
+            onPlayNext={this.handlePlayNext}
+            onPlayPrev={this.handlePlayPrev}
+            onOpenPlayList={onOpenPlayList}
+          />
+        </div>
+      </React.Fragment>
     );
   }
 }

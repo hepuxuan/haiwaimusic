@@ -1,15 +1,16 @@
-.search {
+.searchRoot {
   background-color: #f4f4f4;
-  input {
-    display: block;
-    width: calc(100% - 20px);
-    margin: auto;
-    border-radius: 3px;
-    background: #fff;
-    height: 36px;
-    appearance: none;
-    border: none;
-  }
+}
+
+.searchInput {
+  display: block;
+  width: calc(100% - 20px);
+  margin: auto;
+  border-radius: 3px;
+  background: #fff;
+  height: 36px;
+  appearance: none;
+  border: none;
 }
 
 .searchWrapper {

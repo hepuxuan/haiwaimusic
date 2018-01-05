@@ -1,7 +1,9 @@
 import React from 'react';
+import { inject, observer } from 'mobx-react';
+import { Link } from 'react-router-dom';
 import styles from '../scss/playList.scss';
 
-export default function ({ playList, isPlayListOpen, onClosePlayList }) {
+function PlayList({ store, isPlayListOpen, onClosePlayList }) {
   return isPlayListOpen && (
     <div className={styles.listWrapper}>
       <div className={styles.listRoot}>
@@ -10,15 +12,15 @@ export default function ({ playList, isPlayListOpen, onClosePlayList }) {
         </h3>
         <div className={styles.playList}>
           {
-            playList.map(({
+            store.playList.map(({
              songId, song, singer, mid,
             }) => (
               <div className={styles.song} key={songId}>
-                <a href={`/song/${song}?mid=${mid}`}>
+                <Link to={`/song/${song}?mid=${mid}`}>
                   <span className={styles.songName}>{song}</span>
                   <span>-</span>
                   <span className={styles.author}>{singer}</span>
-                </a>
+                </Link>
               </div>
             ))
           }
@@ -34,3 +36,5 @@ export default function ({ playList, isPlayListOpen, onClosePlayList }) {
     </div>
   );
 }
+
+export default inject('store')(observer(PlayList));

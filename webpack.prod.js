@@ -36,11 +36,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = [
   {
     entry: {
-      vendor: ['react', 'react-dom'],
+      vendor: ['react', 'react-dom', 'react-router-dom', 'mobx', 'mobx-react'],
       index: './client/index.js',
-      song: './client/song.js',
-      playList: './client/playList.js',
-      search: './client/search.js',
     },
 
     output: {
@@ -112,10 +109,7 @@ module.exports = [
   {
     target: 'node',
     entry: {
-      index: './server/routes/index.js',
-      song: './server/routes/song.js',
-      playList: './server/routes/playList.js',
-      search: './server/routes/search.js',
+      ServerApp: './server/ServerApp.js',
     },
 
     output: {

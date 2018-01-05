@@ -10,13 +10,10 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const RedisStore = require('connect-redis')(session);
 const redis = require('redis');
-const index = require('./build/index');
-const song = require('./build/song');
-const playList = require('./build/playList');
+const application = require('./build/application');
 const qqApi = require('./routes/qqApi');
 const auth = require('./routes/auth');
 const user = require('./routes/user');
-const search = require('./build/search');
 const config = require('./config');
 const userService = require('./services/user');
 
@@ -84,13 +81,10 @@ passport.deserializeUser((_user, done) => {
   done(null, _user);
 });
 
-app.use('/', index);
-app.use('/song', song);
-app.use('/playList', playList);
-app.use('/search', search);
 app.use('/api/qqmusic', qqApi);
 app.use('/auth', auth);
 app.use('/user', user);
+app.use('/', application);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

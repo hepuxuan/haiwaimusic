@@ -1,13 +1,15 @@
 import React from 'react';
+import { inject, observer } from 'mobx-react';
 import styles from './myAccount.scss';
 
-export default function ({ user }) {
+function MyAccount({ store }) {
   return (
     <div className={styles.myAccount}>
       {
-        user ? <a href="/auth/logout">退出</a>
+        store.user ? <a href="/auth/logout">退出</a>
           : <a href="/auth/google">登陆</a>
       }
     </div>
   );
 }
+export default inject('store')(observer(MyAccount));

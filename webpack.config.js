@@ -23,11 +23,8 @@ const webpack = require('webpack');
 module.exports = [
   {
     entry: {
-      vendor: ['react', 'react-dom'],
+      vendor: ['react', 'react-dom', 'react-router-dom', 'mobx', 'mobx-react'],
       index: './client/index.js',
-      song: './client/song.js',
-      playList: './client/playList.js',
-      search: './client/search.js',
     },
     devtool: 'source-map',
     output: {
@@ -74,6 +71,10 @@ module.exports = [
         filename: '[name]-[hash].css',
         allChunks: true,
       }),
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks: Infinity,
+      }),
       function OutputHash() {
         this.plugin('done', (stats) => {
           fs.writeFileSync(path.join(__dirname, 'server', 'stats.generated.json'), JSON.stringify({
@@ -87,10 +88,7 @@ module.exports = [
     target: 'node',
     devtool: 'source-map',
     entry: {
-      index: './server/routes/index.js',
-      song: './server/routes/song.js',
-      playList: './server/routes/playList.js',
-      search: './server/routes/search.js',
+      application: './server/routes/application.js',
     },
 
     output: {

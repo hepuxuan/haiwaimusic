@@ -1,9 +1,11 @@
 import React from 'react';
-import Navbar from './Navbar';
-import BottomNav from '../../components/BottomNav';
-import HotSongList from './HotSongList';
-import { jsonp, getPlayList } from '../../utils';
-import styles from '../scss/index.scss';
+import { inject, observer } from 'mobx-react';
+import Navbar from './components/Mainnav';
+import BottomNav from '../components/BottomNav';
+import HotSongList from './components/HotSongList';
+import AudioPlayback from '../components/AudioPlayback';
+import { jsonp } from '../utils';
+import styles from './scss/index.scss';
 
 function convertToModel({
   id: songId, mid, singer: singerList, name: song, album,
@@ -42,6 +44,7 @@ const URLS = {
   topSongseuna: 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?tpl=3&page=detail&date=2017_51&topid=3&type=top&song_begin=0&song_num=30&g_tk=5381&jsonpCallback=JsonCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0',
 };
 
+@inject('store') @observer
 export default class Index extends React.Component {
   state = {
     hotSongsmainland: [],
@@ -50,15 +53,11 @@ export default class Index extends React.Component {
     topSongsmainland: [],
     topSongshktw: [],
     topSongseuna: [],
-    playList: [],
     selectedhotSongsTab: 'mainland',
     selectedtopSongsTab: 'mainland',
   }
 
   componentDidMount() {
-    this.setState({
-      playList: [...getPlayList(), ...this.props.playList],
-    });
     jsonp(URLS.hotSongsmainland, (data) => {
       this.setState({
         hotSongsmainland: data.new_song.data.song_list.map(convertToModel),
@@ -131,15 +130,16 @@ export default class Index extends React.Component {
   }
 
   render() {
-    const { playList } = this.state;
+    const { playList } = this.props.store;
     const hotSongsTabs = this.renderTabs('hotSongs');
     const topSongsTabs = this.renderTabs('topSongs');
 
     return (
       <React.Fragment>
         <div className="page-body">
-          <Navbar user={this.props.user} />
-          <div className="main-body">
+          <Navbar />
+          <BottomNav activeLink="home" />
+          <div className={`main-body ${styles.indexMain}`}>
             <HotSongList songs={playList} title="播放列表" />
             <HotSongList
               songs={this.state[`hotSongs${this.state.selectedhotSongsTab}`]}
@@ -151,9 +151,9 @@ export default class Index extends React.Component {
               title="巅峰榜单"
               tabs={topSongsTabs}
             />
+            <AudioPlayback />
           </div>
         </div>
-        <BottomNav activeLink="home" />
       </React.Fragment>
     );
   }

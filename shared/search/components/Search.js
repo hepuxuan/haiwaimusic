@@ -16,10 +16,10 @@ export default class Search extends React.Component {
       onSearch, onChange, q, ...props
     } = this.props;
     return (
-      <div className={styles.search}>
+      <div className={styles.searchRoot}>
         <form className={styles.searchForm} onSubmit={this.handleSubmit}>
           <div className={styles.searchWrapper}>
-            <input {...props} placeholder="搜索歌手或者歌名" onChange={this.handleChange} value={q} />
+            <input className={styles.searchInput} {...props} placeholder="搜索歌手或者歌名" onChange={this.handleChange} value={q} />
             <button type="submit">
               <i className="material-icons">search</i>
             </button>

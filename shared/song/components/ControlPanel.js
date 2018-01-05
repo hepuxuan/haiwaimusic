@@ -1,10 +1,13 @@
 import React from 'react';
+import { inject, observer } from 'mobx-react';
 import { formatTime } from '../../utils';
 import styles from '../scss/controlPanel.scss';
 
-export default function ({
-  onToggleLoop, onPause, onPlay, isPlaying, loop,
-  onPlayNext, onPlayPrev, onOpenPlayList, duration, current,
+function ControlPanel({
+  onPause, onPlay, store: {
+    duration, current, toggleLoop, loop, isPlaying,
+  },
+  onPlayNext, onPlayPrev, onOpenPlayList,
 }) {
   const progress = duration ? (current / duration) * 100 : 0;
   return (
@@ -19,7 +22,7 @@ export default function ({
       </div>
       <div className={styles.buttonsGroup}>
         <div>
-          <button onClick={onToggleLoop}>
+          <button onClick={toggleLoop}>
             <i className="material-icons">loop</i>
             {
               loop && <div className={styles.loop1}>1</div>
@@ -58,3 +61,5 @@ export default function ({
     </div>
   );
 }
+
+export default inject('store')(observer(ControlPanel));

@@ -24,6 +24,18 @@ function addToPlayList(song) {
   }
 }
 
+function getQueryVariable(search, variable) {
+  const query = search.substring(1);
+  const vars = query.split('&');
+  for (let i = 0; i < vars.length; i++) {
+    const pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) === variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+  return null;
+}
+
 function removeFromPlayList(mid) {
   if (__SERVER__DATA__.user) {
     fetch(`/user/playList/${mid}`, {
@@ -76,5 +88,5 @@ function goto(url) {
   ga('send', 'pageview', url);
 }
 
-export { getPlayList, getSearchHistory, updateHistory,
+export { getPlayList, getSearchHistory, updateHistory, getQueryVariable,
   jsonp, formatTime, goto, addToPlayList, removeFromPlayList };

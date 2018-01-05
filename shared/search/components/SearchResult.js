@@ -1,11 +1,13 @@
 import React from 'react';
+import { inject, observer } from 'mobx-react';
+import { Link } from 'react-router-dom';
 import styles from '../scss/searchResult.scss';
 
-export default function ({
-  singer, song, songId, imageId, isInPlayList, handleAddToList, mid,
+function SearchResult({
+  singer, song, songId, imageId, isInPlayList, mid, store,
 }) {
   return (
-    <a href={`/song/${song}?&mid=${mid}`} className={styles.result}>
+    <Link to={`/song/${song}?&mid=${mid}`} className={styles.result}>
       <div className={styles.innerBox}>
         <div className={styles.misicIcon}>
           <i className="material-icons">music_note</i>
@@ -23,7 +25,7 @@ export default function ({
           onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          handleAddToList({
+          store.addToList({
             singer, song, songId, imageId, mid,
           });
         }}
@@ -32,6 +34,8 @@ export default function ({
         }
         </button>
       </div>
-    </a>
+    </Link>
   );
 }
+
+export default inject('store')(observer(SearchResult));

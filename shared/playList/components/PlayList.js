@@ -1,16 +1,24 @@
 import React from 'react';
+import { inject, observer } from 'mobx-react';
+import { Link } from 'react-router-dom';
 import ListItem from './ListItem';
 import styles from '../scss/playList.scss';
 
-export default function ({ playList, onRemoveSong }) {
-  return playList.length ? (
+function onRemoveSong(mid, store) {
+  setTimeout(() => {
+    store.removeSong(mid);
+  }, 500);
+}
+
+function PlayList({ store }) {
+  return store.playList.length ? (
     <div className={styles.mylist}>
       {
-        playList.map(song => (
+        store.playList.map(song => (
           <div className={styles.listItem} key={song.songId}>
             <ListItem {...song} />
             <div>
-              <button onClick={() => { onRemoveSong(song.mid); }}>
+              <button onClick={() => { onRemoveSong(song.mid, store); }}>
                 &#10006;
               </button>
             </div>
@@ -21,7 +29,9 @@ export default function ({ playList, onRemoveSong }) {
   ) : (
     <div className={styles.titleEmpty}>
       您的列表空空如也，立刻
-      <a href="/search">搜索歌曲</a>
+      <Link to="/search">搜索歌曲</Link>
     </div>
   );
 }
+
+export default inject('store')(observer(PlayList));

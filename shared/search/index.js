@@ -1,15 +1,13 @@
 import React from 'react';
-import find from 'lodash/find';
-import 'isomorphic-fetch';
-import Navbar from '../../components/Navbar';
-import Search from './Search';
-import BottomNav from '../../components/BottomNav';
-import SearchResultList from './SearchResultList';
-import HistoryList from './HistoryList';
-import Hotkeyword from './Hotkeyword';
-import Loader from '../../components/Loader';
-import { getSearchHistory, updateHistory, getPlayList, addToPlayList, jsonp } from '../../utils';
-import styles from '../scss/index.scss';
+import Navbar from '../components/Navbar';
+import Search from './components/Search';
+import BottomNav from '../components/BottomNav';
+import SearchResultList from './components/SearchResultList';
+import HistoryList from './components/HistoryList';
+import Hotkeyword from './components/Hotkeyword';
+import Loader from '../components/Loader';
+import { getSearchHistory, updateHistory, jsonp } from '../utils';
+import styles from './scss/index.scss';
 
 export default class Index extends React.Component {
   state = {
@@ -19,14 +17,12 @@ export default class Index extends React.Component {
     q: '',
     isLoading: false,
     isSearching: false,
-    playList: [],
     hotwordsList: [],
   }
 
   componentDidMount() {
     window.addEventListener('scroll', this.handleScroll);
     this.setState({
-      playList: this.props.playList.concat(getPlayList()),
       searchHistory: getSearchHistory(),
     });
     jsonp('https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg?g_tk=5381&jsonpCallback=JsonCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0', (data) => {
@@ -129,25 +125,15 @@ export default class Index extends React.Component {
     });
   }
 
-  handleAddToList = (song) => {
-    if (find(this.state.playList, ({ songId }) => songId === song.songId)) {
-      return;
-    }
-    const newList = this.state.playList.concat(song);
-    addToPlayList(song);
-    this.setState({
-      playList: newList,
-    });
-  }
-
   render() {
     const {
-      searchResults, isLoading, searchHistory, isSearching, q, playList, hotwordsList,
+      searchResults, isLoading, searchHistory, isSearching, q, hotwordsList,
     } = this.state;
     return (
       <React.Fragment>
         <div className="page-body">
           <Navbar title="搜索歌曲" user={this.props.user} />
+          <BottomNav activeLink="search" />
           <Search
             onChange={this.handleChangeSearchString}
             onFocus={this.handleFocus}
@@ -166,11 +152,7 @@ export default class Index extends React.Component {
                 );
               } else if (q) {
                 return (
-                  <SearchResultList
-                    playList={playList}
-                    handleAddToList={this.handleAddToList}
-                    searchResults={searchResults}
-                  />
+                  <SearchResultList searchResults={searchResults} />
                 );
               }
                 return (
@@ -189,7 +171,6 @@ export default class Index extends React.Component {
             isLoading && <Loader />
           }
         </div>
-        <BottomNav activeLink="search" />
       </React.Fragment>
     );
   }
