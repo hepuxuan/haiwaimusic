@@ -3,6 +3,7 @@
 .bottomNavRoot {
   width: 100%;
   background-color: $grey-100;
+  z-index: 1;
   position: sticky;
   top: 0;
 }
