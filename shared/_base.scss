@@ -60,3 +60,7 @@ button:after {
 button:focus:not(:active)::after {
   animation: ripple 1s ease-out;
 }
+
+:global(.with-play-back) {
+  margin-bottom: 90px !important;
+}

@@ -6,6 +6,7 @@ import SearchResultList from './components/SearchResultList';
 import HistoryList from './components/HistoryList';
 import Hotkeyword from './components/Hotkeyword';
 import Loader from '../components/Loader';
+import AudioPlayback from '../components/AudioPlayback';
 import { getSearchHistory, updateHistory, jsonp } from '../utils';
 import styles from './scss/index.scss';
 
@@ -130,48 +131,47 @@ export default class Index extends React.Component {
       searchResults, isLoading, searchHistory, isSearching, q, hotwordsList,
     } = this.state;
     return (
-      <React.Fragment>
-        <div className="page-body">
-          <Navbar title="搜索歌曲" user={this.props.user} />
-          <BottomNav activeLink="search" />
-          <Search
-            onChange={this.handleChangeSearchString}
-            onFocus={this.handleFocus}
-            onSearch={this.handleSearch}
-            q={q}
-          />
-          {
-            (() => {
-              if (isSearching) {
-                return (
-                  <HistoryList
-                    onSelect={this.handleSelectSearch}
-                    searchHistory={searchHistory}
-                    onClose={this.handleCloseHistory}
-                  />
-                );
-              } else if (q) {
-                return (
-                  <SearchResultList searchResults={searchResults} />
-                );
-              }
-                return (
-                  <div className={`${styles.hotSearchWords} main-body`}>
-                    <h4>热门搜索词</h4>
-                    {
-                      hotwordsList.map(k => (
-                        <Hotkeyword key={k} onClick={this.handleSelectSearch}>{k}</Hotkeyword>
-                      ))
-                    }
-                  </div>
-                );
-            })()
-          }
-          {
-            isLoading && <Loader />
-          }
-        </div>
-      </React.Fragment>
+      <div className="page-body with-play-back">
+        <Navbar title="搜索歌曲" user={this.props.user} />
+        <BottomNav activeLink="search" />
+        <Search
+          onChange={this.handleChangeSearchString}
+          onFocus={this.handleFocus}
+          onSearch={this.handleSearch}
+          q={q}
+        />
+        {
+          (() => {
+            if (isSearching) {
+              return (
+                <HistoryList
+                  onSelect={this.handleSelectSearch}
+                  searchHistory={searchHistory}
+                  onClose={this.handleCloseHistory}
+                />
+              );
+            } else if (q) {
+              return (
+                <SearchResultList searchResults={searchResults} />
+              );
+            }
+              return (
+                <div className={`${styles.hotSearchWords} main-body`}>
+                  <h4>热门搜索词</h4>
+                  {
+                    hotwordsList.map(k => (
+                      <Hotkeyword key={k} onClick={this.handleSelectSearch}>{k}</Hotkeyword>
+                    ))
+                  }
+                </div>
+              );
+          })()
+        }
+        {
+          isLoading && <Loader />
+        }
+        <AudioPlayback />
+      </div>
     );
   }
 }

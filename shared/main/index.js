@@ -139,7 +139,7 @@ export default class Index extends React.Component {
         <div className="page-body">
           <Navbar />
           <BottomNav activeLink="home" />
-          <div className={`main-body ${styles.indexMain}`}>
+          <div className="main-body with-play-back">
             <HotSongList songs={playList} title="播放列表" />
             <HotSongList
               songs={this.state[`hotSongs${this.state.selectedhotSongsTab}`]}

@@ -16,7 +16,7 @@ function PlayList({ store, isPlayListOpen, onClosePlayList }) {
              songId, song, singer, mid,
             }) => (
               <div className={styles.song} key={songId}>
-                <Link to={`/song/${song}?mid=${mid}`}>
+                <Link to={`/song/${song}?mid=${mid}`} onClick={() => { window.setTimeout(onClosePlayList, 300); }}>
                   <span className={styles.songName}>{song}</span>
                   <span>-</span>
                   <span className={styles.author}>{singer}</span>
