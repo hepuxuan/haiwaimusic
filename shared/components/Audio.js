@@ -6,6 +6,7 @@ import { inject, observer } from 'mobx-react';
 export default class Audio extends React.Component {
   componentDidMount() {
     this.interval = this.triggerTimer();
+    this.props.store.play();
   }
 
   componentWillUnmount() {
