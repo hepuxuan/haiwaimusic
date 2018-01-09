@@ -13,4 +13,16 @@
   filter: blur(30px);
 }
 
+.background::before {
+  content: "";
+  min-height: 100%;
+  position: fixed;
+  left: -30px;
+  right: -30px;
+  z-index: -1;
+  top: -30px;
+  bottom: -30px;
+  background-color: rgba(0,0,0,0.2);
+}
+
 @import '../../base';

@@ -11,7 +11,7 @@ const history = createBrowserHistory({
 
 history.listen((location) => {
   ReactGA.set({ page: location.pathname });
-  ReactGA.pageview(location.pathname);
+  ReactGA.pageview(location.pathname + location.search);
 });
 
 window.browserHistory = history;
