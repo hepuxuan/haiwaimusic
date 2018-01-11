@@ -54,7 +54,7 @@ export default class Player extends React.Component {
   render() {
     const {
       lyric, onOpenPlayList, store: {
-        isPaused, isStopped,
+        isPaused, isStopped, current,
       },
     } = this.props;
     return (
@@ -66,6 +66,7 @@ export default class Player extends React.Component {
               lyric={lyric}
               isPaused={isPaused}
               isStopped={isStopped}
+              current={current}
             />
           }
           <ControlPanel

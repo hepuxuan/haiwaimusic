@@ -11,6 +11,7 @@ export default class Lyric extends React.Component {
     this.lrc = new Lrc(this.props.lyric, this.handleOutput);
     if (!this.props.isStopped) {
       this.lrc.play();
+      this.lrc.seek(this.props.current * 1000);
     }
   }
 

@@ -10,10 +10,6 @@ a {
   text-decoration: none;
 }
 
-:global(.page-body) {
-  margin-bottom: 53px;
-}
-
 button {
   background-color: inherit;
   outline: inherit;
@@ -62,5 +58,5 @@ button:focus:not(:active)::after {
 }
 
 :global(.with-play-back) {
-  margin-bottom: 90px !important;
+  margin-bottom: 60px !important;
 }
