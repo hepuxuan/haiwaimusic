@@ -1,6 +1,6 @@
 const fetch = require('isomorphic-fetch');
-const { parseString } = require('xml2js');
-const { promisify } = require('util');
+const { parseJsonP } = require('../../shared/utils');
+const he = require('he');
 
 module.exports = {
   search(q, page = 1) {
@@ -40,7 +40,7 @@ module.exports = {
     const t = (new Date).getUTCMilliseconds(); // eslint-disable-line
     const guid = (Math.round(2147483647 * Math.random()) * t) % 1e10;
     const fileName = `C200${mid}.m4a`;
-    const url = `http://base.music.qq.com/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=${guid}&g_tk=938407465&loginUin=0&hostUin=0&format=json&inCharset=GB2312&outCharset=GB231&platform=yqq&jsonpCallback=&needNewCode=0`;
+    const url = `http://base.music.qq.com/fcgi-bin/fcg_musicexpress.fcg?json=3&guid=${guid}&g_tk=938407465&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf8&platform=yqq&jsonpCallback=&needNewCode=0`;
     return fetch(url)
       .then(res => res.json())
       .then(({ key }) => key)
@@ -48,12 +48,18 @@ module.exports = {
   },
 
   getLyric(songId) {
-    const url = `http://music.qq.com/miniportal/static/lyric/${songId % 100}/${songId}.xml`;
-    const parseXml = promisify(parseString);
-    return fetch(url)
+    const url = `http://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric.fcg?nobase64=1&musicid=${songId}&callback=jsonp&g_tk=5381&loginUin=0&hostUin=0&format=json&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0`;
+    return fetch(url, {
+      headers: {
+        Referer: 'https://y.qq.com/',
+      },
+    })
       .then(r => r.text())
-      .then(xml => parseXml(xml))
-      .then(result => result)
+      .then(text => ({
+        lyric: he.decode(parseJsonP('jsonp', text).lyric, {
+          decimal: true,
+        }),
+      }))
       .catch(() => ({ lyric: '[offset:0]\n[00:00.00][10:00.00]暂无歌词' }));
   },
 };

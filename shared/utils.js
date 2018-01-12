@@ -1,4 +1,4 @@
-import filter from 'lodash/filter';
+const filter = require('lodash/filter');
 
 function getPlayList() {
   let playList = [];
@@ -88,5 +88,19 @@ function goto(url) {
   ga('send', 'pageview', url);
 }
 
-export { getPlayList, getSearchHistory, updateHistory, getQueryVariable,
-  jsonp, formatTime, goto, addToPlayList, removeFromPlayList };
+function parseJsonP(functionName, value) {
+  return JSON.parse(value.replace(functionName, '').slice(1, -1));
+}
+
+module.exports = {
+  getPlayList,
+  getSearchHistory,
+  updateHistory,
+  getQueryVariable,
+  jsonp,
+  formatTime,
+  goto,
+  addToPlayList,
+  removeFromPlayList,
+  parseJsonP,
+};

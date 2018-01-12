@@ -17,7 +17,7 @@ router.get('/lyric', (req, res) => {
 
   getLyric(songId).then((lyric) => {
     res.json(lyric);
-  }).catch((e) => { console.log(e); });
+  });
 });
 
 router.get('/song/:mid', (req, res) => {
