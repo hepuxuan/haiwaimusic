@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 const fs = require('fs');
 const autoprefixer = require('autoprefixer');
@@ -108,6 +109,7 @@ module.exports = [
   },
   {
     target: 'node',
+    externals: [nodeExternals()],
     entry: {
       application: './server/routes/application.js',
     },

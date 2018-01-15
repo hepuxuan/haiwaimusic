@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const nodeExternals = require('webpack-node-externals');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
@@ -87,6 +88,7 @@ module.exports = [
   {
     target: 'node',
     devtool: 'source-map',
+    externals: [nodeExternals()],
     entry: {
       application: './server/routes/application.js',
     },
