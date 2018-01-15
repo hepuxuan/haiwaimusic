@@ -107,6 +107,7 @@ module.exports = {
         .then((vkey) => {
           const address = `https://dl.stream.qqmusic.qq.com/${fileName}?vkey=${vkey}&guid=${guid}&fromtag=52`;
           client.set(`song.address:${mid}`, address, 'EX', ONE_DAY);
+          return address;
         });
     });
   },
