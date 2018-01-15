@@ -9,6 +9,8 @@ lib-cov
 *.pid
 *.gz
 
+.vscode
+
 pids
 logs
 results

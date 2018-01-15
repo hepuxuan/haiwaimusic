@@ -9,13 +9,13 @@ const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const RedisStore = require('connect-redis')(session);
-const redis = require('redis');
 const application = require('./build/application');
 const qqApi = require('./routes/qqApi');
 const auth = require('./routes/auth');
 const user = require('./routes/user');
 const config = require('./config');
 const userService = require('./services/user');
+const { client } = require('./services/redis');
 
 const app = express();
 
@@ -37,7 +37,6 @@ app.use(express.static(path.join(__dirname, '../public'), {
   maxAge: oneYear,
 }));
 
-const client = redis.createClient();
 app.use(session({
   store: new RedisStore({
     client,

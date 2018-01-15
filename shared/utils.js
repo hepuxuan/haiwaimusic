@@ -89,7 +89,7 @@ function goto(url) {
 }
 
 function parseJsonP(functionName, value) {
-  return JSON.parse(value.replace(functionName, '').slice(1, -1));
+  return JSON.parse(value.replace(`${functionName}(`, '').slice(0, -1));
 }
 
 module.exports = {

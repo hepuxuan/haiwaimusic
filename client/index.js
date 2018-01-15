@@ -10,13 +10,13 @@ import { getPlayList } from '../shared/utils';
 import history from './history';
 
 const {
-  user, playList, song, showPlayer,
+  playList, ...props
 } = __SERVER__DATA__;
 
 const newPlayList = getPlayList().concat(playList);
 
 const store = new Store({
-  user, playList: newPlayList, song, showPlayer,
+  playList: newPlayList, ...props,
 });
 
 hydrate(

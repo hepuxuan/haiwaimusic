@@ -1,4 +1,5 @@
 import React from 'react';
+import ClickOutside from 'react-click-outside';
 import { func } from 'prop-types';
 import styles from './menu.scss';
 
@@ -23,6 +24,11 @@ export class Menu extends React.Component {
     };
   }
 
+  handleClose = () => {
+    this.setState({
+      isOpen: false,
+    });
+  }
 
   handleToggleMenu = (e) => {
     e.preventDefault();
@@ -34,18 +40,23 @@ export class Menu extends React.Component {
 
   render() {
     return (
-      <div className={styles.root}>
-        <button onClick={this.handleToggleMenu}>
-          <i className="material-icons">more_vert</i>
-        </button>
-        {
-          this.state.isOpen && (
-            <div className={styles.menu}>
-              {this.props.children}
-            </div>
-          )
-        }
-      </div>
+      <ClickOutside onClickOutside={this.handleClose}>
+        <div className={styles.root}>
+          <button onClick={this.handleToggleMenu}>
+            {
+              this.props.title ? this.props.title : <i className="material-icons">more_vert</i>
+            }
+          </button>
+          {
+            this.state.isOpen && (
+              <div className={styles.menu}>
+                {this.props.children}
+              </div>
+            )
+          }
+        </div>
+      </ClickOutside >
+
     );
   }
 }

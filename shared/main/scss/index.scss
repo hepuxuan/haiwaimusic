@@ -12,3 +12,16 @@
 .activeTab {
   color: $primary-color;
 }
+
+.title {
+  font-size: 18px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.emptyList {
+  text-align: center;
+  a {
+    color: $primary-color;
+  }
+}

@@ -5,7 +5,9 @@ const { renderToString } = require('react-dom/server');
 const ServerApp = require('../ServerApp').default;
 const { getPlayList } = require('../services/user');
 const Store = require('../../shared/store').default;
-const { getSongAddress, getSongInfo } = require('../services/qqmusic');
+const {
+  getSongAddress, getSongInfo, getNewSongs, getTopSongs,
+} = require('../services/qqmusic');
 
 const router = express.Router();
 useStaticRendering(true);
@@ -18,19 +20,27 @@ router.get('/', async (req, res) => {
     playList = [];
   }
 
-  const store = new Store({ user: req.user, playList });
+  const type = 'mainland';
 
-  const reactApp = <ServerApp url={req.url} context={{}} store={store} />;
+  Promise.all([getNewSongs(type), getTopSongs(type)]).then(([newSongs, topSongs]) => {
+    const store = new Store({
+      user: req.user, playList, newSongs: { mainland: newSongs }, topSongs: { mainland: topSongs },
+    });
 
-  res.render('template', {
-    title: '海外音悦台',
-    page: 'index',
-    hash: req.hash,
-    body: renderToString(reactApp),
-    data: JSON.stringify({
-      user: req.user,
-      playList,
-    }),
+    const reactApp = <ServerApp url={req.url} context={{}} store={store} />;
+
+    res.render('template', {
+      title: '海外音悦台',
+      page: 'index',
+      hash: req.hash,
+      body: renderToString(reactApp),
+      data: JSON.stringify({
+        user: req.user,
+        playList,
+        newSongs: { mainland: newSongs },
+        topSongs: { mainland: topSongs },
+      }),
+    });
   });
 });
 
