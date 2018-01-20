@@ -51,6 +51,12 @@ export default class Player extends React.Component {
     }
   }
 
+  handlePlay = () => {
+    if (this.props.store.audio) {
+      this.props.store.audio.play();
+    }
+  }
+
   render() {
     const {
       lyric, onOpenPlayList, store: {
@@ -70,7 +76,7 @@ export default class Player extends React.Component {
             />
           }
           <ControlPanel
-            onPlay={this.props.store.play}
+            onPlay={this.handlePlay}
             onPause={this.props.store.pause}
             onPlayNext={this.handlePlayNext}
             onPlayPrev={this.handlePlayPrev}
