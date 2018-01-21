@@ -22,7 +22,7 @@ export default class Audio extends React.Component {
   }, 1000)
 
   handleEnded = () => {
-    this.props.store.replay();
+    this.props.store.stop();
     if (this.props.store.loop) {
       setTimeout(() => {
         this.props.store.play();

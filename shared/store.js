@@ -62,6 +62,11 @@ export default class Store {
     }
   }
 
+  @action.bound stop() {
+    this.isPaused = false;
+    this.isStopped = true;
+  }
+
   @action.bound pause() {
     this.isPaused = true;
     this.isStopped = false;
