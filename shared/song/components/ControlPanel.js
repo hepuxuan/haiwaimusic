@@ -1,25 +1,17 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { formatTime } from '../../utils';
+import ProgressBar from './ProgressBar';
 import styles from '../scss/controlPanel.scss';
 
 function ControlPanel({
   onPause, onPlay, store: {
-    duration, current, toggleLoop, loop, isPlaying,
+    duration, current, toggleLoop, loop, isPlaying, handleForward,
   },
   onPlayNext, onPlayPrev, onOpenPlayList,
 }) {
-  const progress = duration ? (current / duration) * 100 : 0;
   return (
     <div className={styles.root}>
-      <div className={styles.playerStats}>
-        <div className={styles.time}>{formatTime(current)}</div>
-        <div className={styles.progressBar}>
-          <div className={styles.background} />
-          <div style={{ width: `${progress}%` }} className={styles.progress} />
-        </div>
-        <div className={styles.time}>{formatTime(duration)}</div>
-      </div>
+      <ProgressBar duration={duration} current={current} onForward={handleForward} />
       <div className={styles.buttonsGroup}>
         <div>
           <button onClick={toggleLoop}>

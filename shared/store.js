@@ -113,6 +113,11 @@ export default class Store {
       });
   }
 
+  @action.bound handleForward(current) {
+    this.current = current;
+    this.audio.currentTime = current;
+  }
+
   fetchNewSongList(type) {
     if (this.newSongsMap.get(type).length) {
       return Promise.resolve(this.newSongsMap.get(type));

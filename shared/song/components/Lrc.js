@@ -61,10 +61,12 @@ export default class Lrc {
   }
 
   focusLine(i) {
-    this.handler(this.lines[i].txt, {
-      originLineNum: this.lines[i].originLineNum,
-      lineNum: i,
-    });
+    if (this.lines[i]) {
+      this.handler(this.lines[i].txt, {
+        originLineNum: this.lines[i].originLineNum,
+        lineNum: i,
+      });
+    }
   }
 
   findCurLine(time) {

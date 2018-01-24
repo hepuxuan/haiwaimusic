@@ -35,6 +35,11 @@ export default class Lyric extends React.Component {
     if (this.props.isPaused !== nextProps.isPaused) {
       this.lrc.pauseToggle();
     }
+
+    const diff = nextProps.current - this.props.current;
+    if (Math.abs(diff) >= 2) {
+      this.lrc.seek(diff * 1000);
+    }
   }
 
   componentWillUnmount() {
