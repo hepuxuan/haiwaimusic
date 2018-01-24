@@ -58,15 +58,17 @@ export default class ProgressBar extends React.Component {
           <div className={styles.background} />
           <div style={{ width: `${progress}%` }} className={styles.progress} />
           <div
-            style={{ left: `${progress}%` }}
-            className={styles.slide}
+            style={{ left: `calc(${progress}% - 25px)` }}
+            className={styles.slideRoot}
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
             onDrag={this.handleDrag}
             onTouchStart={this.handleDragStart}
             onTouchEnd={this.handleDragEnd}
             onTouchMove={this.handleTouchMove}
-          />
+          >
+            <div className={styles.slide} />
+          </div>
         </div>
         <div className={styles.time}>{formatTime(duration)}</div>
       </div>
