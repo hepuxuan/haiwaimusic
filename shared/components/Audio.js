@@ -17,7 +17,7 @@ export default class Audio extends React.Component {
 
   triggerTimer = () => setInterval(() => {
     if (!this.props.store.isStopped && !this.props.store.isPaused) {
-      this.props.store.current = this.props.store.current + 1;
+      this.props.store.resetTimmer();
     }
   }, 1000)
 

@@ -63,6 +63,7 @@ export default class Store {
   }
 
   @action.bound stop() {
+    this.current = 0;
     this.isPaused = false;
     this.isStopped = true;
   }
@@ -111,6 +112,9 @@ export default class Store {
       .then((song) => {
         this.setSong(song);
       });
+  }
+  @action resetTimmer() {
+    this.current = this.audio.currentTime;
   }
 
   @action.bound handleForward(current) {
