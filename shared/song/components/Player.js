@@ -59,7 +59,7 @@ export default class Player extends React.Component {
 
   render() {
     const {
-      lyric, onOpenPlayList, store: {
+      onOpenPlayList, store: {
         isPaused, isStopped, current,
       },
     } = this.props;
@@ -67,14 +67,7 @@ export default class Player extends React.Component {
       <React.Fragment>
         <div className={styles.audioPlayer}>
           <Image />
-          {
-            lyric && <Lyric
-              lyric={lyric}
-              isPaused={isPaused}
-              isStopped={isStopped}
-              current={current}
-            />
-          }
+          <Lyric />
           <ControlPanel
             onPlay={this.handlePlay}
             onPause={this.props.store.pause}

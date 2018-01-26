@@ -1,6 +1,7 @@
 import { action, computed, extendObservable, observable } from 'mobx';
 import find from 'lodash/find';
 import { removeFromPlayList, addToPlayList } from './utils';
+import Lrc from './Lrc';
 
 export default class Store {
   constructor({
@@ -30,6 +31,8 @@ export default class Store {
       current,
       newSongsMap,
       topSongsMap,
+      lyric: '',
+      currentLine: '',
     });
   }
 
@@ -50,22 +53,24 @@ export default class Store {
     this.isPaused = false;
     if (this.audio) {
       this.audio.play();
+      if (this.lyric) {
+        this.lyric.play();
+      }
     }
   }
 
   @action.bound replay() {
     this.current = 0;
-    this.isStopped = false;
-    this.isPaused = false;
-    if (this.audio) {
-      this.audio.play();
-    }
+    this.play();
   }
 
   @action.bound stop() {
     this.current = 0;
     this.isPaused = false;
     this.isStopped = true;
+    if (this.lyric) {
+      this.lyric.stop();
+    }
   }
 
   @action.bound pause() {
@@ -73,6 +78,9 @@ export default class Store {
     this.isStopped = false;
     if (this.audio) {
       this.audio.pause();
+      if (this.lyric) {
+        this.lyric.pauseToggle();
+      }
     }
   }
 
@@ -118,8 +126,16 @@ export default class Store {
   }
 
   @action.bound handleForward(current) {
+    const diff = current - this.current;
     this.current = current;
     this.audio.currentTime = current;
+    if (this.lyric) {
+      this.lyric.seek(diff * 1000);
+    }
+  }
+
+  @action.bound handleOutput(currentLine) {
+    this.currentLine = currentLine;
   }
 
   fetchNewSongList(type) {
@@ -142,5 +158,21 @@ export default class Store {
       .then((songs) => {
         this.setTopSongs(songs.songs, type);
       });
+  }
+
+  fetchLyric = () => {
+    if (this.lyric) {
+      this.lyric.handler = () => {};
+    }
+    const url = `/api/qqmusic/lyric?songId=${this.song.songId}`;
+    fetch(url).then(res => res.json()).then(action(({ lyric: _lyric }) => {
+      this.lyric = new Lrc(_lyric, this.handleOutput);
+      if (this.isPlaying) {
+        this.lyric.play();
+        this.lyric.seek(this.current * 1000);
+      }
+    })).catch(action(() => {
+      this.lyric = null;
+    }));
   }
 }

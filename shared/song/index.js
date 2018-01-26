@@ -13,34 +13,20 @@ export default class IndexContainer extends React.Component {
     super(props);
 
     this.state = {
-      lyric: null,
       isPlayListOpen: false,
     };
   }
 
   componentDidMount() {
     const mid = getQueryVariable(this.props.location.search, 'mid');
-    this.props.store.fetchSongInfo(mid).then(() => { this.fetchLyric(); });
+    this.props.store.fetchSongInfo(mid).then(this.props.store.fetchLyric);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.location.search !== nextProps.location.search) {
       const mid = getQueryVariable(nextProps.location.search, 'mid');
-      this.props.store.fetchSongInfo(mid).then(() => { this.fetchLyric(); });
+      this.props.store.fetchSongInfo(mid).then(this.props.store.fetchLyric);
     }
-  }
-
-  fetchLyric = () => {
-    const url = `/api/qqmusic/lyric?songId=${this.props.store.song.songId}`;
-    fetch(url).then(res => res.json()).then(({ lyric }) => {
-      this.setState({
-        lyric,
-      });
-    }).catch(() => {
-      this.setState({
-        lyric: null,
-      });
-    });
   }
 
   handleOpenPlayList = () => {
@@ -60,9 +46,7 @@ export default class IndexContainer extends React.Component {
   }
 
   render() {
-    const {
-      lyric, isPlayListOpen,
-    } = this.state;
+    const { isPlayListOpen } = this.state;
 
     return (
       <React.Fragment>
@@ -81,7 +65,7 @@ export default class IndexContainer extends React.Component {
             return (
               <React.Fragment>
                 <Description song={song} singer={singer} />
-                <Player lyric={lyric} onOpenPlayList={this.handleOpenPlayList} />
+                <Player onOpenPlayList={this.handleOpenPlayList} />
                 <PlayList
                   isPlayListOpen={isPlayListOpen}
                   onClosePlayList={this.handleClosePlayList}
