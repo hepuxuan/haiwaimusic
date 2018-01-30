@@ -39,7 +39,6 @@ export default class Audio extends React.Component {
         const {
           song, mid,
         } = playList[nextIndex];
-        this.props.store.play();
         window.browserHistory.push(`/song/${song}?&mid=${mid}`);
       }
     }
