@@ -33,6 +33,7 @@ export default class Store {
       topSongsMap,
       lyric: '',
       currentLine: '',
+      loaded: false,
     });
   }
 
@@ -49,13 +50,25 @@ export default class Store {
   }
 
   @action.bound play() {
+    const { isPaused } = this;
     this.isStopped = false;
     this.isPaused = false;
     if (this.audio) {
       this.audio.play();
-      if (this.lyric) {
-        this.lyric.play();
+      if (this.lyric && this.loaded) {
+        if (isPaused) {
+          this.lyric.pauseToggle();
+        } else {
+          this.lyric.play();
+        }
       }
+    }
+  }
+
+  @action.bound handleLoadAudio() {
+    this.loaded = true;
+    if (this.isPlaying && this.lyric) {
+      this.lyric.play();
     }
   }
 

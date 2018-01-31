@@ -25,6 +25,7 @@ export default class IndexContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.location.search !== nextProps.location.search) {
       const mid = getQueryVariable(nextProps.location.search, 'mid');
+      this.props.store.loaded = false;
       this.props.store.fetchSongInfo(mid).then(this.props.store.fetchLyric);
     }
   }

@@ -80,7 +80,7 @@ export default class Index extends React.Component {
         <div className="page-body">
           <Navbar />
           <BottomNav activeLink="home" />
-          <div className="main-body with-play-back">
+          <div className="main-body">
             {
               playList.length ? <HotSongList songs={playList} title="播放列表" /> : (
                 <div className={styles.emptyList}>
@@ -92,16 +92,25 @@ export default class Index extends React.Component {
               )
             }
             <HotSongList
-              songs={newSongs}
+              songs={newSongs.slice(0, 16)}
               title="新歌榜单"
               tabs={hotSongsTabs}
             />
             <HotSongList
-              songs={topSongs}
+              songs={topSongs.slice(0, 16)}
               title="巅峰榜单"
               tabs={topSongsTabs}
             />
             <AudioPlayback />
+          </div>
+          <div className={`${styles.footer}`}>
+            <div className={styles.feeback}>
+              <span>联系我们：</span>
+              <i className="material-icons">email</i>
+              <a href="mailto:puxuanhe@gmail.com">
+                puxuanhe@gmail.com
+              </a>
+            </div>
           </div>
         </div>
       </React.Fragment>

@@ -46,7 +46,7 @@ export default class Audio extends React.Component {
 
   render() {
     const {
-      renderAudio, song, play, setDuration,
+      renderAudio, song, setDuration, handleLoadAudio,
     } = this.props.store;
     if (renderAudio && song) {
       const { songUrl } = song;
@@ -54,14 +54,14 @@ export default class Audio extends React.Component {
         <audio
           ref={(r) => {
             this.props.store.audio = r;
+            this.props.store.play();
           }}
           onLoadedMetadata={() => {
             setDuration(this.props.store.audio.duration);
           }}
           src={songUrl}
           onEnded={this.handleEnded}
-          autoPlay
-          onPlay={play}
+          onLoadedData={handleLoadAudio}
         />
       );
     }

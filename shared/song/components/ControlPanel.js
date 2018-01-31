@@ -4,8 +4,8 @@ import ProgressBar from './ProgressBar';
 import styles from '../scss/controlPanel.scss';
 
 function ControlPanel({
-  onPause, onPlay, store: {
-    duration, current, toggleLoop, loop, isPlaying, handleForward,
+  store: {
+    duration, current, toggleLoop, loop, isPlaying, handleForward, pause, play,
   },
   onPlayNext, onPlayPrev, onOpenPlayList,
 }) {
@@ -29,11 +29,11 @@ function ControlPanel({
         <div>
           {
             isPlaying ? (
-              <button onClick={onPause} className={styles.button}>
+              <button onClick={pause} className={styles.button}>
                 <i className="material-icons">pause</i>
               </button>
             ) : (
-              <button onClick={onPlay} className={styles.button}>
+              <button onClick={play} className={styles.button}>
                 <i className="material-icons">play_arrow</i>
               </button>
             )

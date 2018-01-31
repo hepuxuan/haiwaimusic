@@ -58,19 +58,13 @@ export default class Player extends React.Component {
   }
 
   render() {
-    const {
-      onOpenPlayList, store: {
-        isPaused, isStopped, current,
-      },
-    } = this.props;
+    const { onOpenPlayList } = this.props;
     return (
       <React.Fragment>
         <div className={styles.audioPlayer}>
           <Image />
           <Lyric />
           <ControlPanel
-            onPlay={this.handlePlay}
-            onPause={this.props.store.pause}
             onPlayNext={this.handlePlayNext}
             onPlayPrev={this.handlePlayPrev}
             onOpenPlayList={onOpenPlayList}
