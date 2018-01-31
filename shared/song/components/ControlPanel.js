@@ -3,9 +3,15 @@ import { inject, observer } from 'mobx-react';
 import ProgressBar from './ProgressBar';
 import styles from '../scss/controlPanel.scss';
 
+function handlePlay(audio) {
+  if (audio) {
+    audio.play();
+  }
+}
+
 function ControlPanel({
   store: {
-    duration, current, toggleLoop, loop, isPlaying, handleForward, pause, play,
+    duration, current, toggleLoop, loop, isPlaying, handleForward, pause, audio,
   },
   onPlayNext, onPlayPrev, onOpenPlayList,
 }) {
@@ -33,7 +39,7 @@ function ControlPanel({
                 <i className="material-icons">pause</i>
               </button>
             ) : (
-              <button onClick={play} className={styles.button}>
+              <button onClick={() => { handlePlay(audio); }} className={styles.button}>
                 <i className="material-icons">play_arrow</i>
               </button>
             )
