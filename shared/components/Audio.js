@@ -6,9 +6,6 @@ import { inject, observer } from 'mobx-react';
 export default class Audio extends React.Component {
   componentDidMount() {
     this.interval = this.triggerTimer();
-    if (this.props.store.audio) {
-      this.props.store.audio.play();
-    }
   }
 
   componentWillUnmount() {
@@ -58,6 +55,7 @@ export default class Audio extends React.Component {
           onLoadedMetadata={() => {
             setDuration(this.props.store.audio.duration);
           }}
+          autoPlay
           onPlay={play}
           src={songUrl}
           onEnded={this.handleEnded}
