@@ -25,7 +25,6 @@
     > div {
       display: inline-block;
       width: 27%;
-      max-width: 200px;
       margin-right: 6px;
     }
   }
@@ -41,11 +40,29 @@
     display: flex;
     flex-wrap: wrap;
     > div {
-      width: 25%;
-      padding: 0 16px 12px 0;
+      width: 20%;
+      padding: 0 8px 12px 0;
       box-sizing: border-box;
     }
   }
+}
+
+.imageBox {
+  position: relative;
+  width: 100%;
+}
+.imageBox > div {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;;
+}
+.imageBox:before{
+  content: "";
+  display: block;
+  padding-top: 100%;
 }
 
 .singerName {

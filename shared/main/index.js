@@ -92,12 +92,12 @@ export default class Index extends React.Component {
               )
             }
             <HotSongList
-              songs={newSongs.slice(0, 16)}
+              songs={newSongs.slice(0, 15)}
               title="新歌榜单"
               tabs={hotSongsTabs}
             />
             <HotSongList
-              songs={topSongs.slice(0, 16)}
+              songs={topSongs.slice(0, 15)}
               title="巅峰榜单"
               tabs={topSongsTabs}
             />

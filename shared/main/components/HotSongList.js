@@ -20,9 +20,11 @@ export default function ({ songs, title, tabs }) {
            return (
              <div key={songId}>
                <Link to={`/song/${song}?&mid=${mid}`}>
-                 <LazyLoad>
-                   <img width="100%" src={url} alt="" />
-                 </LazyLoad>
+                 <div className={styles.imageBox}>
+                   <LazyLoad>
+                     <img width="100%" src={url} alt="" />
+                   </LazyLoad>
+                 </div>
                  <div>
                    <div className={styles.songName}>{song}</div>
                    <div className={styles.singerName}>{singer}</div>
