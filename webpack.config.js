@@ -3,6 +3,7 @@ const fs = require('fs');
 const nodeExternals = require('webpack-node-externals');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const pxtorem = require('postcss-pxtorem');
 const webpack = require('webpack');
 /*
  * We've enabled UglifyJSPlugin for you! This minifies your app
@@ -59,7 +60,14 @@ module.exports = [
               loader: 'postcss-loader',
               options: {
                 ident: 'postcss',
-                plugins: [autoprefixer],
+                plugins: [
+                  autoprefixer,
+                  pxtorem({
+                    rootValue: 14,
+                    propList: ['*'],
+                    selectorBlackList: [],
+                  }),
+                ],
               },
             },
           ]),
@@ -125,7 +133,14 @@ module.exports = [
               loader: 'postcss-loader',
               options: {
                 ident: 'postcss',
-                plugins: [autoprefixer],
+                plugins: [
+                  autoprefixer,
+                  pxtorem({
+                    rootValue: 14,
+                    propList: ['*'],
+                    selectorBlackList: ['html'],
+                  }),
+                ],
               },
             },
           ],

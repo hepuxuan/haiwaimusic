@@ -3,6 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 const fs = require('fs');
 const autoprefixer = require('autoprefixer');
+const pxtorem = require('postcss-pxtorem');
 const CompressionPlugin = require('compression-webpack-plugin');
 /*
  * We've enabled UglifyJSPlugin for you! This minifies your app
@@ -72,7 +73,14 @@ module.exports = [
               loader: 'postcss-loader',
               options: {
                 ident: 'postcss',
-                plugins: [autoprefixer],
+                plugins: [
+                  autoprefixer,
+                  pxtorem({
+                    rootValue: 14,
+                    propList: ['*'],
+                    selectorBlackList: ['html'],
+                  }),
+                ],
               },
             },
           ]),
@@ -146,7 +154,14 @@ module.exports = [
               loader: 'postcss-loader',
               options: {
                 ident: 'postcss',
-                plugins: [autoprefixer],
+                plugins: [
+                  autoprefixer,
+                  pxtorem({
+                    rootValue: 14,
+                    propList: ['*'],
+                    selectorBlackList: ['html'],
+                  }),
+                ],
               },
             },
           ],
