@@ -50,19 +50,21 @@ export default class Store {
   }
 
   @action.bound play() {
-    const { isPaused } = this;
-    this.isStopped = false;
-    this.isPaused = false;
+    if (this.isPlaying) {
+      return;
+    }
     if (this.audio) {
       this.audio.play();
       if (this.lyric && this.loaded) {
-        if (isPaused) {
+        if (this.isPaused) {
           this.lyric.pauseToggle();
         } else {
           this.lyric.play();
         }
       }
     }
+    this.isStopped = false;
+    this.isPaused = false;
   }
 
   @action.bound handleLoadAudio() {
