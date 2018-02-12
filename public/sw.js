@@ -1,25 +1,22 @@
 var __wpo = {
   "assets": {
     "main": [
-      "./build/index-98f0133dfc947f8972dc.js",
-      "./build/vendor-98f0133dfc947f8972dc.js",
-      "./build/index-98f0133dfc947f8972dc.css",
-      "/shell"
+      "./build/index-b0c33cfa6a8b6b5c6f14.js",
+      "./build/vendor-b0c33cfa6a8b6b5c6f14.js",
+      "./build/index-b0c33cfa6a8b6b5c6f14.css"
     ],
     "additional": [],
     "optional": []
   },
-  "externals": [
-    "/shell"
-  ],
+  "externals": [],
   "hashesMap": {
-    "984ab1f73d82eacb85158ffd34efa226346f1d23": "./build/index-98f0133dfc947f8972dc.js",
-    "b2b440f3b3abcd5b8992dbeea0ed6deb5583bc10": "./build/vendor-98f0133dfc947f8972dc.js",
-    "2f4e352532dae815834c808ca87362abb3c7de74": "./build/index-98f0133dfc947f8972dc.css"
+    "a89b428bf1b4912ce27a894c3457e6a69397441e": "./build/index-b0c33cfa6a8b6b5c6f14.js",
+    "0c14457db83a1ed50fd72c74c4bf4b273d8abeaf": "./build/vendor-b0c33cfa6a8b6b5c6f14.js",
+    "7c16b72c1b0abad8991809f049c5e7011d95abdd": "./build/index-b0c33cfa6a8b6b5c6f14.css"
   },
   "strategy": "changed",
   "responseStrategy": "cache-first",
-  "version": "2018-2-11 20:19:51",
+  "version": "2018-2-11 20:47:02",
   "name": "webpack-offline",
   "pluginVersion": "4.9.0",
   "relativePaths": true

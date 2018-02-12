@@ -108,9 +108,9 @@ module.exports = [
         test: /\.js|.css/,
       }),
       new OfflinePlugin({
-        externals: ['/shell'],
         ServiceWorker: {
           output: '../build/sw.js',
+          appShell: '/shell',
           minify: true,
         },
         AppCache: false,
