@@ -86,6 +86,7 @@ module.exports = [
         allChunks: true,
       }),
       new OfflinePlugin({
+        externals: ['/shell'],
         ServiceWorker: {
           output: '../sw.js',
           appShell: '/shell',
