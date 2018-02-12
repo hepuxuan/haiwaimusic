@@ -18,5 +18,6 @@ results
 node_modules
 npm-debug.log
 /public/build
+/public/index.html
 server/build/
 server/stats.generated.json

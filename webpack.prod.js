@@ -5,6 +5,7 @@ const fs = require('fs');
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
 const CompressionPlugin = require('compression-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
 /*
  * We've enabled UglifyJSPlugin for you! This minifies your app
  * in order to load faster and run less javascript.
@@ -105,6 +106,14 @@ module.exports = [
       }),
       new CompressionPlugin({
         test: /\.js|.css/,
+      }),
+      new OfflinePlugin({
+        externals: ['/shell'],
+        ServiceWorker: {
+          output: '../build/sw.js',
+          minify: true,
+        },
+        AppCache: false,
       }),
       function OutputHash() {
         this.plugin('done', (stats) => {

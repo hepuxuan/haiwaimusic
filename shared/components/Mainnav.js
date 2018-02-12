@@ -1,6 +1,6 @@
 import React from 'react';
-import MyAccount from '../../components/myAccount';
-import styles from '../scss/navbar.scss';
+import MyAccount from './myAccount';
+import styles from './mainnav.scss';
 
 export default function ({ user }) {
   return (

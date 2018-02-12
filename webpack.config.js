@@ -5,6 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
 const webpack = require('webpack');
+const OfflinePlugin = require('offline-plugin');
 /*
  * We've enabled UglifyJSPlugin for you! This minifies your app
  * in order to load faster and run less javascript.
@@ -76,13 +77,20 @@ module.exports = [
     },
 
     plugins: [
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks: Infinity,
+      }),
       new ExtractTextPlugin({
         filename: '[name]-[hash].css',
         allChunks: true,
       }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor',
-        minChunks: Infinity,
+      new OfflinePlugin({
+        externals: ['/shell'],
+        ServiceWorker: {
+          output: '../build/sw.js',
+        },
+        AppCache: false,
       }),
       function OutputHash() {
         this.plugin('done', (stats) => {

@@ -35,6 +35,11 @@ app.use(bodyParser());
 const oneYear = 86400000 * 365;
 app.use(express.static(path.join(__dirname, '../public'), {
   maxAge: oneYear,
+  setHeaders(res, path) {
+    if (path.indexOf('sw.js') !== -1 || path.indexOf('manifest') !== -1) {
+      res.setHeader('Cache-Control', 'public, max-age=0');
+    }
+  },
 }));
 
 app.use(session({

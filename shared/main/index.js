@@ -1,11 +1,12 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
-import Navbar from './components/Mainnav';
+import Navbar from '../components/Mainnav';
 import BottomNav from '../components/BottomNav';
 import HotSongList from './components/HotSongList';
 import AudioPlayback from '../components/AudioPlayback';
 import styles from './scss/index.scss';
+
 
 @inject('store') @observer
 export default class Index extends React.Component {
@@ -17,6 +18,7 @@ export default class Index extends React.Component {
   componentDidMount() {
     this.props.store.fetchNewSongList('mainland');
     this.props.store.fetchTopSongList('mainland');
+    this.props.store.fetchPlayList();
   }
 
   handleSelectTab = (e) => {
@@ -102,15 +104,6 @@ export default class Index extends React.Component {
               tabs={topSongsTabs}
             />
             <AudioPlayback />
-          </div>
-          <div className={`${styles.footer}`}>
-            <div className={styles.feeback}>
-              <span>联系我们：</span>
-              <i className="material-icons">email</i>
-              <a href="mailto:puxuanhe@gmail.com">
-                puxuanhe@gmail.com
-              </a>
-            </div>
           </div>
         </div>
       </React.Fragment>

@@ -19,6 +19,7 @@ export default class Store {
       euna: topSongs.euna || [],
     });
 
+
     extendObservable(this, {
       user,
       playList,
@@ -35,6 +36,18 @@ export default class Store {
       currentLine: '',
       loaded: false,
     });
+  }
+
+  fetchPlayList() {
+    if (!this.playList.length) {
+      return fetch('/user', {
+        credentials: 'same-origin',
+      }).then(res => res.json()).then(action((data) => {
+        this.playList = data.playList;
+        this.user = data.user;
+      }));
+    }
+    return Promise.resolve('');
   }
 
   @action.bound setDuration(duration) {

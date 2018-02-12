@@ -1,0 +1,30 @@
+@import '../../variables';
+
+.title {
+  margin: auto;
+  max-width: 30%;
+  margin-top: 30px;
+}
+
+.detailBox {
+  width: 24%;
+  margin: 20px 1% 0 0;
+  display: inline-block;
+}
+
+.textBox {
+  margin: 8px 0 0 0;
+}
+
+.imageBox {
+  position: relative;
+  width: 100%;
+  
+}
+
+.imageBox:before{
+  content: "";
+  display: block;
+  padding-top: 100%;
+  background-color: $grey-200;
+}

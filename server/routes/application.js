@@ -1,7 +1,7 @@
 const express = require('express');
 const React = require('react');
 const { useStaticRendering } = require('mobx-react');
-const { renderToString } = require('react-dom/server');
+const { renderToString, renderToStaticMarkup } = require('react-dom/server');
 const ServerApp = require('../ServerApp').default;
 const { getPlayList } = require('../services/user');
 const Store = require('../../shared/store').default;
@@ -11,6 +11,23 @@ const {
 
 const router = express.Router();
 useStaticRendering(true);
+
+router.get('/shell', async (req, res) => {
+  const store = new Store({
+    user: req.user, playList: [],
+  });
+  const reactApp = <ServerApp url={req.url} context={{}} store={store} />;
+
+  res.render('template', {
+    title: '海外音悦台',
+    page: 'index',
+    hash: req.hash,
+    body: renderToStaticMarkup(reactApp),
+    data: JSON.stringify({
+      playList: [],
+    }),
+  });
+});
 
 router.get('/', async (req, res) => {
   let playList;
