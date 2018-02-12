@@ -12,7 +12,7 @@ export default class Shell extends React.Component {
       this.props.store.fetchTopSongList('mainland'),
       this.props.store.fetchPlayList(),
     ]).then(() => {
-      // browserHistory.replace('/');
+      browserHistory.replace('/');
     });
   }
   render() {
