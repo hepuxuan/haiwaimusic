@@ -86,10 +86,10 @@ module.exports = [
         allChunks: true,
       }),
       new OfflinePlugin({
-        externals: ['/shell'],
+        externals: ['/?pwa=true', 'https://fonts.googleapis.com/icon?family=Material+Icons'],
+        relativePaths: true,
         ServiceWorker: {
           output: '../sw.js',
-          appShell: '/shell',
         },
         AppCache: false,
       }),

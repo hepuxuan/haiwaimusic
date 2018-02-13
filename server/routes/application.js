@@ -12,24 +12,26 @@ const {
 const router = express.Router();
 useStaticRendering(true);
 
-router.get('/shell', async (req, res) => {
-  const store = new Store({
-    user: req.user, playList: [],
-  });
-  const reactApp = <ServerApp url={req.url} context={{}} store={store} />;
-
-  res.render('template', {
-    title: '海外音悦台',
-    page: 'index',
-    hash: req.hash,
-    body: renderToStaticMarkup(reactApp),
-    data: JSON.stringify({
-      playList: [],
-    }),
-  });
-});
-
 router.get('/', async (req, res) => {
+  if (req.query.pwa) {
+    const store = new Store({
+      user: req.user, playList: [],
+    });
+    const reactApp = <ServerApp url={req.url} context={{}} store={store} />;
+
+    res.render('template', {
+      title: '海外音悦台',
+      page: 'index',
+      hash: req.hash,
+      body: renderToStaticMarkup(reactApp),
+      data: JSON.stringify({
+        playList: [],
+      }),
+    });
+
+    return;
+  }
+
   let playList;
   if (req.user) {
     playList = (await getPlayList(req.user.uuid)).songs;

@@ -5,8 +5,8 @@
   "background_color": "#FF5722",
   "display": "standalone",
   "orientation": "portrait",
-  "Scope": "/",
-  "start_url": "/shell",
+  "scope": "/",
+  "start_url": "/?pwa=true",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",

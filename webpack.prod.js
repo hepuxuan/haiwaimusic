@@ -108,7 +108,7 @@ module.exports = [
         test: /\.js|.css/,
       }),
       new OfflinePlugin({
-        externals: ['/shell'],
+        externals: ['/?pwa=true', 'https://fonts.googleapis.com/icon?family=Material+Icons'],
         ServiceWorker: {
           output: '../build/sw.js',
           appShell: '/shell',

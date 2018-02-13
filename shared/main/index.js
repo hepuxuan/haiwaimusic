@@ -5,8 +5,8 @@ import Navbar from '../components/Mainnav';
 import BottomNav from '../components/BottomNav';
 import HotSongList from './components/HotSongList';
 import AudioPlayback from '../components/AudioPlayback';
+import SongListShell from './components/SongListShell';
 import styles from './scss/index.scss';
-
 
 @inject('store') @observer
 export default class Index extends React.Component {
@@ -84,26 +84,38 @@ export default class Index extends React.Component {
           <BottomNav activeLink="home" />
           <div className="main-body">
             {
-              playList.length ? <HotSongList songs={playList} title="播放列表" /> : (
-                <div className={styles.emptyList}>
-                  <div className={styles.title}>播放列表</div>
-                  播放列表空空如也，立刻
-                  <Link to="/search">搜索歌曲</Link>
-                  或<a href="/auth/google">登陆</a>
-                </div>
+              newSongs.length && topSongs.length ? (
+                <React.Fragment>
+                  {
+                    playList.length ? <HotSongList songs={playList} title="播放列表" /> : (
+                      <div className={styles.emptyList}>
+                        <div className={styles.title}>播放列表</div>
+                        播放列表空空如也，立刻
+                        <Link to="/search">搜索歌曲</Link>
+                        或<a href="/auth/google">登陆</a>
+                      </div>
+                    )
+                  }
+                  <HotSongList
+                    songs={newSongs.slice(0, 15)}
+                    title="新歌榜单"
+                    tabs={hotSongsTabs}
+                  />
+                  <HotSongList
+                    songs={topSongs.slice(0, 15)}
+                    title="巅峰榜单"
+                    tabs={topSongsTabs}
+                  />
+                  <AudioPlayback />
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <SongListShell />
+                  <SongListShell />
+                  <SongListShell />
+                </React.Fragment>
               )
             }
-            <HotSongList
-              songs={newSongs.slice(0, 15)}
-              title="新歌榜单"
-              tabs={hotSongsTabs}
-            />
-            <HotSongList
-              songs={topSongs.slice(0, 15)}
-              title="巅峰榜单"
-              tabs={topSongsTabs}
-            />
-            <AudioPlayback />
           </div>
         </div>
       </React.Fragment>
