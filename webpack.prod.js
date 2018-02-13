@@ -110,8 +110,7 @@ module.exports = [
       new OfflinePlugin({
         externals: ['https://www.yinyuetai.fun/?pwa=true', 'https://fonts.googleapis.com/icon?family=Material+Icons'],
         ServiceWorker: {
-          output: '../build/sw.js',
-          appShell: '/shell',
+          output: '../sw.js',
           minify: true,
         },
         AppCache: false,

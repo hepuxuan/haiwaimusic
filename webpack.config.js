@@ -86,7 +86,7 @@ module.exports = [
         allChunks: true,
       }),
       new OfflinePlugin({
-        externals: ['/?pwa=true', 'https://fonts.googleapis.com/icon?family=Material+Icons'],
+        externals: ['http://localhost:8080/?pwa=true', 'https://fonts.googleapis.com/icon?family=Material+Icons'],
         relativePaths: true,
         ServiceWorker: {
           output: '../sw.js',
