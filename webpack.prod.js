@@ -108,7 +108,6 @@ module.exports = [
         test: /\.js|.css/,
       }),
       new OfflinePlugin({
-        appShell: '/?pwa=true',
         externals: ['https://www.yinyuetai.fun/?pwa=true', 'https://fonts.googleapis.com/icon?family=Material+Icons'],
         ServiceWorker: {
           output: '../sw.js',
