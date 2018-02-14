@@ -1,9 +1,9 @@
 var __wpo = {
   "assets": {
     "main": [
-      "./build/index-fe2e526c0f5739ede106.js",
-      "./build/vendor-fe2e526c0f5739ede106.js",
-      "./build/index-fe2e526c0f5739ede106.css",
+      "./build/index-4825814a8164cfd3f996.js",
+      "./build/vendor-4825814a8164cfd3f996.js",
+      "./build/index-4825814a8164cfd3f996.css",
       "http://localhost:8080/?pwa=true",
       "https://fonts.googleapis.com/icon?family=Material+Icons"
     ],
@@ -15,15 +15,15 @@ var __wpo = {
     "https://fonts.googleapis.com/icon?family=Material+Icons"
   ],
   "hashesMap": {
-    "cfd78dd0e71bdf3f1a789b193ae17c7b4cfa35e0": "./build/index-fe2e526c0f5739ede106.js",
-    "3ccd75ea8b50b2f2e65ad521db09a16482287b72": "./build/vendor-fe2e526c0f5739ede106.js",
-    "be788e986cd8a2ca8434cf12dc94d1ec643d2ac0": "./build/index-fe2e526c0f5739ede106.css"
+    "482f5e1464b8a4592e5f3ae1fdb8c8417090bca7": "./build/index-4825814a8164cfd3f996.js",
+    "a06e3efe8220a824733bf2a280de683e9de342ca": "./build/vendor-4825814a8164cfd3f996.js",
+    "dd9397a5645eb713279306a79feddafe58b7268d": "./build/index-4825814a8164cfd3f996.css"
   },
   "navigateFallbackURL": "/?pwa=true",
   "navigateFallbackForRedirects": true,
   "strategy": "changed",
   "responseStrategy": "cache-first",
-  "version": "2018-2-13 20:23:29",
+  "version": "2018-2-13 20:41:11",
   "name": "webpack-offline",
   "pluginVersion": "4.9.0",
   "relativePaths": true
