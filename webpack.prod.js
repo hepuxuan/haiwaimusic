@@ -113,7 +113,6 @@ module.exports = [
         ServiceWorker: {
           output: '../sw.js',
           publicPath: '/sw.js',
-          navigateFallbackURL: '/?pwa=true',
           minify: true,
         },
         AppCache: false,
