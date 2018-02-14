@@ -111,6 +111,8 @@ module.exports = [
         externals: ['https://www.yinyuetai.fun/?pwa=true', 'https://fonts.googleapis.com/icon?family=Material+Icons'],
         ServiceWorker: {
           output: '../sw.js',
+          publicPath: '/sw.js',
+          navigateFallbackURL: '/?pwa=true',
           minify: true,
         },
         AppCache: false,
