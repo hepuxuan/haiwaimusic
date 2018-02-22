@@ -21,7 +21,10 @@ export default function (props) {
             <TransitionGroup>
               <CSSTransition
                 key={_location.pathname}
-                timeout={300}
+                timeout={{
+                  enter: 500,
+                  exit: 300,
+                }}
                 classNames="fade"
               >
                 <Switch location={_location}>

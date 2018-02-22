@@ -1,11 +1,12 @@
 :global {
   .fade-enter {
     transform: translate(-100%);
+    z-index: 1;
   }
     
   .fade-enter-active {
     transform: translate(0%);
-    transition: transform 300ms ease-in-out;
+    transition: transform 500ms ease-in-out;
   }
     
   .fade-exit {
