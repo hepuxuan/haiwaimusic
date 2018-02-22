@@ -1,7 +1,7 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
+import { inject, observer } from 'mobx-react';
+import { runInAction } from 'mobx';
 import Search from './components/Search';
-import BottomNav from '../components/BottomNav';
 import SearchResultList from './components/SearchResultList';
 import HistoryList from './components/HistoryList';
 import Hotkeyword from './components/Hotkeyword';
@@ -10,15 +10,25 @@ import AudioPlayback from '../components/AudioPlayback';
 import { getSearchHistory, updateHistory, jsonp } from '../utils';
 import styles from './scss/index.scss';
 
+@inject('store') @observer
 export default class Index extends React.Component {
-  state = {
-    searchHistory: [],
-    searchResults: [],
-    page: 1,
-    q: '',
-    isLoading: false,
-    isSearching: false,
-    hotwordsList: [],
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchHistory: [],
+      searchResults: [],
+      page: 1,
+      q: '',
+      isLoading: false,
+      isSearching: false,
+      hotwordsList: [],
+    };
+    runInAction('navigation', () => {
+      props.store.isIndex = false;
+      props.store.title = '搜索歌曲';
+      props.store.showNav = true;
+      props.store.path = '/search';
+    });
   }
 
   componentDidMount() {
@@ -131,9 +141,7 @@ export default class Index extends React.Component {
       searchResults, isLoading, searchHistory, isSearching, q, hotwordsList,
     } = this.state;
     return (
-      <div className="page-body with-play-back">
-        <Navbar title="搜索歌曲" user={this.props.user} />
-        <BottomNav activeLink="search" />
+      <div>
         <Search
           onChange={this.handleChangeSearchString}
           onFocus={this.handleFocus}

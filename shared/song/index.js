@@ -1,5 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import { runInAction } from 'mobx';
 import Description from './components/Description';
 import Nav from './components/Nav';
 import Player from './components/Player';
@@ -15,6 +16,13 @@ export default class IndexContainer extends React.Component {
     this.state = {
       isPlayListOpen: false,
     };
+
+    runInAction('navigation', () => {
+      props.store.isIndex = false;
+      props.store.title = '';
+      props.store.showNav = false;
+      props.store.path = '/song';
+    });
   }
 
   componentDidMount() {
@@ -50,7 +58,7 @@ export default class IndexContainer extends React.Component {
     const { isPlayListOpen } = this.state;
 
     return (
-      <React.Fragment>
+      <div>
         <Nav handleAddToPlayList={this.handleAddToList} />
         {
           (() => {
@@ -76,7 +84,7 @@ export default class IndexContainer extends React.Component {
             );
           })()
         }
-      </React.Fragment>
+      </div>
     );
   }
 }

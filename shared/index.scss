@@ -1,0 +1,26 @@
+:global {
+  .fade-enter {
+    transform: translate(-100%);
+  }
+    
+  .fade-enter-active {
+    transform: translate(0%);
+    transition: transform 300ms ease-in-out;
+  }
+    
+  .fade-exit {
+    transform: translate(0%);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+    
+  .fade-exit.fade-exit-active {
+    transform: translate(200%);
+    transition: transform 300ms ease-in-out;
+  }
+}
+
+.routeBase {
+  position: relative;
+}

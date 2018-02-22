@@ -1,21 +1,27 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
+import { inject, observer } from 'mobx-react';
+import { runInAction } from 'mobx';
 import PlayList from './components/PlayList';
-import BottomNav from '../components/BottomNav';
 import AudioPlayback from '../components/AudioPlayback';
 import './scss/index.scss';
 
-export default function Index() {
-  return (
-    <React.Fragment>
-      <div className="page-body">
-        <Navbar title="播放列表" />
-        <BottomNav activeLink="playList" />
-        <div className="main-body with-play-back">
-          <PlayList />
-          <AudioPlayback />
-        </div>
+@inject('store') @observer
+export default class Index extends React.Component {
+  componentWillMount() {
+    runInAction(() => {
+      this.props.store.isIndex = false;
+      this.props.store.title = '播放列表';
+      this.props.store.showNav = true;
+      this.props.store.path = '/playList';
+    });
+  }
+
+  render() {
+    return (
+      <div className="main-body with-play-back">
+        <PlayList />
+        <AudioPlayback />
       </div>
-    </React.Fragment>
-  );
+    );
+  }
 }

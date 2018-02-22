@@ -35,7 +35,15 @@ export default class Store {
       lyric: '',
       currentLine: '',
       loaded: false,
+      title: '',
+      isIndex: true,
+      showNav: true,
+      path: '/',
     });
+  }
+
+  @action setTitle(title) {
+    this.title = title;
   }
 
   fetchPlayList() {
