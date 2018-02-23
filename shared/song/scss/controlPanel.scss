@@ -9,6 +9,12 @@
   margin: 0 auto;
 }
 
+:global(.fade-enter) {
+  .root {
+    display: none;
+  }
+}
+
 .buttonsGroup {
   width: 100%;
   display: flex;

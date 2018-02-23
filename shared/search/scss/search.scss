@@ -2,6 +2,12 @@
   background-color: #f4f4f4;
 }
 
+:global(.fade-enter) {
+  .searchRoot {
+    visibility: hidden;
+  }
+}
+
 .searchInput {
   display: block;
   width: calc(100% - 20px);

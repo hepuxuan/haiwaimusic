@@ -44,3 +44,9 @@
     transform: rotate(360deg);
   }
 }
+
+:global(.fade-enter) {
+  .playbackRoot {
+    display: none;
+  }
+}
