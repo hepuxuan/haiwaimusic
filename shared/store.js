@@ -1,5 +1,6 @@
 import { action, computed, extendObservable, observable } from 'mobx';
 import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
 import { removeFromPlayList, addToPlayList } from './utils';
 import Lrc from './Lrc';
 
@@ -172,6 +173,43 @@ export default class Store {
 
   @action.bound handleOutput(currentLine) {
     this.currentLine = currentLine;
+  }
+
+  @action.bound playPrev() {
+    const { playList } = this;
+    if (playList.length) {
+      const index = findIndex(
+        playList,
+        ({ songId: existingSongId }) =>
+          existingSongId.toString() === this.song.songId.toString(),
+      );
+      let nextIndex;
+      if (index > 0) {
+        nextIndex = index - 1;
+      } else {
+        nextIndex = playList.length - 1;
+      }
+      const {
+        song, mid,
+      } = playList[nextIndex];
+      window.browserHistory.push(`/song/${song}?&mid=${mid}`);
+    }
+  }
+
+  @action.bound playNext() {
+    const { playList } = this;
+    if (playList.length) {
+      const index = findIndex(
+        playList,
+        ({ songId: existingSongId }) =>
+          existingSongId.toString() === this.song.songId.toString(),
+      );
+      const nextIndex = (index + 1) % playList.length;
+      const {
+        song, mid,
+      } = playList[nextIndex];
+      window.browserHistory.push(`/song/${song}?&mid=${mid}`);
+    }
   }
 
   fetchNewSongList(type) {

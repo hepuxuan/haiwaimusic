@@ -1,11 +1,31 @@
 import React from 'react';
 import findIndex from 'lodash/findIndex';
 import { inject, observer } from 'mobx-react';
+import { reaction } from 'mobx';
+
+function initMediaSession({ song, singer, imageId }) {
+  const url = `https//imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: song,
+    artist: singer,
+    artwork: [
+      { src: url, sizes: '300x300', type: 'image/jpeg' },
+    ],
+  });
+}
 
 @inject('store') @observer
 export default class Audio extends React.Component {
   componentDidMount() {
     this.interval = this.triggerTimer();
+    if ('mediaSession' in navigator) {
+      if (this.props.store.song) {
+        initMediaSession(this.props.store.song);
+      }
+      reaction(() => this.props.store.song, initMediaSession);
+      navigator.mediaSession.setActionHandler('previoustrack', this.props.store.playPrev);
+      navigator.mediaSession.setActionHandler('nexttrack', this.props.store.playNext);
+    }
   }
 
   componentWillUnmount() {
