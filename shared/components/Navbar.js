@@ -1,8 +1,13 @@
 import React from 'react';
 import MyAccount from './myAccount';
+import { inject, observer } from 'mobx-react';
 import styles from './navbar.scss';
 
-export default function () {
+
+function Navbar({ store: { showNav } }) {
+  if (!showNav) {
+    return null;
+  }
   return (
     <div className={styles.navBar}>
       <div className={styles.title}>
@@ -16,3 +21,5 @@ export default function () {
     </div>
   );
 }
+
+export default inject('store')(observer(Navbar));
