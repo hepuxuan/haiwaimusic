@@ -23,7 +23,7 @@ export default function (props) {
                 key={_location.pathname}
                 timeout={{
                   enter: 500,
-                  exit: 300,
+                  exit: 0,
                 }}
                 classNames="fade"
               >

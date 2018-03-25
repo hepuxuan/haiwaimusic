@@ -1,6 +1,6 @@
 import { hydrate } from 'react-dom';
 import React from 'react';
-import { Provider } from 'mobx-react';
+import { Provider, inject, observer } from 'mobx-react';
 import 'es6-promise';
 import 'isomorphic-fetch';
 import { Router } from 'react-router-dom';
@@ -10,22 +10,33 @@ import Store from '../shared/store';
 import { getPlayList } from '../shared/utils';
 import history from './history';
 
+const { playList, user, ...props } = __SERVER__DATA__;
 
-const {
-  playList, user, ...props
-} = __SERVER__DATA__;
-
-
-const newPlayList = getPlayList().concat(playList);
 const store = new Store({
-  playList: newPlayList, user, ...props,
+  playList,
+  user,
+  ...props,
 });
+
+@inject('store')
+@observer
+class ClientApp extends React.Component {
+  componentDidMount() {
+    const newPlayList = getPlayList().concat(playList);
+    this.props.store.playList = newPlayList;
+  }
+  render() {
+    return (
+      <Router history={history}>
+        <App />
+      </Router>
+    );
+  }
+}
 
 hydrate(
   <Provider store={store}>
-    <Router history={history}>
-      <App />
-    </Router>
+    <ClientApp />
   </Provider>,
   document.getElementById('main'),
 );

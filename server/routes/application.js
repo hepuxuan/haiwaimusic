@@ -14,9 +14,7 @@ useStaticRendering(true);
 
 router.get('/', async (req, res) => {
   if (req.query.pwa) {
-    const store = new Store({
-      user: req.user, playList: [],
-    });
+    const store = new Store({});
     const reactApp = <ServerApp url={req.url} context={{}} store={store} />;
 
     res.render('template', {
@@ -43,7 +41,10 @@ router.get('/', async (req, res) => {
 
   Promise.all([getNewSongs(type), getTopSongs(type)]).then(([newSongs, topSongs]) => {
     const store = new Store({
-      user: req.user, playList, newSongs: { mainland: newSongs }, topSongs: { mainland: topSongs },
+      user: req.user,
+      playList,
+      newSongs: { mainland: newSongs },
+      topSongs: { mainland: topSongs },
     });
 
     const reactApp = <ServerApp url={req.url} context={{}} store={store} />;
@@ -115,37 +116,41 @@ router.get('/song/:song', async (req, res) => {
     playListPromise = Promise.resolve({ songs: [] });
   }
 
-  Promise.all([getSongInfo(mid), getSongAddress(mid), playListPromise])
-    .then(([{ songId, singer, imageId }, songUrl, { songs }]) => {
-      const store = new Store({
-        user: req.user,
-        playList: songs,
+  Promise.all([getSongInfo(mid), getSongAddress(mid), playListPromise]).then(([{ songId, singer, imageId }, songUrl, { songs }]) => {
+    const store = new Store({
+      user: req.user,
+      playList: songs,
+      song: {
+        songId,
+        song,
+        singer,
+        imageId,
+        songUrl,
+        mid,
+      },
+    });
+
+    const reactApp = <ServerApp url={req.url} context={{}} store={store} />;
+
+    res.render('template', {
+      title: '音乐播放',
+      page: 'song',
+      hash: req.hash,
+      body: renderToString(reactApp),
+      data: JSON.stringify({
         song: {
           songId,
-          song,
           singer,
+          song,
           imageId,
           songUrl,
           mid,
         },
-      });
-
-      const reactApp = <ServerApp url={req.url} context={{}} store={store} />;
-
-      res.render('template', {
-        title: '音乐播放',
-        page: 'song',
-        hash: req.hash,
-        body: renderToString(reactApp),
-        data: JSON.stringify({
-          song: {
-            songId, singer, song, imageId, songUrl, mid,
-          },
-          user: req.user,
-          playList: songs,
-        }),
-      });
+        user: req.user,
+        playList: songs,
+      }),
     });
+  });
 });
 
 module.exports = router;

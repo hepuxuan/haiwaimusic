@@ -10,19 +10,17 @@ export default function () {
         <Cell height={20} />
       </div>
       <div className={styles.body}>
-        {
-          range(4).map(index => (
-            <div className={styles.detailBox} key={index}>
-              <div className={styles.imageBox} />
-              <div className={styles.textBox}>
-                <Cell height={8} width="70%" />
-              </div>
-              <div className={styles.textBox}>
-                <Cell height={8} width="40%" />
-              </div>
+        {range(4).map(index => (
+          <div className={styles.detailBox} key={index}>
+            <div className={styles.imageBox} />
+            <div className={styles.textBox}>
+              <Cell height={8} width="70%" />
             </div>
-          ))
-        }
+            <div className={styles.textBox}>
+              <Cell height={8} width="40%" />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

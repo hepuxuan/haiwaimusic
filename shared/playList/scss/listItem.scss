@@ -7,3 +7,19 @@
   color: #808080;
   font-size: 12px;
 }
+
+.item {
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  width: 80px;
+  margin-right: 18px;
+}
+
+@media (max-width: 800px) {
+  .image {
+    width: 50px;
+  }
+}

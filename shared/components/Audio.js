@@ -4,17 +4,17 @@ import { inject, observer } from 'mobx-react';
 import { reaction } from 'mobx';
 
 function initMediaSession({ song, singer, imageId }) {
-  const url = `https//imgcache.qq.com/music/photo/album_300/${imageId % 100}/300_albumpic_${imageId}_0.jpg`;
+  const url = `https//imgcache.qq.com/music/photo/album_300/${imageId %
+    100}/300_albumpic_${imageId}_0.jpg`;
   navigator.mediaSession.metadata = new MediaMetadata({
     title: song,
     artist: singer,
-    artwork: [
-      { src: url, sizes: '300x300', type: 'image/jpeg' },
-    ],
+    artwork: [{ src: url, sizes: '300x300', type: 'image/jpeg' }],
   });
 }
 
-@inject('store') @observer
+@inject('store')
+@observer
 export default class Audio extends React.Component {
   componentDidMount() {
     this.interval = this.triggerTimer();
@@ -32,11 +32,12 @@ export default class Audio extends React.Component {
     clearInterval(this.interval);
   }
 
-  triggerTimer = () => setInterval(() => {
-    if (!this.props.store.isStopped && !this.props.store.isPaused) {
-      this.props.store.resetTimmer();
-    }
-  }, 1000)
+  triggerTimer = () =>
+    setInterval(() => {
+      if (!this.props.store.isStopped && !this.props.store.isPaused) {
+        this.props.store.resetTimmer();
+      }
+    }, 1000);
 
   handleEnded = () => {
     this.props.store.stop();
@@ -45,7 +46,7 @@ export default class Audio extends React.Component {
         this.props.store.play();
       }, 500);
     } else {
-      const { playList } = this.props.store;
+      const { playList = [] } = this.props.store;
       if (playList.length) {
         const index = findIndex(
           playList,
@@ -53,13 +54,11 @@ export default class Audio extends React.Component {
             existingSongId.toString() === this.props.store.song.songId.toString(),
         );
         const nextIndex = (index + 1) % playList.length;
-        const {
-          song, mid,
-        } = playList[nextIndex];
+        const { song, mid } = playList[nextIndex];
         window.browserHistory.push(`/song/${song}?&mid=${mid}`);
       }
     }
-  }
+  };
 
   render() {
     const {

@@ -65,7 +65,7 @@ passport.use(new GoogleStrategy(
     clientSecret: config.clientSecret,
     callbackURL: config.callbackURL,
   },
-  ((token, tokenSecret, profile, done) => {
+  (token, tokenSecret, profile, done) => {
     const user = {
       uuid: profile.id,
       name: profile.displayName,
@@ -75,7 +75,7 @@ passport.use(new GoogleStrategy(
     userService.createOrUpdate(user).then(() => {
       done(null, user);
     });
-  }),
+  },
 ));
 
 passport.serializeUser((_user, done) => {

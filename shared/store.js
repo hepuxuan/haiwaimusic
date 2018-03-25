@@ -6,8 +6,17 @@ import Lrc from './Lrc';
 
 export default class Store {
   constructor({
-    user, playList, song, isPaused = false, isStopped = true,
-    loop = false, renderAudio = false, duration = null, current = 0, newSongs = {}, topSongs = {},
+    user,
+    playList,
+    song,
+    isPaused = false,
+    isStopped = true,
+    loop = false,
+    renderAudio = false,
+    duration = null,
+    current = 0,
+    newSongs = {},
+    topSongs = {},
   }) {
     const newSongsMap = observable.map({
       mainland: newSongs.mainland || [],
@@ -19,7 +28,6 @@ export default class Store {
       hktw: topSongs.hktw || [],
       euna: topSongs.euna || [],
     });
-
 
     extendObservable(this, {
       user,
@@ -43,35 +51,42 @@ export default class Store {
     });
   }
 
-  @action setTitle(title) {
+  @action
+  setTitle(title) {
     this.title = title;
   }
 
   fetchPlayList() {
-    if (!this.playList.length) {
+    if (!this.user) {
       return fetch('/user', {
         credentials: 'same-origin',
-      }).then(res => res.json()).then(action((data) => {
-        this.playList = data.playList;
-        this.user = data.user;
-      }));
+      })
+        .then(res => res.json())
+        .then(action((data) => {
+          this.playList = [...data.playList, ...this.playList];
+          this.user = data.user;
+        }));
     }
     return Promise.resolve('');
   }
 
-  @action.bound setDuration(duration) {
+  @action.bound
+  setDuration(duration) {
     this.duration = duration;
   }
 
-  @action.bound toggleLoop() {
+  @action.bound
+  toggleLoop() {
     this.loop = !this.loop;
   }
 
-  @computed get isPlaying() {
+  @computed
+  get isPlaying() {
     return !this.isPaused && !this.isStopped;
   }
 
-  @action.bound play() {
+  @action.bound
+  play() {
     if (this.isPlaying) {
       return;
     }
@@ -89,19 +104,22 @@ export default class Store {
     this.isPaused = false;
   }
 
-  @action.bound handleLoadAudio() {
+  @action.bound
+  handleLoadAudio() {
     this.loaded = true;
     if (this.isPlaying && this.lyric) {
       this.lyric.play();
     }
   }
 
-  @action.bound replay() {
+  @action.bound
+  replay() {
     this.current = 0;
     this.play();
   }
 
-  @action.bound stop() {
+  @action.bound
+  stop() {
     this.current = 0;
     this.isPaused = false;
     this.isStopped = true;
@@ -110,7 +128,8 @@ export default class Store {
     }
   }
 
-  @action.bound pause() {
+  @action.bound
+  pause() {
     this.isPaused = true;
     this.isStopped = false;
     if (this.audio) {
@@ -121,25 +140,30 @@ export default class Store {
     }
   }
 
-  @action.bound removeSong(mid) {
+  @action.bound
+  removeSong(mid) {
     const song = this.playList.find(({ mid: _mid }) => _mid === mid);
     this.playList.remove(song);
     removeFromPlayList(mid);
   }
 
-  @action.bound setSong(song) {
+  @action.bound
+  setSong(song) {
     this.song = song;
   }
 
-  @action.bound setNewSongs(songs, type) {
+  @action.bound
+  setNewSongs(songs, type) {
     this.newSongsMap.set(type, songs);
   }
 
-  @action.bound setTopSongs(songs, type) {
+  @action.bound
+  setTopSongs(songs, type) {
     this.topSongsMap.set(type, songs);
   }
 
-  @action.bound addToList(song) {
+  @action.bound
+  addToList(song) {
     if (find(this.playList, ({ songId }) => songId === song.songId)) {
       return;
     }
@@ -147,7 +171,8 @@ export default class Store {
     addToPlayList(song);
   }
 
-  @action fetchSongInfo(mid) {
+  @action
+  fetchSongInfo(mid) {
     if (this.song && this.song.mid === mid) {
       return Promise.resolve();
     }
@@ -158,11 +183,13 @@ export default class Store {
         this.setSong(song);
       });
   }
-  @action resetTimmer() {
+  @action
+  resetTimmer() {
     this.current = this.audio.currentTime;
   }
 
-  @action.bound handleForward(current) {
+  @action.bound
+  handleForward(current) {
     const diff = current - this.current;
     this.current = current;
     this.audio.currentTime = current;
@@ -171,17 +198,18 @@ export default class Store {
     }
   }
 
-  @action.bound handleOutput(currentLine) {
+  @action.bound
+  handleOutput(currentLine) {
     this.currentLine = currentLine;
   }
 
-  @action.bound playPrev() {
+  @action.bound
+  playPrev() {
     const { playList } = this;
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) =>
-          existingSongId.toString() === this.song.songId.toString(),
+        ({ songId: existingSongId }) => existingSongId.toString() === this.song.songId.toString(),
       );
       let nextIndex;
       if (index > 0) {
@@ -189,25 +217,21 @@ export default class Store {
       } else {
         nextIndex = playList.length - 1;
       }
-      const {
-        song, mid,
-      } = playList[nextIndex];
+      const { song, mid } = playList[nextIndex];
       window.browserHistory.push(`/song/${song}?&mid=${mid}`);
     }
   }
 
-  @action.bound playNext() {
+  @action.bound
+  playNext() {
     const { playList } = this;
     if (playList.length) {
       const index = findIndex(
         playList,
-        ({ songId: existingSongId }) =>
-          existingSongId.toString() === this.song.songId.toString(),
+        ({ songId: existingSongId }) => existingSongId.toString() === this.song.songId.toString(),
       );
       const nextIndex = (index + 1) % playList.length;
-      const {
-        song, mid,
-      } = playList[nextIndex];
+      const { song, mid } = playList[nextIndex];
       window.browserHistory.push(`/song/${song}?&mid=${mid}`);
     }
   }
@@ -239,14 +263,17 @@ export default class Store {
       this.lyric.handler = () => {};
     }
     const url = `/api/qqmusic/lyric?songId=${this.song.songId}`;
-    fetch(url).then(res => res.json()).then(action(({ lyric: _lyric }) => {
-      this.lyric = new Lrc(_lyric, this.handleOutput);
-      if (this.isPlaying) {
-        this.lyric.play();
-        this.lyric.seek(this.current * 1000);
-      }
-    })).catch(action(() => {
-      this.lyric = null;
-    }));
-  }
+    fetch(url)
+      .then(res => res.json())
+      .then(action(({ lyric: _lyric }) => {
+        this.lyric = new Lrc(_lyric, this.handleOutput);
+        if (this.isPlaying) {
+          this.lyric.play();
+          this.lyric.seek(this.current * 1000);
+        }
+      }))
+      .catch(action(() => {
+        this.lyric = null;
+      }));
+  };
 }

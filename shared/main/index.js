@@ -7,7 +7,8 @@ import AudioPlayback from '../components/AudioPlayback';
 import SongListShell from './components/SongListShell';
 import styles from './scss/index.scss';
 
-@inject('store') @observer
+@inject('store')
+@observer
 export default class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +41,7 @@ export default class Index extends React.Component {
     } else {
       this.props.store.fetchTopSongList(selectedTab);
     }
-  }
+  };
 
   renderTabs(type) {
     return (
@@ -51,7 +52,8 @@ export default class Index extends React.Component {
             data-value="mainland"
             className={this.state[`selected${type}Tab`] === 'mainland' ? styles.activeTab : null}
             onClick={this.handleSelectTab}
-          >内地
+          >
+            内地
           </button>
         </div>
         <div>
@@ -60,7 +62,8 @@ export default class Index extends React.Component {
             data-value="hktw"
             className={this.state[`selected${type}Tab`] === 'hktw' ? styles.activeTab : null}
             onClick={this.handleSelectTab}
-          >港台
+          >
+            港台
           </button>
         </div>
         <div>
@@ -69,7 +72,8 @@ export default class Index extends React.Component {
             data-value="euna"
             className={this.state[`selected${type}Tab`] === 'euna' ? styles.activeTab : null}
             onClick={this.handleSelectTab}
-          >欧美
+          >
+            欧美
           </button>
         </div>
       </div>
@@ -77,7 +81,7 @@ export default class Index extends React.Component {
   }
 
   render() {
-    const { playList, newSongsMap, topSongsMap } = this.props.store;
+    const { playList = [], newSongsMap, topSongsMap } = this.props.store;
     const hotSongsTabs = this.renderTabs('hotSongs');
     const topSongsTabs = this.renderTabs('topSongs');
 
@@ -86,39 +90,29 @@ export default class Index extends React.Component {
 
     return (
       <div className="main-body">
-        {
-          newSongs.length && topSongs.length ? (
-            <React.Fragment>
-              {
-                playList.length ? <HotSongList songs={playList} title="播放列表" /> : (
-                  <div className={styles.emptyList}>
-                    <div className={styles.title}>播放列表</div>
-                    播放列表空空如也，立刻
-                    <Link to="/search">搜索歌曲</Link>
-                    或<a href="/auth/google">登陆</a>
-                  </div>
-                )
-              }
-              <HotSongList
-                songs={newSongs.slice(0, 15)}
-                title="新歌榜单"
-                tabs={hotSongsTabs}
-              />
-              <HotSongList
-                songs={topSongs.slice(0, 15)}
-                title="巅峰榜单"
-                tabs={topSongsTabs}
-              />
-              <AudioPlayback />
-            </React.Fragment>
+        <React.Fragment>
+          {playList.length ? (
+            <HotSongList songs={playList} title="播放列表" />
           ) : (
-            <React.Fragment>
-              <SongListShell />
-              <SongListShell />
-              <SongListShell />
-            </React.Fragment>
-          )
-        }
+            <div className={styles.emptyList}>
+              <div className={styles.title}>播放列表</div>
+              播放列表空空如也，立刻
+              <Link to="/search">搜索歌曲</Link>
+              或<a href="/auth/google">登陆</a>
+            </div>
+          )}
+          {newSongs.length ? (
+            <HotSongList songs={newSongs.slice(0, 15)} title="新歌榜单" tabs={hotSongsTabs} />
+          ) : (
+            <SongListShell />
+          )}
+          {topSongs.length ? (
+            <HotSongList songs={topSongs.slice(0, 15)} title="巅峰榜单" tabs={topSongsTabs} />
+          ) : (
+            <SongListShell />
+          )}
+          <AudioPlayback />
+        </React.Fragment>
       </div>
     );
   }

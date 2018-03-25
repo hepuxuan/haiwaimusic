@@ -1,9 +1,10 @@
-@import '../../variables';
+@import "../../variables";
 
 .listItem {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  padding: 8px 8px 28px 10px;
 }
 
 .titleEmpty {
@@ -12,18 +13,14 @@
   align-items: center;
   height: 60vh;
   font-size: 16px;
-  a {
+  > a {
     color: $primary-color;
     padding-left: 2px;
-  };
+  }
 }
 
 .mylist {
   margin: 18px auto;
-}
-
-.mylist > div {
-  padding: 8px 8px 28px 10px;
 }
 
 @media (max-width: 800px) {

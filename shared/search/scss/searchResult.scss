@@ -1,4 +1,4 @@
-@import '../../variables';
+@import "../../variables";
 
 .title {
   font-size: 16px;
@@ -16,11 +16,15 @@
   justify-content: space-between;
 }
 
-.misicIcon {
-  i {
-    font-size: 32px;
-  }
+.image {
+  width: 80px;
   margin-right: 12px;
+}
+
+@media (max-width: 800px) {
+  .image {
+    width: 50px;
+  }
 }
 
 .innerBox {

@@ -11,20 +11,22 @@ function onRemoveSong(mid, store) {
 }
 
 function PlayList({ store }) {
-  return store.playList.length ? (
+  return store.playList && store.playList.length ? (
     <div className={styles.mylist}>
-      {
-        store.playList.map(song => (
-          <div className={styles.listItem} key={song.songId}>
-            <ListItem {...song} />
-            <div>
-              <button onClick={() => { onRemoveSong(song.mid, store); }}>
-                &#10006;
-              </button>
-            </div>
+      {store.playList.map(song => (
+        <div className={styles.listItem} key={song.songId}>
+          <ListItem {...song} />
+          <div>
+            <button
+              onClick={() => {
+                onRemoveSong(song.mid, store);
+              }}
+            >
+              &#10006;
+            </button>
           </div>
-        ))
-      }
+        </div>
+      ))}
     </div>
   ) : (
     <div className={styles.titleEmpty}>

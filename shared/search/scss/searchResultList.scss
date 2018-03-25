@@ -1,4 +1,4 @@
-@import '../../variables';
+@import "../../variables";
 
 .searchitems {
   max-width: $page-width;
@@ -6,7 +6,7 @@
 }
 
 .searchItem {
-  padding: 8px 8px 28px 0;
+  padding: 8px 8px 28px 8px;
 }
 
 @media (max-width: 800px) {
