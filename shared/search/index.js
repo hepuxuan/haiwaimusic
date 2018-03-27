@@ -10,16 +10,13 @@ import AudioPlayback from '../components/AudioPlayback';
 import { getSearchHistory, updateHistory, jsonp } from '../utils';
 import styles from './scss/index.scss';
 
-@inject('store') @observer
+@inject('store')
+@observer
 export default class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       searchHistory: [],
-      searchResults: [],
-      page: 1,
-      q: '',
-      isLoading: false,
       isSearching: false,
       hotwordsList: [],
     };
@@ -36,54 +33,35 @@ export default class Index extends React.Component {
     this.setState({
       searchHistory: getSearchHistory(),
     });
-    jsonp('https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg?g_tk=5381&jsonpCallback=JsonCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0', (data) => {
-      this.setState({
-        hotwordsList: data.data.hotkey.map(({ k }) => k),
-      });
-    });
+    jsonp(
+      'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg?g_tk=5381&jsonpCallback=JsonCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0',
+      (data) => {
+        this.setState({
+          hotwordsList: data.data.hotkey.map(({ k }) => k),
+        });
+      },
+    );
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  getSearchResult(q, page = 1) {
-    this.setState({
-      isLoading: true,
-    });
-    const url = `/api/qqmusic?q=${q}&p=${page}`;
-    return fetch(url).then(res => res.json()).then((json) => {
-      this.setState({
-        isLoading: false,
-      });
-      return json;
-    });
-  }
-
   handleScroll = () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight
-      && !this.state.isLoading) {
-      const { q, page } = this.state;
-      const newPage = page + 1;
-      if (q) {
-        this.getSearchResult(q, newPage).then(({ songs }) => {
-          this.setState(prevState => ({
-            searchResults: prevState.searchResults.concat(songs),
-            page: newPage,
-          }));
-        });
-      }
+    const { store } = this.props;
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+      !store.isLoadingSearchResult
+    ) {
+      store.fetchMoreSearchResult();
     }
-  }
+  };
 
   handleSearch = () => {
-    const { q } = this.state;
     let searchHistory;
+    const { q, fetchSearchResult } = this.props.store;
     if (this.state.searchHistory.indexOf(q) === -1) {
-      searchHistory = [
-        q,
-        ...this.state.searchHistory,
-      ].slice(0, 5);
+      searchHistory = [q, ...this.state.searchHistory].slice(0, 5);
     } else {
       searchHistory = this.state.searchHistory;
     }
@@ -91,30 +69,25 @@ export default class Index extends React.Component {
     this.setState({
       isSearching: false,
       searchHistory,
-      q,
-      searchResults: [],
     });
+
     updateHistory(searchHistory);
     if (q) {
-      this.getSearchResult(q).then(({ songs }) => {
-        this.setState(() => ({
-          searchResults: songs,
-        }));
-      });
+      fetchSearchResult();
     }
-  }
+  };
 
   handleFocus = () => {
     this.setState({
       isSearching: true,
     });
-  }
+  };
 
   handleCloseHistory = () => {
     this.setState({
       isSearching: false,
     });
-  }
+  };
 
   handleBlur = () => {
     setTimeout(() => {
@@ -122,62 +95,45 @@ export default class Index extends React.Component {
         isSearching: false,
       });
     }, 500);
-  }
+  };
 
   handleSelectSearch = (q) => {
-    this.setState({
-      q,
-    }, this.handleSearch);
-  }
-
-  handleChangeSearchString = (q) => {
-    this.setState({
-      q,
-    });
-  }
+    this.props.store.setQ(q);
+    this.handleSearch();
+  };
 
   render() {
     const {
-      searchResults, isLoading, searchHistory, isSearching, q, hotwordsList,
+      searchHistory, isSearching, hotwordsList,
     } = this.state;
+    const { store } = this.props;
     return (
       <div>
-        <Search
-          onChange={this.handleChangeSearchString}
-          onFocus={this.handleFocus}
-          onSearch={this.handleSearch}
-          q={q}
-        />
-        {
-          (() => {
-            if (isSearching) {
-              return (
-                <HistoryList
-                  onSelect={this.handleSelectSearch}
-                  searchHistory={searchHistory}
-                  onClose={this.handleCloseHistory}
-                />
-              );
-            } else if (q) {
-              return (
-                <SearchResultList searchResults={searchResults} />
-              );
-            }
-              return (
-                <div className={`${styles.hotSearchWords} main-body`}>
-                  <h4>热门搜索词</h4>
-                  {
-                    hotwordsList.map(k => (
-                      <Hotkeyword key={k} onClick={this.handleSelectSearch}>{k}</Hotkeyword>
-                    ))
-                  }
-                </div>
-              );
-          })()
-        }
-        {
-          isLoading && <Loader />
-        }
+        <Search onFocus={this.handleFocus} onSearch={this.handleSearch} />
+        {(() => {
+          if (isSearching) {
+            return (
+              <HistoryList
+                onSelect={this.handleSelectSearch}
+                searchHistory={searchHistory}
+                onClose={this.handleCloseHistory}
+              />
+            );
+          } else if (store.q) {
+            return <SearchResultList />;
+          }
+          return (
+            <div className={`${styles.hotSearchWords} main-body`}>
+              <h4>热门搜索词</h4>
+              {hotwordsList.map(k => (
+                <Hotkeyword key={k} onClick={this.handleSelectSearch}>
+                  {k}
+                </Hotkeyword>
+              ))}
+            </div>
+          );
+        })()}
+        {store.isLoadingSearchResult && <Loader />}
         <AudioPlayback />
       </div>
     );

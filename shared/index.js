@@ -22,20 +22,41 @@ export default function (props) {
               <CSSTransition
                 key={_location.pathname}
                 timeout={{
-                  enter: 500,
+                  enter: 300,
                   exit: 0,
                 }}
                 classNames="fade"
               >
                 <Switch location={_location}>
-                  <Route path="/song/:song" render={({ match, location }) => <Song location={location} match={match} {...props} />} />
-                  <Route path="/playList" render={({ match, location }) => <PlayList location={location} match={match} {...props} />} />
-                  <Route path="/search" render={({ match, location }) => <Search location={location} match={match} {...props} />} />
-                  <Route exact path="/" render={({ match, location }) => <Index location={location} match={match} {...props} />} />
+                  <Route
+                    path="/song/:song"
+                    render={({ match, location }) => (
+                      <Song location={location} match={match} {...props} />
+                    )}
+                  />
+                  <Route
+                    path="/playList"
+                    render={({ match, location }) => (
+                      <PlayList location={location} match={match} {...props} />
+                    )}
+                  />
+                  <Route
+                    path="/search"
+                    render={({ match, location }) => (
+                      <Search location={location} match={match} {...props} />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/"
+                    render={({ match, location }) => (
+                      <Index location={location} match={match} {...props} />
+                    )}
+                  />
                 </Switch>
               </CSSTransition>
             </TransitionGroup>
-        )}
+          )}
         />
       </div>
       <Audio />

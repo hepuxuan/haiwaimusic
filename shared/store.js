@@ -48,6 +48,10 @@ export default class Store {
       isIndex: true,
       showNav: true,
       path: '/',
+      q: '',
+      page: 1,
+      searchResult: null,
+      isLoadingSearchResult: false,
     });
   }
 
@@ -68,6 +72,35 @@ export default class Store {
         }));
     }
     return Promise.resolve('');
+  }
+
+  @action.bound
+  setQ(q) {
+    this.q = q;
+  }
+
+  @action.bound
+  fetchSearchResult() {
+    if (this.q) {
+      this.isLoadingSearchResult = true;
+      this.searchResult = [];
+      const url = `/api/qqmusic?q=${this.q}&p=${this.page}`;
+      return fetch(url).then(res => res.json()).then(action((json) => {
+        this.isLoadingSearchResult = false;
+        this.searchResult = json.songs;
+      }));
+    }
+  }
+
+  @action.bound
+  fetchMoreSearchResult() {
+    this.isLoadingSearchResult = true;
+    this.page = this.page + 1;
+    const url = `/api/qqmusic?q=${this.q}&p=${this.page}`;
+    return fetch(url).then(res => res.json()).then(action((json) => {
+      this.isLoadingSearchResult = false;
+      this.searchResult = this.searchResult.concat(json.songs);
+    }));
   }
 
   @action.bound
