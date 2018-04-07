@@ -1,6 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import Image from '../../components/Image';
 import styles from '../scss/searchResult.scss';
 
 function SearchResult({
@@ -12,7 +13,7 @@ function SearchResult({
     <Link to={`/song/${song}?&mid=${mid}`} className={styles.result}>
       <div className={styles.innerBox}>
         <div className={styles.image}>
-          <img width="100%" src={imageUrl} alt="" />
+          <Image width="100%" src={imageUrl} alt="" />
         </div>
         <div>
           <div className={styles.title} key="title">

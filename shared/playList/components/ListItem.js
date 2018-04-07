@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Image from '../../components/Image';
 import styles from '../scss/listItem.scss';
 
 export default function ({
@@ -11,7 +12,7 @@ export default function ({
     <Link to={`/song/${song}?mid=${mid}`} className={styles.result}>
       <div className={styles.item}>
         <div className={styles.image}>
-          <img width="100%" src={imageUrl} alt="" />
+          <Image width="100%" src={imageUrl} alt="" />
         </div>
         <div>
           <div className={styles.title} key="title">

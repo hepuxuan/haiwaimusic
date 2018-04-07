@@ -1,6 +1,6 @@
 import React from 'react';
-import LazyLoad from 'react-lazy-load';
 import { Link } from 'react-router-dom';
+import Image from '../../components/Image';
 import styles from '../scss/hotSongList.scss';
 
 export default function ({ songs, title, tabs }) {
@@ -19,11 +19,7 @@ export default function ({ songs, title, tabs }) {
           return (
             <div key={songId}>
               <Link to={`/song/${song}?&mid=${mid}`}>
-                <div className={styles.imageBox}>
-                  <LazyLoad>
-                    <img width="100%" src={url} alt="" />
-                  </LazyLoad>
-                </div>
+                <Image width="100%" src={url} />
                 <div>
                   <div className={styles.songName}>{song}</div>
                   <div className={styles.singerName}>{singer}</div>

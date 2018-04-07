@@ -11,15 +11,23 @@ function BottomNav({ store }) {
   return (
     <div className={styles.bottomNavRoot}>
       <div className={styles.bottomNav}>
-        <Link to="/" className={activeLink === '/' ? styles.active : ''}>
-          主页
-        </Link>
-        <Link to="/playList" className={activeLink === '/playList' ? styles.active : ''}>
-          播放列表
-        </Link>
-        <Link to="/search" className={activeLink === '/search' ? styles.active : ''}>
-          搜索
-        </Link>
+        <div className={activeLink === '/' ? `${styles.active} ${styles.navLink}` : styles.navLink}>
+          <Link to="/">主页</Link>
+        </div>
+        <div
+          className={
+            activeLink === '/playList' ? `${styles.active} ${styles.navLink}` : styles.navLink
+          }
+        >
+          <Link to="/playList">播放列表</Link>
+        </div>
+        <div
+          className={
+            activeLink === '/search' ? `${styles.active} ${styles.navLink}` : styles.navLink
+          }
+        >
+          <Link to="/search">搜索</Link>
+        </div>
       </div>
     </div>
   );
