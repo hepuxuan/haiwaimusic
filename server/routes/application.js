@@ -106,9 +106,8 @@ router.get('/search', async (req, res) => {
   });
 });
 
-router.get('/song/:song', async (req, res) => {
-  const { song } = req.params;
-  const { mid } = req.query;
+router.get('/song', async (req, res) => {
+  const { mid, song } = req.query;
   let playListPromise;
   if (req.user) {
     playListPromise = getPlayList(req.user.uuid);

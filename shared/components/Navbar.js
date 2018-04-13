@@ -1,8 +1,7 @@
 import React from 'react';
-import MyAccount from './myAccount';
 import { inject, observer } from 'mobx-react';
+import MyAccount from './myAccount';
 import styles from './navbar.scss';
-
 
 function Navbar({ store: { showNav } }) {
   if (!showNav) {

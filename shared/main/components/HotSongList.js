@@ -18,7 +18,7 @@ export default function ({ songs, title, tabs }) {
             100}/300_albumpic_${imageId}_0.jpg`;
           return (
             <div key={songId}>
-              <Link to={`/song/${song}?&mid=${mid}`}>
+              <Link to={`/song?song=${song}&mid=${mid}`}>
                 <Image width="100%" src={url} />
                 <div>
                   <div className={styles.songName}>{song}</div>

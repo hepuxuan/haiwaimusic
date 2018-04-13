@@ -12,7 +12,7 @@ class AudioPlayback extends React.Component {
       const imageUrl = `//imgcache.qq.com/music/photo/album_300/${song.imageId %
         100}/300_albumpic_${song.imageId}_0.jpg`;
       return (
-        <Link to={`/song/${song.name}?mid=${song.mid}`}>
+        <Link to={`/song?song=${song.song}&mid=${song.mid}`}>
           <div className={styles.playbackRoot}>
             <div className={styles.songDetails}>
               <img

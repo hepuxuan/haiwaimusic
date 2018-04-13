@@ -29,7 +29,7 @@ export default function (props) {
               >
                 <Switch location={_location}>
                   <Route
-                    path="/song/:song"
+                    path="/song"
                     render={({ match, location }) => (
                       <Song location={location} match={match} {...props} />
                     )}

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import styles from '../scss/nav.scss';
 
-export default function ({ handleAddToPlayList }) {
+function Nav({ handleAddToPlayList, location }) {
   return (
     <div className={styles.navbar}>
-      <Link to="/">
+      <Link to={`/${location.search}`}>
         <i className="material-icons">keyboard_arrow_left</i>
       </Link>
       <button onClick={handleAddToPlayList}>
@@ -14,3 +14,5 @@ export default function ({ handleAddToPlayList }) {
     </div>
   );
 }
+
+export default withRouter(Nav);

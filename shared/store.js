@@ -12,7 +12,6 @@ export default class Store {
     isPaused = false,
     isStopped = true,
     loop = false,
-    renderAudio = false,
     duration = null,
     current = 0,
     newSongs = {},
@@ -36,7 +35,6 @@ export default class Store {
       isPaused,
       isStopped,
       loop,
-      renderAudio,
       duration,
       current,
       newSongsMap,
@@ -85,10 +83,12 @@ export default class Store {
       this.isLoadingSearchResult = true;
       this.searchResult = [];
       const url = `/api/qqmusic?q=${this.q}&p=${this.page}`;
-      return fetch(url).then(res => res.json()).then(action((json) => {
-        this.isLoadingSearchResult = false;
-        this.searchResult = json.songs;
-      }));
+      return fetch(url)
+        .then(res => res.json())
+        .then(action((json) => {
+          this.isLoadingSearchResult = false;
+          this.searchResult = json.songs;
+        }));
     }
   }
 
@@ -97,10 +97,12 @@ export default class Store {
     this.isLoadingSearchResult = true;
     this.page = this.page + 1;
     const url = `/api/qqmusic?q=${this.q}&p=${this.page}`;
-    return fetch(url).then(res => res.json()).then(action((json) => {
-      this.isLoadingSearchResult = false;
-      this.searchResult = this.searchResult.concat(json.songs);
-    }));
+    return fetch(url)
+      .then(res => res.json())
+      .then(action((json) => {
+        this.isLoadingSearchResult = false;
+        this.searchResult = this.searchResult.concat(json.songs);
+      }));
   }
 
   @action.bound
@@ -251,7 +253,7 @@ export default class Store {
         nextIndex = playList.length - 1;
       }
       const { song, mid } = playList[nextIndex];
-      window.browserHistory.push(`/song/${song}?&mid=${mid}`);
+      window.browserHistory.push(`/song?song=${song}&mid=${mid}`);
     }
   }
 
@@ -265,7 +267,7 @@ export default class Store {
       );
       const nextIndex = (index + 1) % playList.length;
       const { song, mid } = playList[nextIndex];
-      window.browserHistory.push(`/song/${song}?&mid=${mid}`);
+      window.browserHistory.push(`/song?song=${song}&mid=${mid}`);
     }
   }
 

@@ -9,7 +9,7 @@ export default function ({
   const imageUrl = `//imgcache.qq.com/music/photo/album_300/${imageId %
     100}/300_albumpic_${imageId}_0.jpg`;
   return (
-    <Link to={`/song/${song}?mid=${mid}`} className={styles.result}>
+    <Link to={`/song?song=${song}&mid=${mid}`} className={styles.result}>
       <div className={styles.item}>
         <div className={styles.image}>
           <Image width="100%" src={imageUrl} alt="" />
