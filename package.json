@@ -26,6 +26,7 @@
     "hbs": "~4.0.1",
     "he": "^1.1.1",
     "history": "^4.7.2",
+    "https-proxy-agent": "^2.2.1",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "lrc": "^0.1.0",
