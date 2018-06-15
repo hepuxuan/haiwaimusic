@@ -95,9 +95,9 @@ module.exports = {
 
   getSongAddress(mid) {
     return getAsync(`song.address:${mid}`).then((cache) => {
-      if (cache !== null) {
-        return cache;
-      }
+      // if (cache !== null) {
+      //   return cache;
+      // }
       const t = (new Date).getUTCMilliseconds(); // eslint-disable-line
       const guid = (Math.round(2147483647 * Math.random()) * t) % 1e10;
       const fileName = `C400${mid}.m4a`;
