@@ -5,7 +5,7 @@ const he = require('he');
 const HttpsProxyAgent = require('https-proxy-agent');
 
 const ONE_DAY = 60 * 60 * 24;
-const PROXY_URL = 'http://39.105.78.30:3128';
+const PROXY_URL = 'http://111.230.166.51:3128';
 
 const URLS = {
   newSongsmainland: 'https://u.y.qq.com/cgi-bin/musicu.fcg?callback=JsonCallback&g_tk=5381&jsonpCallback=recom650982096327902&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data=%7B%22comm%22%3A%7B%22ct%22%3A24%7D%2C%22new_song%22%3A%7B%22module%22%3A%22QQMusic.MusichallServer%22%2C%22method%22%3A%22GetNewSong%22%2C%22param%22%3A%7B%22type%22%3A1%7D%7D%7D',
