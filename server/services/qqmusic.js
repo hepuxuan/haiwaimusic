@@ -5,7 +5,7 @@ const he = require('he');
 const HttpsProxyAgent = require('https-proxy-agent');
 
 const ONE_DAY = 60 * 60 * 24;
-const PROXY_URL = 'http://114.215.95.188:3128';
+const PROXY_URL = 'https://secure.uku.im:993';
 
 const URLS = {
   newSongsmainland: 'https://u.y.qq.com/cgi-bin/musicu.fcg?callback=JsonCallback&g_tk=5381&jsonpCallback=recom650982096327902&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data=%7B%22comm%22%3A%7B%22ct%22%3A24%7D%2C%22new_song%22%3A%7B%22module%22%3A%22QQMusic.MusichallServer%22%2C%22method%22%3A%22GetNewSong%22%2C%22param%22%3A%7B%22type%22%3A1%7D%7D%7D',
@@ -112,6 +112,9 @@ module.exports = {
         },
       })
         .then(res => res.json())
+        .catch(e => {
+          console.log(e);
+        })
         .then(res => res.data.items[0].vkey)
         .then((vkey) => {
           const address = `https://dl.stream.qqmusic.qq.com/${fileName}?vkey=${vkey}&guid=${guid}&uin=0&fromtag=66`;
